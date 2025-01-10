@@ -1,0 +1,75 @@
+<style>
+	.layoutwrapper {
+		width: 665px;
+		border: 1px solid #ededed;
+		padding:15px;
+	}
+	.layouts {
+		overflow: scroll; 
+		height: 450px; 
+	}
+	.layoutoption {
+		display: inline-block;
+		margin:10px;
+		border: solid 3px #fdfdfd;
+		text-align: center;
+	}
+	.layoutoption:hover{
+		border: solid 3px #dfdfdf;
+	} 
+	.active {
+		border: solid 3px #f5863b;
+	}
+	.layoutoption img {
+		border: 1px solid #ddd;
+	}
+</style>
+
+
+<script>
+	dojo.addonload( function(){
+		var x = dojo.byid("layout").value;
+		if(x != ""){
+			dijit.byid("layoutselect").setvalue(x);
+			dojo.addclass("layout" + x, "active");
+		}
+	});
+	
+	function setlayout(x){
+		dojo.query("#layouts a").removeclass("active");
+		dojo.addclass("layout" + x, "active");
+		dojo.byid("layout").value = x;
+		dojo.byid("layoutselect").value = x;
+		dijit.byid("layoutdialog").hide();
+	}
+	
+	function opendialog(){
+		dijit.byid("layoutdialog").show();
+	}
+</script>
+
+
+<input id="layoutselect" dojotype="dijit.form.textbox" readonly="readonly" name="layoutselect" type="text" onclick="opendialog();">
+<button id="buttonone" dojotype="dijit.form.button" type="button" iconclass="contenticon" onclick="opendialog();">change layout</button>
+
+<div id="layoutdialog" data-dojo-type="dijit.dialog" title="banner layout">
+	<div class="layoutwrapper">
+		<div id="layouts" class="layouts">
+			<a id="layout1" onclick="setlayout('1');" class="layoutoption"><img src="/images/icons/layout1.png"></a>
+			<a id="layout2" onclick="setlayout('2');" class="layoutoption"><img src="/images/icons/layout2.png"></a>
+			<a id="layout3" onclick="setlayout('3');" class="layoutoption"><img src="/images/icons/layout3.png"></a>
+			<a id="layout4" onclick="setlayout('4');" class="layoutoption"><img src="/images/icons/layout4.png"></a>
+		</div>
+	</div>
+</div>
+	dojo.byid("layoutselect").value = x;
+		dijit.byid("layoutdialog").hide();
+	}
+	
+	function opendialog(){
+		dijit.byid("layoutdialog").show();
+	}
+</script>
+
+
+<input id="layoutselect" dojotype="dijit.form.textbox" readonly="readonly" name="layoutselect" type="text" onclick="ope

@@ -1,0 +1,92 @@
+.user-info {
+    background: $gray-dark;
+    border-radius: 0 0 0 6px;
+    border-right: 3px solid $gray-darker;
+    color: $gray-lighter;
+    font-size: 11px;
+    line-height: 1.6em;
+    padding: 20px 16px 20px 18px;
+    position: fixed;
+    right: -335px;
+    top: 105px;
+    width: 335px;
+    min-height: 573px;
+    z-index: 200;
+
+    .trigger {
+      background: url('/application/themes/quest/images/layout/info-trigger.png') no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+      cursor: pointer;
+      display: block;
+      height: 50px;
+      left: -81px;
+      position: absolute;
+      text-align: center;
+      top: 0px;
+      width: 81px;
+    }
+
+  	h2 {
+  	    color: $white;
+  	    font-size: 18px;
+  	    font-weight: 300;
+  	    margin: 8px 0;
+  	    text-shadow: 0.05em 0.05em 0.1em $gray-darker;
+  	}
+
+  	a {
+  	    background: none repeat scroll 0 0 $gray-darker;
+  	    border: 1px solid $white;
+  	    border-radius: 5px;
+  	    color: $white;
+  	    display: block;
+  	    margin: 15px auto;
+  	    padding: 5px 10px;
+  	    text-align: center;
+  	    text-decoration: none;
+  	    width: 100px;
+
+    		&:hover {
+    		    background: none repeat scroll 0 0 $gray-light;
+    		}
+  	}
+
+  	table {
+  	    background: none repeat scroll 0 0 $gray-dark;
+  	    border: 1px solid $gray;
+  	    border-collapse: collapse;
+  	    margin-bottom: 10px;
+  	    width: 100%;
+
+    		th,
+    		td {
+    		    background: none repeat scroll 0 0 $gray-dark;
+    		    border: 1px solid $gray;
+    		    color: $gray-light;
+    		    padding: 5px 5px 5px 10px;
+    		    text-align: left;
+    		    width: 50%;
+    		}
+
+    		th {
+    		    font-weight: bold;
+    		}
+  	}
+}
+
+
+  	h2 {
+  	    color: $white;
+  	    font-size: 18px;
+  	    font-weight: 300;
+  	    margin: 8px 0;
+  	    text-shadow: 0.05em 0.05em 0.1em $gray-darker;
+  	}
+
+  	a {
+  	    background: none repeat scroll 0 0 $gray-darker;
+  	    border: 1px solid $white;
+  	    border-radius: 5px;
+  	    color: $white;
+  	    display: block;
+  	    margin: 15px auto;
+  	    padding: 5px 1

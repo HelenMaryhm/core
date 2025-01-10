@@ -1,0 +1,59 @@
+#set($list = $navtool.getnav())
+<div class="list-group sidebar-menu">
+
+                
+  
+	#foreach($n in $list)
+		<a href="${n.href}" class="list-group-item #if($n.active)active#end">${n.title}</a>
+ 
+		#set($children = $n.children)
+		#if( $n.active && $children && $children.size() > 0 )
+			<ul>
+				#foreach($ch in $children)
+					<li>
+						#if($ch.active)<strong>#end <a href='${ch.href}'>${ch.title}</a> #if($ch.active)</strong>#end
+  						#set($children2 = $ch.children)
+						#if( $ch.active && $children2 && $children2.size() > 0 )
+							<ul>
+								#foreach($c2 in $children2)
+									<li>#if($c2.active)<strong>#end <a href='${c2.href}'>${c2.title}</a> #if($c2.active)</strong>#end
+								#end
+							</ul>
+						#end
+					</li>
+				#end
+			</ul>
+		#end
+	#end
+	#if ($edit_mode && $publish_htmlpage_permission)
+	<div style="height:20px;">
+      #set($_formid="dot_form_menu_$date.date.time") 
+	  <form class="navbar-form navbar-right" action="${directorurl}" method="post" name="${_formid}" id="${_formid}">
+		<input type="hidden" name="cmd" value="ordermenu" />
+		<input type="hidden" name="hostid" value="${host.identifier}" />
+		<input type="hidden" name="referer" value="${vtlservlet_uri}" />
+		<input type="hidden" name="pagepath" value="${vtlservlet_uri}" />
+		<input type="hidden" name="startlevel" value="2" />
+		<input type="hidden" name="depth" value="2" />
+			<a href="javascript:document.getelementbyid('${_formid}').submit();" class="btn btn-primary btn-xs normaltip" data-original-title="reorder menu">
+				<i class="fa fa-arrow-up"></i> 
+				<i class="fa fa-arrow-down"></i> 
+			</a>
+	  </form>
+	</div>
+    #end
+</div>
+>#end <a href='${c2.href}'>${c2.title}</a> #if($c2.active)</strong>#end
+								#end
+							</ul>
+						#end
+					</li>
+				#end
+			</ul>
+		#end
+	#end
+	#if ($edit_mode && $publish_htmlpage_permission)
+	<div style="height:20px;">
+      #set($_formid="dot_form_menu_$date.date.time") 
+	  <form class="navbar-form navbar-right" action="${directorurl}" method="post" name="${_formid}" id="${_formid}">
+	

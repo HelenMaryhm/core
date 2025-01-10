@@ -1,0 +1,56 @@
+#set($blogSearch = $request.getParameter('blogSearch'))
+<div class="blog-menu">
+  <form method="get">
+    <div class="input-group search-field">
+      <input type="text" name="blogSearch" id="searchBox" class="form-control py-2" placeholder="Search" #if($blogSearch != '') value="$!{blogSearch}"#end />
+      <span class="input-group-append">
+        ## <button class="btn btn-primary btn-document-search" type="submit"></button>
+        <button class="btn btn-primary" type="button">
+            <i class="fa fa-search"></i>
+        </button>
+      </span>
+    </div><!-- /search-field -->
+    <input type="hidden" name="search" value="true" />
+  </form>
+
+  <div class="card search-filter topics mb-4">
+    <!-- Default panel contents -->
+    <div class="card-header"><h4 class="card-title mb-0">Topics</h4></div>
+    <div class="list-group mb-0">
+      <a href="/blogs/" class="list-group-item#if(!$request.getParameter('cat')) active#end">Most Recent</a>
+      #foreach($con in $categories.getChildrenCategoriesByKey("topic"))
+        <a href="/blogs/?cat=$con.categoryVelocityVarName" class="list-group-item#if($request.getParameter('cat') == $con.categoryVelocityVarName) active#end">$con.categoryName</a>
+      #end
+    </div>
+  </div>
+
+  <div class="card search-filter tags">
+    <!-- Default panel contents -->
+    <div class="card-header"><h4 class="card-title mb-0">Tags</h4></div>
+    <div class="card-body">
+        <ul class="tags-cloud">
+        
+        #set($blogTags = $estool.search('{
+            "query" : {
+				"match_all" : {}
+			},
+			"aggs" : {
+				"tags" : { 
+				    "terms" : {
+				        "field" : "blog.tags"
+				    } 
+				}
+			}
+		}'))
+		
+		#foreach($f in $blogTags.aggregations)
+			#foreach($term in $f.buckets)
+          		<li><a href="/blogs/?tag=$term.key" id="$term.key" data-tag="$term.key">$term.key <span>$term.docCount</span></a></li>
+			#end
+		#end
+        </ul>
+      
+    </div>
+  </div>
+
+</div>

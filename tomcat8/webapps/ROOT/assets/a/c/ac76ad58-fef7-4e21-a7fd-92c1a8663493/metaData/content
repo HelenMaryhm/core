@@ -1,0 +1,137 @@
+#set($catvar=$request.getparameter("cat"))
+#set($tagvar=$request.getparameter("tag"))
+#set($searchvar=$request.getparameter("blogsearch"))
+
+#set($nowsers= $date.format('yyyymmddhhmmss', $date.getdate()))
+
+#set($_qk = "+structurename:blog +(conhost:$host.identifier conhost:system_host)")
+
+#if($utilmethods.isset($searchvar))
+  #set($_qk = $_qk + "+(blog.title:*$searchvar* || blog.body:*$searchvar*)")
+#end
+
+#if($utilmethods.isset($catvar))
+  #set($_qk = $_qk + "+(categories:$catvar)")
+#end
+
+#if($utilmethods.isset($tagvar))
+  #set($_qk = $_qk + "+blog.tags:*$tagvar*")
+#end
+
+#if($request.getparameter("page"))
+  #set($pagenumber = $math.tointeger($request.getparameter("page")))
+#else
+  #set($pagenumber = 1)
+#end
+
+#set($numbertopull = 5)
+
+#set($mypagelist = $dotcontent.pullperpage("${_qk}",${pagenumber},${numbertopull},"blog.syspublishdate desc"))
+
+#if($utilmethods.isset($catvar))
+  <a class="btn btn-warning btn-sm btn-rss pull-right-expecific" href="/blogs/rss?cat=$catvar"><i class="fa fa-rss"></i> rss</a>
+#else
+  <a class="btn btn-warning btn-sm btn-rss pull-right-expecific" href="/blogs/rss"><i class="fa fa-rss"></i> rss</a>
+#end
+<h1 class="page-title">insight blog</h1>
+#if($utilmethods.isset($searchvar) || $utilmethods.isset($catvar) || $utilmethods.isset($tagvar))
+  <p class="blog-search-string">
+    #if($utilmethods.isset($searchvar))
+      <span class="search-label">search results for:</span>
+      <span class="search-term">"$searchvar"</span>
+    #end
+    #if($utilmethods.isset($catvar))
+      <span class="search-label">filter by:</span>
+      <span class="search-term">"$catvar"</span>
+    #end
+    #if($utilmethods.isset($tagvar))
+      <span class="search-label">tagged by:</span>
+      <span class="search-term">"$tagvar"</span>
+    #end
+  </p>
+#end
+
+<ul class="media-list media-list-extend blog-listing pl-0">
+  #set($contentcount = ($pagenumber - 1) * $numbertopull)
+  #foreach($con in $mypagelist)
+    #set($contentcount = $contentcount + 1)
+    <li class="media">
+      <article>
+        <div class="media-boty">
+          #editcontentlet($con.inode)
+          <h4 class="media-heading post-title"><a href="/blogs/$con.urltitle">$!{con.title}</a></h4>
+          <div class="post-info">
+            <time datetime="$date.format('yyyy-mm-dd',$!con.syspublishdate)t$date.format('hh:mm:ss',$!con.syspublishdate)" class="date">$date.format('mmmm dd, yyyy',$con.syspublishdate)</time>
+            <span class="author">$con.author</span>
+            <span class="comments">
+              <a href="/blogs/$con.urltitle#comments">
+                #if($con.commentscount > 0)
+                  $con.commentscount comments
+                #else
+                  no comments
+                #end
+              </a>
+            </span>
+          </div>
+          <p class="summary">$utilmethods.prettyshortenstring("$con.body", 200)</p>
+        </div>
+      </article>
+    </li>
+  #end
+</ul>
+
+<nav aria-label="blog pagination">
+    <ul class="pagination">
+      #if($mypagelist.previouspage)
+        <li class="page-item previous">
+          #set($prevpage= $pagenumber - 1)
+          #if($utilmethods.isset($searchvar))
+            <a class="page-link" href="?page=$prevpage&blogsearch=$searchvar">
+          #elseif($utilmethods.isset($catvar))
+            <a class="page-link" href="?page=$prevpage&cat=$catvar">
+          #elseif($utilmethods.isset($tagvar))
+            <a class="page-link" href="?page=$prevpage&tag=$tagvar">
+          #else
+            <a class="page-link" href="?page=$prevpage">
+          #end
+          <i class="fa fa-caret-left"></i> previous
+          </a>
+        </li>
+      #end
+      #if($mypagelist.nextpage)
+        <li class="page-item next ml-auto">
+          #set($nextpage= $pagenumber + 1)
+          #if($utilmethods.isset($searchvar))
+            <a class="page-link" href="?page=$nextpage&blogsearch=$searchvar">
+          #elseif($utilmethods.isset($catvar))
+            <a class="page-link" href="?page=$nextpage&cat=$catvar">
+          #elseif($utilmethods.isset($tagvar))
+            <a class="page-link" href="?page=$nextpage&tag=$tagvar">
+          #else
+            <a class="page-link" href="?page=$nextpage">
+          #end
+          next <i class="fa fa-caret-right"></i>
+          </a>
+        </li>
+      #end
+    </ul>
+</nav>
+ <a class="page-link" href="?page=$prevpage&cat=$catvar">
+          #elseif($utilmethods.isset($tagvar))
+            <a class="page-link" href="?page=$prevpage&tag=$tagvar">
+          #else
+            <a class="page-link" href="?page=$prevpage">
+          #end
+          <i class="fa fa-caret-left"></i> previous
+          </a>
+        </li>
+      #end
+      #if($mypagelist.nextpage)
+        <li class="page-item next ml-auto">
+          #set($nextpage= $pagenumber + 1)
+          #if($utilmethods.isset($searchvar))
+            <a class="page-link" href="?page=$nextpage&blogsearch=$searchvar">
+          #elseif($utilmethods.isset($catvar))
+            <a class="page-link" href="?page=$nextpage&cat=$catvar">
+          #elseif($utilmethods.isset($tagvar))
+            <a class="page-link" href="?page=$nextpage

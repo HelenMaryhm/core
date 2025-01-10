@@ -1,0 +1,48 @@
+.blog-menu {
+
+    .btn-document-search {
+        &:before {
+            @include add-icon(0, 0);
+            content: "\f002";
+        }
+
+        &:hover {
+            border-color: $brand-secondary;
+            background-color: $brand-secondary;
+        }
+    }
+
+    .search-field {
+        margin-bottom: $padding-base-vertical;
+    }
+
+}
+
+// TODO: where should this macro styles go?
+
+/*** Tag Cloud ***/
+.tag-cloud {
+    text-align: center;
+
+    a {
+        display: inline-block;
+        margin: $padding-base-vertical / 2;
+
+        &.xSmallTag{
+            font-size: ceil($font-size-base * 0.7);
+        }
+        &.smallTag{
+            font-size: ceil($font-size-base * 0.8);
+        }
+        &.mediumTag{
+            font-size: $font-size-base;
+        }
+        &.largeTag{
+            font-size: ceil($font-size-base * 1.25);
+        }
+        &.xLargeTag{
+            font-size: ceil($font-size-base * 1.5);
+        }
+    }
+}
+	

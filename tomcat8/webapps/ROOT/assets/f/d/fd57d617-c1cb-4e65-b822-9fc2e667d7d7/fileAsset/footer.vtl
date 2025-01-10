@@ -1,0 +1,155 @@
+<!-- FOOTER -->
+<footer id="ft">
+	<div class="social-links">
+		<div class="container">
+			
+			<div class="row">
+				<div class="col-sm-12 col-md-6 center-xs">
+					<ul class="list-inline social-tools center-xs">
+						<li><a href="//twitter.com/dotcms" target="_blank"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-twitter fa-stack-1x fa-inverse"></i></span></a></li>
+						<li><a href="//www.linkedin.com/company/dotcms" target="_blank"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-linkedin fa-stack-1x fa-inverse"></i></span></a></li>
+						<li><a href="//plus.google.com/+Dotcms?rel=author" rel="publisher" target="_blank"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-google-plus fa-stack-1x fa-inverse"></i></span></a></li>
+						<li><a href="//www.youtube.com/user/javacms" target="_blank"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-youtube fa-stack-1x fa-inverse"></i></span></a></li>
+						<li><a href="/company/rss/"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-rss fa-stack-1x fa-inverse"></i></span></a></li>
+						<li><a href="//github.com/dotCMS" target="_blank"><span class="fa-stack fa-lg"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-github fa-stack-1x fa-inverse"></i></span></a></li>
+					</ul>
+				</div>
+				<div class="col-sm-12 col-md-6 text-right center-xs">
+					<div>
+						<a href="tel:13059002001" style="color:#fff;">+1-305-900-2001</a>   | 
+						<a href="/home/privacy-policy.dot" style="color:#fff;">Privacy</a>  | 
+						 ©$!{date.format('yyyy',$UtilMethods.getCurrentDate())} dotCMS LLC. All rights reserved.
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+
+<!-- Javascript -->
+<!-- Load jQuery from Google CDN -->
+<script src="//code.jquery.com/jquery.min.js"></script>
+<!--
+Bootstrap v4.0, contains all the jQuery plugins.
+More information at: http://getbootstrap.com/javascript/
+-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script src="//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js"></script>
+## <script src="/application/themes/dotcms-new/js/jquery-2.1.1.min.js"></script>
+## <script src="/application/themes/dotcms-new/js/bootstrap.min.js"></script>
+<script>
+	WebFont.load({
+		google : {
+			families : [ 'Roboto:400,300,700:latin', 'Roboto+Slab:400,100,700:latin' ]
+		}
+	});
+</script>
+#set($dateString = $date.format('yyyy-MM-dd',$UtilMethods.getCurrentDate()))
+#set($redirectUrl = '/marketing/thank-you/thank-you.dot')
+
+#set($geolocationFromSession = $session.getAttribute("geolocation"))
+#if(!$UtilMethods.isSet($geolocationFromSession))
+    #set($locationURL = "http://www.geoplugin.net/json.gp?ip=$request.getRemoteAddr()")
+    #set($geolocation = $json.fetch("$!locationURL"))
+    $session.setAttribute("geolocation", $geolocation)
+#else
+    #set($geolocation = $session.getAttribute("geolocation"))
+#end
+
+<script type="text/javascript">
+
+function getHubData() {
+    var cookieName="hubspotutk";
+    function escape(s) { return s.replace(/([.*+?\^${}()|\[\]\/\\])/g, '\\$1'); };
+    var cookieMatch = document.cookie.match(RegExp('(?:^|;\\s*)' + escape(cookieName) + '=([^;]*)'));
+    cookieMatch = cookieMatch ? cookieMatch[1] : null;
+	var hubData = {}
+	hubData.hutk=cookieMatch;
+	hubData.pageUrl = window.location.href;
+	hubData.ipAddress = "$request.remoteAddr";
+	return JSON.stringify(hubData);
+}
+
+$(document).ready(function() {
+    $("#contactForm").submit(function(e) {
+        e.preventDefault();
+    	var dataObj={        
+			'stName':'MarketingContact',
+			'ipAddress': '$request.getRemoteAddr()',
+			'referUrl': document.referrer,
+			'campaign': '$!{dotPageContent.campaign}',
+			'country': '${geolocation.geoplugin_countryName}',
+			'leadSource' : '$!{dotPageContent.campaign}',
+			'date': '$dateString',
+			'host1': 'dotcms.com:/leads',
+            'hubspotId':getHubData(),
+#if($visitor.accruedTags)
+			'tags' : '#foreach($tag in $visitor.accruedTags)$!{tag.tag}, #end',
+#else
+			'tags' : '',
+#end
+		};
+		
+		if($('#firstName').val() != undefined && $('#firstName').val().length > 0){
+			dataObj.firstName = $('#firstName').val();
+		}
+		
+		if($('#lastName').val() != undefined && $('#lastName').val().length > 0){
+			dataObj.lastName = $('#lastName').val();
+		}
+		
+		if($('#email').val() != undefined && $('#email').val().length > 0){
+			dataObj.email = $('#email').val();
+		}
+		
+        if($('#company').val() != undefined && $('#company').val().length > 0){
+			dataObj.company = $('#company').val();
+        }
+        
+        if($('#phone').val() != undefined && $('#phone').val().length > 0){
+			dataObj.phone = $('#phone').val();
+        }
+   
+		dataObj.comments = $('#comments').val();
+
+		$('#firstName').attr('disabled', true);
+		$('#lastName').attr('disabled', true);
+		$('#company').attr('disabled', true);
+		$('#email').attr('disabled', true);
+		$('#phone').attr('disabled', true);
+		
+		$('#submit-btn').attr('disabled', true);
+		$('#submit-btn').prop('disabled', true);
+		$("#submit-btn").removeClass("btn-success").addClass( "disabled" );
+
+		$.ajax({
+			url: '/api/content/email%20sales%20and%20send%20to%20sf/1',
+			type: 'PUT',
+			cache: false,
+			data: dataObj,          
+			beforeSend: function (request){
+				request.setRequestHeader("DOTAUTH", "bGljZW5zZXJlcXVlc3RAZG90Y21zLmNvbTpKbnM0QHdAOCZM");
+			},
+			success: function(data,status,xhr) {
+				console.log("works!");
+				window.location= '$redirectUrl';
+			},
+			error: function(data,status,xhr) {
+				alert("Sorry there was an error. Please check your fields and try again.");
+				$('#firstName').attr('disabled', false);
+				$('#lastName').attr('disabled', false);
+				$('#company').attr('disabled', false);
+				$('#email').attr('disabled', false);
+				$('#phone').attr('disabled', false);
+				
+				$('#submit-btn').attr('disabled', false);
+				$('#submit-btn').prop('disabled', false);
+				$("#submit-btn").removeClass("disabled").addClass("btn-success");
+			},
+		});
+	});
+});
+ 
+</script>

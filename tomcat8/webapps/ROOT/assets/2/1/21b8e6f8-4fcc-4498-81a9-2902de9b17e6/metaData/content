@@ -1,0 +1,62 @@
+<script>
+    $(document).ready(function() {
+
+	    jquery.getjson("http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22$!{tickersymbol}%22)&format=json&env=store%3a%2f%2fdatatables.org%2falltableswithkeys&callback=?",
+	    function(data) {
+	      var q = (data.query.results.quote.previousclose);
+	      var x = (data.query.results.quote.change);
+	      var y = (data.query.results.quote.percentchange);
+	
+	      jquery("#price$!{tickersymbol}lg").append(q);
+	
+	      if (x.indexof("-") != -1) {
+	        var x = "<span class=\"down\">&nbsp;" + x + "&nbsp;(" + y + ")</span>";
+	      } else if (x.indexof("+") != -1) {
+	        var x = "<span class=\"up\">&nbsp;" + x + "&nbsp;(" + y + ")</span>";
+	      } else {
+	        var x = "<span>&nbsp;" + x + "&nbsp;(" + y + ")</span>";
+	      }
+	      jquery("#change$!{tickersymbol}lg").append(x);
+	    });
+
+	});
+</script>
+<div class="row">
+    <div class="col-sm-6">
+		<img src="http://chart.finance.yahoo.com/c/5b/v/$!{tickersymbol}?lang=en-us&region=us&width=300&height=180" alt="chart for $!{tickersymbol}" width="100%">
+	</div>
+	<div class="col-sm-6">
+		<div class="media-body">
+			<span class="label label-default pull-right">product</span>
+	    	<div class="media-heading"><a href="/products/$urltitle">$title ($!{tickersymbol})</a></div>
+			<table class="table product-info">
+				<tr>
+					<td>price:</td>
+					<td class="price" id="price$!{tickersymbol}lg"></td>
+				</tr>
+				<tr>
+					<td>change:</td>
+					<td><span id="change$!{tickersymbol}lg"></span></td>
+				</tr>
+				<tr>
+					<td>asset class:</td>
+					<td>$!{assetclass}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
+
+<hr>
+	        var x = "<span class=\"up\">&nbsp;" + x + "&nbsp;(" + y + ")</span>";
+	      } else {
+	        var x = "<span>&nbsp;" + x + "&nbsp;(" + y + ")</span>";
+	      }
+	      jquery("#change$!{tickersymbol}lg").append(x);
+	    });
+
+	});
+</script>
+<div class="row">
+    <div class="col-sm-6">
+		<img src="http://chart.finance.yahoo.com/c/5b/v/$!

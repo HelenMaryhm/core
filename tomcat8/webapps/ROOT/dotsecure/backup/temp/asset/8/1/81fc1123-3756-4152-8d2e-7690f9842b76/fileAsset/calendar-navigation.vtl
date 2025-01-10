@@ -1,0 +1,101 @@
+#if($UtilMethods.isSet($request.getParameter('date')))
+  #set($dateString = $request.getParameter('date'))
+#else
+  #set($dateString = $date.format('yyyy-MM-dd',$UtilMethods.getCurrentDate()))
+#end
+#set($now = $date.toDate('yyyy-MM-dd',$dateString))
+#set($fromDate = $date.toDate('yyyy-MM-dd',$dateString))
+#set($toDate = $date.toDate('yyyy-MM-dd',$dateString))
+#set($smallCalendar = $date.toCalendar($now))
+
+## firstDayOfWeek
+#set($beginning = $date.toDate('yyyy-MM-dd',"${date.format('yyyy', $now)}-${date.format('MM', $now)}-1"))
+#set($beginningCalendar = $date.toCalendar($beginning))
+#set($firstDayOfWeek = $math.sub($beginningCalendar.get(7),1))
+
+##getDaysInMonth
+#set($daysInMonth = $smallCalendar.getActualMaximum(5))
+
+##date of the weex
+#set($dayOfWeek = $math.sub($smallCalendar.get(7),1))
+
+##GETTING WEEK RANGE
+#set($temp = $fromDate.setTime($math.sub($fromDate.getTime(), $math.mul(86400000,$dayOfWeek))))
+#set($temp = $toDate.setTime($math.add($toDate.getTime(),$math.mul(86400000,$math.sub(6,$dayOfWeek)))))
+#set($dayOfTheWeek = $firstDayOfWeek)
+<table cellspacing="0" cellpadding="0" id="nojs-navigationCalendar" class="table events-calendar">
+  <thead>
+    <tr class="header-nav">
+      <th colspan="1" class="prev">
+        <a href="/news-events/events/?date=$date.format('yyyy-MM-dd',$UtilMethods.addDate($now,-1,2))"><i class="fa fa-arrow-circle-left"></i></a>
+      </th>
+      <th colspan="5" class="month-display" id="nojs-navMonthYearName">
+        <a href="/news-events/events/?date=$date.format('yyyy-MM-dd',$now)" class="month-display">$date.format('MMMM yyyy',$now)</a></th>
+      <th  colspan="1" class="next">
+        <a href="/news-events/events/?date=$date.format('yyyy-MM-dd',$UtilMethods.addDate($now,1,2))"><i class="fa fa-arrow-circle-right"></i></a>
+      </th>
+    </tr>
+    <tr class="header-days">
+      <th class="weekend">sun</th>
+      <th>mon</th>
+      <th>tue</th>
+      <th>wed</th>
+      <th>thu</th>
+      <th>fri</th>
+      <th class="weekend">Sat</th>
+    </tr>
+  </thead>
+  <tbody class="nav-body" id="nojs-navBodyCalendar">
+    <tr>
+      #if($firstDayOfWeek > 0)
+        #foreach($i in [0..$math.sub($firstDayOfWeek,1)])
+          <td class="nav-day">&nbsp;</td>          
+        #end
+      #end
+      #foreach($day in [1..${daysInMonth}])
+        #set($cDate = $date.toDate('yyyy-MM-dd', "${date.format('yyyy', $now)}-${date.format('MM', $now)}-$day"))
+        #if(($cDate.compareTo($fromDate) == 1 || $cDate.compareTo($fromDate) == 0)  && ($cDate.compareTo($toDate) == -1 || $cDate.compareTo($toDate) == 0))
+          #set($tdClass = "nav-selected-day")
+        #else
+          #set($tdClass = "")
+        #end
+        #if(($fromDate.compareTo($cDate) <=0 ) && $cDate.compareTo($toDate) <= 0)
+          #set($tdClass = "$!tdClass today")
+        #end
+        #if($dayOfTheWeek == 6) 
+          #set($tdClass = "$!tdClass nav-last-day")
+        #else
+          #set($tdClass = "$!tdClass nav-day")
+        #end
+        <td class="$!tdClass" >
+          <a href="/news-events/events/?date=${date.format('yyyy-MM-dd', $cDate)}">$day</a>
+        </td>
+        #set($dayOfTheWeek = $math.mod($math.add($dayOfTheWeek, 1),7))    
+        #if($dayOfTheWeek == 0)  
+          </tr>
+          #if($day < $daysInMonth) 
+            <tr>
+          #end
+        #end
+      #end
+      #foreach($i in [${dayOfTheWeek}..6]) 
+        <td #if($i == 6) class="nav-last-day" #else class="nav-day" #end >&nbsp;</td>
+        #if($i == 6)
+          </tr>
+        #end
+      #end
+  </tbody>
+</table>
+
+<div id="categories">
+  <h3>Categories</h3>
+  #set($catList = $categories.getChildrenCategoriesByKey('event'))
+  <select onChange="if(this.selectedIndex!=0) self.location=this.options[this.selectedIndex].value" class="js-event-categories" id="event-categories">
+    <option selected></option>
+    #foreach($catInode in $catList)
+      #set($category1 = $categories.getCategoryByInode($catInode))
+      <option #if($catInode.inode == $cat)selected="selected"#end value="/news-events/events/?date=$dateString&cat=$catInode.inode">$catInode.categoryName</option>
+    #end
+  </select>
+</div>
+

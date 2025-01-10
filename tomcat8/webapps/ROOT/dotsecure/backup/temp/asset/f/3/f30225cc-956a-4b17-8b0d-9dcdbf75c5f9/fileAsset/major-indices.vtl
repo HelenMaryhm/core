@@ -1,0 +1,22 @@
+#set($myjson = $json.fetch("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quote%20where%20symbol%20in%20(%22%5EGSPC%22%2C%22%5EIXIC%22%2C%22AAPL%22%2C%22GOOG%22)&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys"))
+
+<div class="row">
+	#foreach($stock in $myjson.query.results.quote)
+		<div class="col-sm-3">
+			<div class="stock-quote" style="padding:2px;background: #f1f1f1;margin:10px 0;">
+				<div>
+					<img src="http://chart.finance.yahoo.com/instrument/1.0/$stock.symbol/chart;range=1d/image;size=300x180?region=US&amp;lang=en-US&amp;scheme=gsbeta" alt="Chart for $stock.symbol" style="width:100%;">
+				</div>
+				<div style="padding: 5px 8px;">
+					#if($stock.symbol == "^IXIC") 
+						<small><b>NASDAQ</b> ($stock.symbol)</small><br>
+					#else
+						<small><b>$stock.Name</b> ($stock.symbol)</small><br>
+					#end
+					<b>$stock.LastTradePriceOnly</b> $stock.Change
+				</div>
+			</div>
+		</div>
+	#end
+</div>
+

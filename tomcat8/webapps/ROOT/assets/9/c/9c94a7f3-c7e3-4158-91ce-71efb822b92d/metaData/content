@@ -1,0 +1,47 @@
+#if(!$edit_mode)
+	$response.setcontenttype("text/xml")
+#end
+#set($nowsers= $date.format('yyyymmddhhmmss', $date.getdate()))
+
+#set($_qk = "+structurename:news
+      +(conhost:$host.identifier conhost:system_host)
+      +news.syspublishdate:[19001010101000 to $nowsers]")
+
+#set($cons = $dotcontent.pull(${_qk},20,"news.syspublishdate desc"))
+
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/atom">
+  <channel>
+    <title>quest news and healines</title>
+    <description>today’s top stores and headlines from the world of finance.</description>
+    <link>http://${host.hostname}/</link>
+    <atom:link href="http://${host.hostname}/news-events/news-rss" rel="self" type="application/rss+xml" />
+        #foreach($con in $cons)
+            <item>
+                <title>$webapi.xmlescape($!{con.title})</title>
+                <description>$webapi.xmlescape($utilmethods.prettyshortenstring("$con.story", 255))</description>
+                <link>http://${host.hostname}/news/$con.urltitle</link>
+                <guid>http://${host.hostname}/news/$con.urltitle</guid>
+            </item>
+    	#end
+  </channel>
+</rss>
+hhmmss', $date.getdate()))
+
+#set($_qk = "+structurename:news
+      +(conhost:$host.identifier conhost:system_host)
+      +news.syspublishdate:[19001010101000 to $nowsers]")
+
+#set($cons = $dotcontent.pull(${_qk},20,"news.syspublishdate desc"))
+
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/atom">
+  <channel>
+    <title>quest news and healines</title>
+    <description>today’s top stores and headlines from the world of finance.</description>
+    <link>http://${host.hostname}/</link>
+    <atom:link href="http://${host.hostname}/news-events/news-rss" rel="self" type="application/rss+xml" />
+        #foreach($con in $cons)
+            <item>
+                <title>$webapi.xmlescape($!{con.title})</title>
+                <description>$webapi.xmlescape($utilmethods.prettyshortenstring("$con.story", 255))</description>
+                <link>http://${host.hostname}/news/$con.urltitle</link>
+                <guid>htt

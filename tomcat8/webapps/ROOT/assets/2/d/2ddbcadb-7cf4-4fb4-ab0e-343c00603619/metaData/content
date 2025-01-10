@@ -1,0 +1,553 @@
+<script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=${host.googlemap}&v=3.exp&signed_in=true&libraries=places"></script>
+
+<style>
+  .btn-location {
+    position: relative;
+  }
+  .btn-loader {
+    left: 10px;
+    position: absolute;
+    top: 12px;
+  }
+  .loading {
+    background-image: url('/images/icons/loader.gif');
+    height: 32px;
+    margin: 0 auto;
+    width: 32px;
+  }
+  .map-canvas {
+    height: 400px;
+    width: 100%;
+  }
+  .map-list {
+    display: none;
+    height: 600px;
+  }
+  .media-object img {
+    width: 100px;
+  }
+  .search-filter .panel-heading .btn {
+    display: none;
+    float: right;
+    margin-top: -2px;
+  }
+  .tags-filter {
+    display: none;
+    margin-left: 10px;
+    padding-left: 10px;
+  }
+</style>
+
+
+
+<hr>
+
+
+
+
+
+<div class="modal fade bs-example-modal-lg" role="dialog" id="mapmodal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">×</span></button>
+        <h4 class="modal-title" id="mymodallabel">pick a location</h4>
+      </div>
+      <div class="modal-body map-canvas" id="mapfilter"></div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-8">
+    <h1 class="news-listing-headline" id="title"></h1>
+    <form class="form-inline" id="listingtools">
+      <div class="form-group">
+        <label for="exampleinputemail1">update distance range:  </label>
+        <select name="" id="distanceselect" class="form-control">
+
+          <option value="50">50 km</option>
+          <option value="100">100 km</option>
+          <option value="200">200 km</option>
+          <option value="500">500 km</option>
+          <option value="1000" selected>1000 km</option>
+          <option value="2000">2000 km</option>
+          <option value="3000">3000 km</option>
+          <option value="200000">any</option>
+        </select>
+           or   <button href="#" class="btn btn-primary btn-location" id="mapfilterbtn">change your location</button>
+        <span class="tags-filter" id="tagsfilter"></span>
+      </div>
+    </form>
+    <hr>
+    <div id="content" class="loading">
+      <ul class="media-list media-list-extend news-listing" id="newslist"></ul>
+      <div id="maplist" class="map-list"></div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <a href="#" class="btn btn-default btn-lg btn-block" id="maplistview">map view</a>
+    <br/>
+    <div class="panel panel-default search-filter tags" id="paneltags">
+      <div class="panel-heading">
+        <a href="#" class="btn btn-xs btn-default" id="resetfilter">reset</a>
+        <h4 class="panel-title">all tags</h4>
+      </div>
+      <div class="list-group">
+      
+      
+		## tags - this gets all the tags as aggregations from elasticsearch
+
+		#set($newstags = $estool.search('
+		{
+		  "query" : {
+				"match_all" : {}
+			},
+			"aggs" : {
+				"tags" : { "terms" : {"field" : "news.tags"} }
+			}
+		}
+
+		'
+		))
+
+     	#foreach($f in $newstags.aggregations)
+			#foreach($term in $f.buckets)
+          		<a href="#" id="$term.key" data-tag="$term.key" class="list-group-item js-filter-items">$term.key ($term.doccount)</a>
+			#end
+		#end
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var _content = $('#content');
+  var _distanceselect = $('#distanceselect');
+  var _filterbutton = $('.js-filter-items');
+  var _listingtools = $('#listingtools');
+  var _mapfilterbtn = $('#mapfilterbtn');
+  var _maplist = $('#maplist');
+  var _maplistview = $('#maplistview');
+  var _mapmodal = $('#mapmodal');
+  var _newslist = $('#newslist');
+  var _paneltags = $('#paneltags');
+  var _resetfilter = $('#resetfilter');
+  var _tagsfilter = $('#tagsfilter');
+  
+  var _tag;
+  var address;
+  var contentlets;
+  var distance ;
+  var endpoint = '/api/es/search';
+  var mapfilter = null;
+  var maplist = null;
+  var marker = null;
+  var startlatitude;
+  var startlongitude;
+  var olddistince=1000;
+  var querybasic = {
+    'bool': {
+      'must': {
+        'term': {
+          'structurename': 'news'
+        }
+      }
+    }
+  };
+
+  _filterbutton.off().on('click', function(e) {
+    filterbytags($(e.target).text());
+  });
+
+  _mapfilterbtn.off().on('click', function(e) {
+    e.preventdefault();
+    _mapmodal.modal();
+    if (!mapfilter) {
+      settimeout(function() {
+        createmapfilter();
+      }, 500);
+    }
+  });
+
+  _resetfilter.on('click', function() {
+    resetfilter();
+  });
+
+  _distanceselect.off().on('change', updatedistance);
+
+  _maplistview.on('click', function() {
+    if (_maplistview.html() === 'map view') {
+      mapview();
+    } else {
+      listview();
+    }
+    togglebutton();
+  });
+
+  navigator.geolocation.getcurrentposition(function(location) {
+    startlatitude = location.coords.latitude;
+    startlongitude = location.coords.longitude;
+    requestdatabylocation();
+  }, handleuserdeniedlocation);
+
+  function mapview() {
+    settitle('map view');
+    toggleview();
+    if (!maplist) {
+      requestdata({
+        'query': querybasic,
+        'size': 999 // todo: use match_all to get all the news
+      }, true);
+    }
+  }
+
+  function listview() {
+    toggleview();
+  }
+
+  function toggleview() {
+    _listingtools.css('display', _listingtools.css('display') === 'none' ? 'block' : 'none');
+    _maplist.css('display', _maplist.css('display') === 'none' ? 'block' : 'none');
+    _newslist.css('display', _newslist.css('display') === 'none' ? 'block' : 'none');
+    _paneltags.css('display', _paneltags.css('display') === 'none' ? 'block' : 'none');
+  }
+
+  function addloader() {
+    _content.addclass('loading');
+  }
+
+  function removeloader() {
+    _content.removeclass('loading');
+  }
+
+  function resetfilter() {
+  	_tag=null;
+    _resetfilter.css('display', 'none');
+    _tagsfilter.css('display', 'none');
+    $('#distanceselect').val(olddistince);
+
+    requestdatabylocation();
+  }
+
+
+  function settitle(title) {
+    $('#title').html(title);
+  }
+
+  function togglebutton() {
+    if (_maplistview.html() === 'map view') {
+      _maplistview.html('list view');
+    } else {
+      _maplistview.html('map view');
+    }
+  }
+
+  function setaddress() {
+    $.ajax({
+      url: '//maps.googleapis.com/maps/api/geocode/json?latlng=' + startlatitude + ','  + startlongitude + '&sensor=true',
+      type: 'get',
+      async: false,
+      success: function(data) {
+        settitle('news near: ' + data.results[data.results.length - 2].formatted_address);
+      },
+      error: function(e) {
+        settitle('sorry, something went wrong. please try again later.');
+      }
+    });
+  }
+
+  function handleuserdeniedlocation() {
+    if (errorcode.code === 1) {
+      settitle('we need you to provide your location, we don\'t save this information.');
+    }
+  }
+
+  function requestdatabylocation() {
+  	var query =querybasic;
+  	
+  	if(_tag!= undefined ){
+  		query = {
+  	  		"query_string": {
+            	"query": "+news.tags:" + _tag + "*"
+            }
+  		}
+  		$('#distanceselect').val('200000');
+  		_resetfilter.css('display', 'block');
+  		_tagsfilter.css('display', 'inline');
+  	}
+  	else{
+  		_resetfilter.css('display', 'none');
+  		_tagsfilter.css('display', 'none');
+  	}
+  
+  	distance = $('#distanceselect').val();
+  
+  
+    
+    
+    var latlongquery = {
+      'sort': [{
+        '_geo_distance' : {
+          'news.latlong' : {
+            'lat' : startlatitude,
+            'lon' : startlongitude
+          },
+          'order' : 'asc',
+          'unit' : 'km'
+        }
+      }],
+      'query': {
+        'bool': {
+          'must': query,
+          'filter': {
+              'geo_distance': {
+                  'distance': distance + 'km',
+                  'news.latlong': {
+                    'lat': startlatitude,
+                    'lon': startlongitude
+                  }
+              }
+          }
+        }
+      },
+      'size': 999 // todo: use match_all
+    };
+	console.log(json.stringify(latlongquery, null, '\t'));
+    setaddress();
+    requestdata(latlongquery);
+  }
+
+  function requestdata(query, mapview) {
+    addloader();
+    var start = new date().gettime();
+    console.log("start:" + start);
+    $.ajax({
+      url: endpoint,
+      type: 'post',
+      cache: false,
+      datatype: 'json',
+      data: json.stringify(query),
+      contenttype: 'application/json',
+      success: function(data) {
+      	
+      	console.log("end:" + new date().gettime());
+      	console.log("took:" + (new date().gettime()-start));
+        if (mapview) {
+          console.log('map items: ' + data.contentlets.length)
+          settimeout(function() {
+            createmapview(data.contentlets);
+          }, 500)
+        } else {
+        
+          contentlets = data.contentlets;
+          if (contentlets.length > 0) {
+            setnewslistitems(contentlets);
+          } else {
+            cleannewslist();
+            settitle('no news there, try changing your location or increase the distance?');
+          }
+        }
+        removeloader();
+      },
+      error: function(e) {
+        settitle('sorry, something went wrong. please try again later.');
+        removeloader();
+      }
+    });
+  }
+
+  function filterbytags(tag) {
+  	if(tag && tag !=undefined){
+  		tag = tag.split(' ')[0];
+  	}
+      _tag=tag;
+
+    
+    if (tag) {
+      _tagsfilter.css('display', 'inline-block');
+      _tagsfilter.html("tagged: " + tag);
+
+    } else {
+      _tagsfilter.css('display', 'none');
+      _tagsfilter.html('');
+    }
+    requestdatabylocation();
+  }
+
+  var months = ['january','february','march','april','may',
+'june','july','august','september','october','november','december'];
+  function getformatteddate(datestring) {
+    var date = new date(datestring);
+    return {
+      date: months[date.getmonth()] + ' ' + date.getdate() + ', ' + date.getfullyear(),
+      datetime: date.getfullyear() + '-' + (date.getmonth() + 1) + '-' + date.getdate() + ' ' + date.gethours() + ':' + date.getminutes() + ':' + date.getseconds()
+    };
+  }
+
+  function updatedistance(e) {
+    cleannewslist();
+    $(e.currenttarget).attr('selected', 'selected');
+    distance = e.currenttarget.value;
+    _tag=null;
+    olddistince = e.currenttarget.value;
+    requestdatabylocation();
+  }
+
+  function cleannewslist() {
+    _newslist.html('');
+  }
+
+  function setnewslistitems(data) {
+    _newslist.html(createhtml(data));
+    $.each(data, function(index, item) {
+    	var imgsrc = "/contentasset/image/" + item.identifier + "/image/filter/resize/resize_w/100";
+		var img = new image();
+ 
+		img.onerror = function (evt){
+
+		}
+		img.onload = function (evt){
+			document.getelementbyid('image' +item.identifier).innerhtml = "<img src='/contentasset/image/" + item.identifier + "/image/filter/resize/resize_w/100'>";
+		}
+ 
+		img.src = imgsrc;
+    })
+    removeloader();
+  }
+
+  function createhtml(content) {
+    var template = '';
+
+    $.each(content, function(index, item) {
+      var detailurl = '/news/' + item.urltitle;
+      var distance;
+      if (item.latlong) {
+        var latitude = parsefloat(item.latlong.split(',')[0]);
+        var longitude = parsefloat(item.latlong.split(',')[1]);
+        distance = calculatedistance(startlatitude, startlongitude, latitude, longitude, 'k');
+      }
+      var formatteddate = getformatteddate(item.syspublishdate);
+      template += '<li class="media"><article>';
+      template += '<a href="' + detailurl + '" class="pull-left media-object">';
+      template += '<span id="image' +item.identifier + '"></span>' ;
+      template += '</a>';
+      template += '<div class="media-body">';
+      template += '<h4 class="media-heading news-title">';
+      template += '<a href="' + detailurl + '">' + item.title + '</a>';
+      template += '</h4>';
+      template += '<div class="post-info">';
+      template += '<time class="date" datetime="' + formatteddate.datetime + '">';
+      template += formatteddate.date;
+      template += '</time>';
+      template += '<span class="comments">';
+      template += '<a href="' + detailurl + '#comments">' + item.commentscount + ' comments</a>';
+      template += '</span>';
+
+      if (distance) {
+        template += '<span class="comments">';
+        template += distance + ' km away';
+        template += '</span>';
+      }
+      template += '</div>';
+      template += '<p class="summary">' + item.caption + '</p>';
+      template += '</div></article></li>';
+    });
+
+    return template;
+  }
+
+  function calculatedistance(lat1, lon1, lat2, lon2, unit) {
+    var radlat1 = math.pi * lat1 / 180;
+    var radlat2 = math.pi * lat2 / 180;
+    var radlon1 = math.pi * lon1 / 180;
+    var radlon2 = math.pi * lon2 / 180;
+    var theta = lon1 - lon2;
+    var radtheta = math.pi * theta / 180;
+    var dist = math.sin(radlat1) * math.sin(radlat2) + math.cos(radlat1) * math.cos(radlat2) * math.cos(radtheta);
+    dist = math.acos(dist);
+    dist = dist * 180/math.pi;
+    dist = dist * 60 * 1.1515;
+    if (unit == 'k') { dist = dist * 1.609344; }
+    if (unit == 'n') { dist = dist * 0.8684; }
+    return dist.tofixed(2);
+  }
+
+  function filtergeolocatedcontent(content) {
+    return $.grep(content, function(item, i) {
+      if (item.latlong) {
+        return item;
+      }
+    });
+  }
+
+  function updatelocation(e) {
+    startlatitude = e.latlng.lat();
+    startlongitude = e.latlng.lng();
+    marker.setposition(new google.maps.latlng(startlatitude, startlongitude));
+    _tag=null;
+    requestdatabylocation();
+  }
+
+  function createmapfilter() {
+    var mapcanvas = document.getelementbyid('mapfilter');
+    var mapoptions = {
+      center: new google.maps.latlng(startlatitude, startlongitude),
+      zoom: 3,
+      maptypeid: google.maps.maptypeid.roadmap
+    };
+    mapfilter = new google.maps.map(mapcanvas, mapoptions);
+    if (!marker) {
+      marker = new google.maps.marker({
+        map: mapfilter,
+        draggable: true
+      });
+      google.maps.event.addlistener(marker,'dragend', updatelocation);
+    }
+    google.maps.event.addlistener(mapfilter, 'click', updatelocation);
+  }
+
+  function createmapview(data) {
+    var mapcanvas = document.getelementbyid('maplist');
+    var mapoptions = {
+      maptypeid: google.maps.maptypeid.roadmap
+    };
+    maplist = new google.maps.map(mapcanvas, mapoptions);
+    var bounds = new google.maps.latlngbounds();
+
+    var latlongitems = filtergeolocatedcontent(data);
+
+    $.each(latlongitems, function(index, item) {
+      var latitude = parsefloat(item.latlong.split(',')[0]);
+      var longitude = parsefloat(item.latlong.split(',')[1]);
+      var marker = new google.maps.marker({
+        map: maplist,
+        position: new google.maps.latlng(latitude, longitude)
+      });
+      bounds.extend(marker.position);
+      createdetailpopup(marker, item);
+    });
+    maplist.fitbounds(bounds);
+  }
+
+  var infowindow = new google.maps.infowindow();
+
+  function createdetailpopup(marker, item) {
+    var detailurl = '/news/' + item.urltitle;
+    var content = '<h4>' + item.title + '</h4>';
+    content += '<p>';
+    if (item.caption) {
+      content += item.caption;
+      content += '<br />';
+    }
+    content += '<a href="' + detailurl + '">read more...</a>';
+    content += '</p>';
+    google.maps.event.addlistener(marker, 'click', function(e) {
+      infowindow.setcontent(content);
+      infowindow.open(marker.get('map'), marker);
+    });
+  }
+</script>
+filtergeolocatedcontent(data);
+
+    $.each(latlo

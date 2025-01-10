@@ -1,0 +1,250 @@
+//
+// variables
+// --------------------------------------------------
+// bootraps uses variables to almost everything,
+// this file is to overwrite those variables and
+// custom out theme
+// -----------------------------------------------
+//* this variables are not from bootstrap.
+
+//
+// variables
+// --------------------------------------------------
+
+// grays
+// -------------------------
+
+$gray-darker:               #26282f;
+$gray-dark:                 #292b32;
+$gray:                      #52606b;
+$gray-light:                #eaeff4;
+$gray-lighter:              #f2f5f8;
+
+
+// general colors
+// -------------------------
+
+$white:                     #ffffff;
+$blue:                      #428bca;
+$blue-darker:               #2c469f;
+$blue-light:                #4bc2e9;
+$blue-lighter:              #dbeffb;
+
+// brand colors
+// -------------------------
+
+$brand:                     $blue;
+$brand-primary:             $blue;
+$brand-secondary:           $blue-darker;
+$brand-success:           #5cb85c;
+$brand-warning:           #df5c36;
+$brand-danger:            #c5283c;
+$brand-info:              #26333f;
+
+
+// links
+// -------------------------
+
+$link-hover-color:      $blue-darker;
+
+
+// typography
+// -------------------------
+
+$font-family-sans-serif:  'open sans', sans-serif;
+$font-family-serif:       'roboto slab', serif;
+
+$font-size-base:            0.8125rem;
+$font-size-x-small:         0.625rem; // ~10px
+$font-size-x-large:         1.5rem; // ~24px
+
+$font-size-small:           0.75rem; //~12px
+$font-size-large: ($font-size-base * 1.25);
+$font-size-lg:    ($font-size-base * 1);
+
+// iconography
+// -------------------------
+
+// todo: replace this with absolute path on theme
+$icon-font-path:          "/application/themes/quest/_bower_components/bootstrap/fonts/";
+$icon-font-path-custom:   "/application/themes/quest/fonts/";
+
+// components
+// -------------------------
+// based on 14px font-size and 1.428 line-height (~20px to start)
+
+$padding-base-vertical:     6px;
+$padding-base-horizontal:   12px;
+
+$padding-large-vertical:    10px;
+$padding-large-horizontal:  16px;
+
+$padding-small-vertical:    5px;
+$padding-small-horizontal:  10px;
+
+$padding-xs-vertical:       1px;
+$padding-xs-horizontal:     5px;
+
+// component variables
+// --------------------------------------------------
+
+$line-height-large:         1.33rem;
+$line-height-small:         1.5rem;
+
+$line-height-computed: 1.5;
+
+$border-radius:             .25rem !default; 
+$border-radius-base:        4px;
+$border-radius-large:       6px;
+$border-radius-small:       3px;
+
+$border-radius-lg:            .3rem !default;
+$border-radius-sm:            .2rem !default;
+
+// grid system
+// --------------------------------------------------
+
+// point at which the navbar stops collapsing
+
+
+
+// navbar
+// -------------------------
+
+// basics of a navbar
+$navbar-height:                    54px;
+$navbar-padding-vertical:          15px;
+
+// inverted navbar toggle
+$navbar-inverse-toggle-hover-bg:            $brand-primary;
+$navbar-inverse-toggle-border-color:        none;
+
+$navbar-border-radius:             $border-radius-base;
+
+
+// tabs
+$nav-tabs-border-color:                     $gray-lighter;
+
+$nav-tabs-justified-link-border-color:            #ddd;
+$nav-tabs-justified-active-link-border-color:     $brand-primary; //$body-bg;
+
+// pills
+$nav-pills-active-link-hover-bg:            $brand-primary; //$component-active-bg;
+$nav-pills-active-link-hover-color:         $white;
+
+
+
+// pagination
+// -------------------------
+
+$pagination-bg:                        $white;
+$pagination-border:                    $gray-lighter;
+$pagination-hover-bg:                  $gray-lighter;
+$pagination-disabled-color:            $gray-lighter;
+
+
+// forms
+// -------------------------
+
+$legend-color:                   $brand-secondary;
+$legend-border-color:            $gray-lighter;
+
+$input-bg:                       $white;
+$input-bg-disabled:              $gray-lighter;
+
+$input-color:                    $gray;
+$input-border:                   #ccc;
+$input-border-radius:            $border-radius-base;
+$input-border-focus:             #66afe9;
+
+$input-color-placeholder:        $gray-light;
+
+$input-height-base:              ($line-height-computed + ($padding-base-vertical * 2) + 2);
+$input-height-large:             40px;
+$input-height-small:             25px;
+
+$legend-color:                   $gray-dark;
+$legend-border-color:            #e5e5e5;
+
+$input-group-addon-bg:           $gray-lighter;
+$input-group-addon-border-color: $input-border;
+
+// buttons
+// -------------------------
+
+$btn-warning-color:              $white !default;
+
+
+// jumbotron
+// -------------------------
+
+$jumbotron-padding:              20px;
+$jumbotron-bg:                   lighten($gray, 55%);
+$jumbotron-heading-color:        $brand-secondary;
+
+
+
+// miscellaneous
+// -------------------------
+
+// horizontal forms & lists
+$component-offset-horizontal: 120px;
+
+// padding
+$alert-padding:  1.25rem;
+
+$alert-danger-bg: $brand-danger;
+$alert-danger-border: $brand-danger;
+$alert-danger-text: $white;
+
+
+// screen
+$screen-tablet: 768px;
+$screen-sm-min: 768px;
+$screen-desktop: 992px;
+$screen-lg-desktop: 1200px;
+
+$line-height-base:        1.428571429; // 20/14
+$line-height-computed:    floor(($font-size-base * $line-height-base)); // ~20px
+
+$text-color: $gray-dark;
+
+// font awesome
+// -------------------------
+$fa-font-path:        "/application/themes/quest/_bower_components/font-awesome/webfonts";
+roup-addon-bg:           $gray-lighter;
+$input-group-addon-border-color: $input-border;
+
+// buttons
+// -------------------------
+
+$btn-warning-color:              $white !default;
+
+
+// jumbotron
+// -------------------------
+
+$jumbotron-padding:              20px;
+$jumbotron-bg:                   lighten($gray, 55%);
+$jumbotron-heading-color:        $brand-secondary;
+
+
+
+// miscellaneous
+// -------------------------
+
+// horizontal forms & lists
+$component-offset-horizontal: 120px;
+
+// padding
+$alert-padding:  1.25rem;
+
+$alert-danger-bg: $brand-danger;
+$alert-danger-border: $brand-danger;
+$alert-danger-text: $white;
+
+
+// screen
+$screen-tablet: 768px;
+$screen-sm-min: 768px;
+$scree

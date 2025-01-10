@@ -1,0 +1,107 @@
+.create-account-form {
+    @include make-row();
+
+    .address-info,
+    .profile-info {
+        @include make-sm-column(6);
+    }
+
+
+    .address-type {
+        float: right;
+        margin-top: 4px;
+
+        .btn {
+            @include border-bottom-radius(0);
+            border-bottom: none;
+            padding-bottom: 4px;
+        }
+    }
+
+    .btn-create-account
+    .btn-cancel {
+        float: right;
+        margin-left: $padding-base-horizontal;
+    }
+
+    .button-group {
+        .control-field {
+            @include media-breakpoint-up(md) {
+                @include make-col-offset(4);
+            }
+            @include media-breakpoint-up(md) {
+                @include make-col(8);
+            }
+        }
+    }
+
+    .control-field {
+        @include media-breakpoint-up(md) {
+            @include make-col(8);
+        }
+    }
+
+    .control-label {
+        @include media-breakpoint-up(md) {
+            @include make-col(4);
+        }
+    }
+
+    .profile-info {
+        margin-bottom: 40px;
+
+        @media (min-width: $screen-tablet) {
+            margin-bottom: 0;
+        }
+    }
+
+}
+e-info {
+        @include make-sm-column(6);
+    }
+
+
+    .address-type {
+        float: right;
+        margin-top: 4px;
+
+        .btn {
+            @include border-bottom-radius(0);
+            border-bottom: none;
+            padding-bottom: 4px;
+        }
+    }
+
+    .btn-create-account
+    .btn-cancel {
+        float: right;
+        margin-left: $padding-base-horizontal;
+    }
+
+    .button-group {
+        .control-field {
+            @include media-breakpoint-up(md) {
+                @include make-col-offset(4);
+            }
+            @include media-breakpoint-up(md) {
+                @include make-col(8);
+            }
+        }
+    }
+
+    .control-field {
+        @include media-breakpoint-up(md) {
+            @include make-col(8);
+        }
+    }
+
+    .control-label {
+        @include media-breakpoint-up(md) {
+            @include make-col(4);
+        }
+    }
+
+    .profile-info {
+        margin-bottom: 40px;
+
+        @media 

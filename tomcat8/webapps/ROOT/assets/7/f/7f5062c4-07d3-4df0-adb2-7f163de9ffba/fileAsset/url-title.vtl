@@ -1,0 +1,80 @@
+#if( !$UtilMethods.isSet($cusFieldVarName) )
+    #set($cusFieldVarName="title")
+#end
+#set($structure = $request.getAttribute("structure"))
+#set($content = $dotcontent.find($request.getAttribute("com.dotmarketing.contentlet.edit").inode))
+<script>
+
+	function getMatches(string, regex, index) {
+	  index || (index = 1); // default to the first capturing group
+	  var matches = [];
+	  var match;
+	  while (match = regex.exec(string)) {
+		matches.push(match[index]);
+	  }
+	  return matches;
+	}
+
+	function updateDisplayURLTitle(){
+		
+		// get the title entered by the user
+		var plainTitle = dojo.byId("$cusFieldVarName");	
+		
+		if(plainTitle == undefined || plainTitle.value.length ==0){
+			dojo.byId("displayURLTitle").innerHTML = "";
+			dojo.byId("urlTitle").value="";
+			return;
+		}
+		
+		// make a friendly url
+		var urlTitle = plainTitle.value.toLowerCase();
+		urlTitle= urlTitle.replace(/^\s+|\s+$/g,"");
+		urlTitle = urlTitle.replace(/[^a-zA-Z 0-9]+/g,' ');	
+		urlTitle = urlTitle.replace(/\s/g, "-");
+		while(urlTitle.indexOf("--") > -1){
+			urlTitle = urlTitle.replace("--",'-');	
+		}
+		while(urlTitle.lastIndexOf("-") == urlTitle.length -1 ){
+			urlTitle=urlTitle.substring(0,urlTitle.length -1);
+		}
+		// set the values of the display place holder and the custom field
+		// the   is to hold the div open
+		
+		dojo.byId("urlTitle").value=urlTitle;
+		
+		var urlMap  ="$structure.urlMapPattern"; 
+		var myRegEx = /{([^\}]*)}/g;
+
+		var matches = getMatches(urlMap, myRegEx, 1);
+
+
+		for(i=0;i<matches.length;i++){
+
+			var val = dojo.byId(matches[0]).value;
+			console.log(matches[0]);
+			console.log(val);
+			urlMap  =urlMap.replace("{"+matches[0]+"}", val);
+
+		}
+
+		#if($content)
+			dojo.byId("displayURLTitle").innerHTML = "<a href='/dotAdmin/#/c/site-browser?url=" + encodeURIComponent(urlMap) + "' target='_parent'>" + urlMap + "</a>";
+		#else
+			dojo.byId("displayURLTitle").innerHTML = urlMap ;
+		#end
+
+
+
+	}
+
+
+	// attach this the text1 field onchange
+	dojo.addOnLoad(function(){
+			dojo.connect(dojo.byId("$cusFieldVarName"), "onchange", null, "updateDisplayURLTitle");
+		}
+	);
+	// populate the field on load
+	dojo.addOnLoad(updateDisplayURLTitle);
+
+</script>
+<div id="displayURLTitle" style="height:20px"> </div>

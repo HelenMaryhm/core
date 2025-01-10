@@ -1,0 +1,203 @@
+//
+// variables
+// --------------------------------------------------
+// bootraps uses variables to almost everything,
+// this file is to overwrite those variables and
+// custom out theme
+// -----------------------------------------------
+//* this variables are not from bootstrap.
+
+//
+// variables
+// --------------------------------------------------
+
+// grays
+// -------------------------
+
+$gray-darker:               #131313;
+$gray-dark:                 #262626;
+$gray:                      #555;
+$gray-light:                #bbb;
+$gray-lighter:              #f1f1f1;
+
+
+// general colors
+// -------------------------
+
+$white:                     white;
+$black:                     #111;
+$blue:                      #3a71bd;
+$blue-darker:               #354f6a;
+
+// brand colors
+// -------------------------
+
+$brand-primary:             #c5283c;
+$brand-secondary:           $blue;
+$brand-success:             #5cb85c;
+$brand-warning:             #df5c36;
+$brand-danger:              #c5283c;
+$brand-info:                #26333f;
+
+
+// links
+// -------------------------
+
+$link-hover-color:      $brand-secondary;
+
+
+// typography
+// -------------------------
+
+$font-size-base:            13px;
+$font-size-x-small:         ceil($font-size-base * 0.7); // ~10px
+$font-size-x-large:         ceil($font-size-base * 1.7); // ~24px
+
+// iconography
+// -------------------------
+
+// todo: replace this with absolute path on theme
+$icon-font-path:          "/application/themes/quest/_bower_components/bootstrap/fonts/";
+$icon-font-path-custom:   "/application/themes/quest/fonts/";
+
+$font-size-base:            0.8125rem;
+$font-size-x-small:         0.625rem; // ~10px
+$font-size-x-large:         1.5rem; // ~24px
+
+$font-size-small:           0.75rem; //~12px
+$font-size-large: ($font-size-base * 1.25);
+$font-size-lg:    ($font-size-base * 1);
+
+
+// components
+// -------------------------
+// based on 14px font-size and 1.428 line-height (~20px to start)
+
+$padding-base-vertical:          10px;
+$padding-base-horizontal:        10px;
+
+
+
+// component variables
+// --------------------------------------------------
+$line-height-computed:           1.5;
+
+$border-radius:             .25rem !default; 
+$border-radius-base:        4px;
+$border-radius-large:       6px;
+$border-radius-small:       3px;
+
+// grid system
+// --------------------------------------------------
+
+
+
+// navbar
+// -------------------------
+
+// basics of a navbar
+$navbar-height:                    25px;
+$navbar-padding-vertical:          15px;
+
+// inverted navbar toggle
+$navbar-inverse-toggle-hover-bg:            lighten($brand-primary, 10%);
+$navbar-inverse-toggle-border-color:        $white;
+
+
+
+// tabs
+$nav-tabs-border-color:                     $gray-lighter;
+
+$nav-tabs-justified-link-border-color:            #ddd;
+$nav-tabs-justified-active-link-border-color:     $body-bg;
+
+// pills
+$nav-pills-active-link-hover-bg:            $component-active-bg;
+$nav-pills-active-link-hover-color:         #fff;
+
+
+
+// pagination
+// -------------------------
+
+$pagination-bg:                        #fff;
+$pagination-border:                    $gray-lighter;
+$pagination-hover-bg:                  $gray-lighter;
+$pagination-disabled-color:            $gray-lighter;
+
+
+
+// forms
+// -------------------------
+
+$legend-color:                   $brand-secondary;
+$legend-border-color:            $gray-lighter;
+
+$input-color:                    $gray;
+$input-border:                   #ccc;
+$input-border-radius:            $border-radius-base;
+$input-border-focus:             #66afe9;
+
+$input-height-base:              ($line-height-computed + ($padding-base-vertical * 2) + 2);
+$input-height-large:             40px;
+$input-height-small:             25px;
+
+
+// jumbotron
+// -------------------------
+
+$jumbotron-padding:              20px;
+$jumbotron-bg:                   $brand-primary;
+$jumbotron-heading-color:        $white;
+
+
+// padding
+$alert-padding:                  1.25rem;
+
+$alert-danger-bg:                $brand-danger;
+$alert-danger-border:            $brand-danger;
+$alert-danger-text:              $white;
+
+// screen
+$screen-tablet: 768px;
+$screen-sm-min: 768px;
+$screen-desktop: 992px;
+$screen-lg-desktop: 1200px;
+
+$line-height-base:        1.428571429; // 20/14
+$line-height-computed:    floor(($font-size-base * $line-height-base)); // ~20px
+
+
+// miscellaneous
+// -------------------------
+
+// horizontal forms & lists
+$component-offset-horizontal: 120px;
+
+
+$text-color: $gray-dark;
+
+// font awesome
+// -------------------------
+$fa-font-path:        "/application/themes/quest/_bower_components/font-awesome/fonts";
+     ($line-height-computed + ($padding-base-vertical * 2) + 2);
+$input-height-large:             40px;
+$input-height-small:             25px;
+
+
+// jumbotron
+// -------------------------
+
+$jumbotron-padding:              20px;
+$jumbotron-bg:                   $brand-primary;
+$jumbotron-heading-color:        $white;
+
+
+// padding
+$alert-padding:                  1.25rem;
+
+$alert-danger-bg:                $brand-danger;
+$alert-danger-border:            $brand-danger;
+$alert-danger-text:              $white;
+
+// screen

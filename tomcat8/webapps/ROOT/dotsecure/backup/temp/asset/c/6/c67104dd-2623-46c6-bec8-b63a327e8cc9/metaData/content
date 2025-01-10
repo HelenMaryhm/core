@@ -1,0 +1,58 @@
+#if($utilmethods.isset($user))
+
+<div class="login-form-wrap">
+    <div class="login-logged-in">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">your account</h3>
+            </div>
+            <div class="panel-body">
+                <h3>welcome back, $user.firstname</h3>
+                <ul>
+                    <li><a href="/dotcms/myaccount">my account</a></li>
+                    <li><a href="/application/login/forgot_password">forgot password</a></li>
+                    <li><a href="/dotcms/logout?referrer=/home/">logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+#else
+
+<div class="login-form-wrap">
+    #set($loginformsourcecode ='/application/vtl/pages/user-account/account-login-form.vtl')
+    #loginform()
+
+    <div class="login-create-account">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">create an account</h3>
+            </div>
+            <div class="panel-body">
+            <p>
+                #if($oauthtool)
+                    <a href="/dotcms/login?referrer=/intranet/&oauth_provider=com.dotcms.osgi.oauth.provider.facebook20api" class="btn btn-lg btn-facebook"><i class="fa fa-facebook-square"></i> login with facebook</a>  
+                    <a href="/dotcms/login?referrer=/intranet/&oauth_provider=com.dotcms.osgi.oauth.provider.google20api" class="btn btn-lg btn-google"><i class="fa fa-google-plus-square"></i> login with google+</a>
+                    <a href="/dotcms/login?referrer=/intranet/&oauth_provider=com.dotcms.osgi.oauth.provider.okta20api" class="btn btn-lg btn-info"><i class="fa fa-smile-o"></i> login with okta (dotcmsuser@dotcms.com / demo123456)</a>
+                #else
+                    <div style="border:2px dotted gray;margin:10px;padding:10px">
+                        oauth based login (facebook, google, okta) is provided by a plugin.  you need to download,configure and build the oauth plugin with your specific api keys and secrets in order to use oauth.  see: <a href="http://dotcms.com/plugins/single-sign-on-using-oauth2" target="_blank">http://dotcms.com/plugins/single-sign-on-using-oauth2</a> for more information.
+                    </div>
+                #end
+                </p>
+                <div class="create-account-button">
+                    <p>create an account to get access to our intranet and upload files to our document repository.</p>
+                    <a href="/application/createaccount/create_account.html" class="btn btn-lg btn-create-account">create account</a>
+                </div>
+                <div class="create-account-button">
+                    if you don’t want to create a new account you can login in with:</p>
+                    <p><b>username:</b> bill@dotcms.com<br><b>password:</b> bill</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+#end
+okta) is provided by a plugin.  you need to download,configure and build the oauth plu

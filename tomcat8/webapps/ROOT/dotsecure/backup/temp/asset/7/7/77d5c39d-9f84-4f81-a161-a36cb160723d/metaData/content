@@ -1,0 +1,88 @@
+/* promo box */
+.promo-box {
+    background:$white;
+    cursor: pointer;
+    margin-bottom: 30px;
+    -webkit-transition: box-shadow 0.3s ease-in-out 0s;
+    -moz-transition: box-shadow 0.3s ease-in-out 0s;
+    -o-transition: box-shadow 0.3s ease-in-out 0s;
+    -ms-transition: box-shadow 0.3s ease-in-out 0s;
+    transition: box-shadow 0.3s ease-in-out 0s;
+    -webkit-box-shadow: 1px 1px 8px 0 rgba(0,0,0,.1);
+    box-shadow: 1px 1px 8px 0 rgba(0,0,0,.1);
+    &:hover {
+      -webkit-box-shadow:0 0 20px 0 rgba(0,0,0,.2);
+      box-shadow:0 0 20px 0 rgba(0,0,0,.2);
+      cursor: pointer;
+    }
+  }
+  .box-img {
+    background: $gray;
+    height: 125px;
+    overflow: hidden;
+    position: relative;
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      cursor: pointer;
+      min-height: 125px;
+      min-width: 100%;
+    }
+  }
+  .box-content {
+    min-height: 200px;
+    padding: 20px 15px;
+    cursor: pointer;
+    position: relative;
+    h3 {
+      text-transform: uppercase;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: $font-family-sans-serif;
+    }
+    p {
+      font-size: 14px;
+      font-weight: 100;
+      margin-bottom: 25px;
+      line-height: 1.4em;
+    }
+    .links {
+        position: absolute;
+        bottom: 30px;
+        left: 30px;
+    }
+  }
+ox-shadow 0.3s ease-in-out 0s;
+    transition: box-shadow 0.3s ease-in-out 0s;
+    -webkit-box-shadow: 1px 1px 8px 0 rgba(0,0,0,.1);
+    box-shadow: 1px 1px 8px 0 rgba(0,0,0,.1);
+    &:hover {
+      -webkit-box-shadow:0 0 20px 0 rgba(0,0,0,.2);
+      box-shadow:0 0 20px 0 rgba(0,0,0,.2);
+      cursor: pointer;
+    }
+  }
+  .box-img {
+    background: $gray;
+    height: 125px;
+    overflow: hidden;
+    position: relative;
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      cursor: pointer;
+      min-height: 125px;
+      min-width: 100%;
+    }
+  }
+  .box-content {
+    min-height: 200px;
+    padding: 20px 15px;
+    cursor: pointer;
+    position: relative;
+    h3 {
+      text-transform: uppercase;
+      font-size: 14px;
+  

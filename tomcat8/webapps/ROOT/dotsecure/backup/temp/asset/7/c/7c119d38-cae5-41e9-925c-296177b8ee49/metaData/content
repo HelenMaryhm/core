@@ -1,0 +1,327 @@
+##setting variables =========
+
+#set($exclude = "-mimetype:*css* -mimetype:*js* -mimetype:*plain  -mimetype:*jpg -mimetype:*png -mimetype:*jpeg -mimetype:*javascript* -mimetype:*velocity*")
+
+#set($urllist = $contents.getemptylist())
+#if ($utilmethods.isset($request.getparameter("q")))
+    #set($q = $request.getparameter("q"))
+    #set($qurl = "q=$!{q}")
+#end
+
+#if ($utilmethods.isset($request.getparameter("mimetype")))
+    #set($mimetype = $request.getparameter("mimetype"))
+    #set($mimetypeurl = "mimetype=$!{mimetype}")
+    #set($_dummy = $urllist.add("mimetype=$!{mimetype}"))
+#end
+
+#if ($utilmethods.isset($request.getparameter("keyword")))
+    #set($keyword = $request.getparameter("keyword"))
+    #set($keywordurl = "keyword=$!{keyword}")
+    #set($_dummy = $urllist.add("keyword=$!{keyword}"))
+#end
+
+#if ($utilmethods.isset($request.getparameter("modifiedon")))
+    #set($modifiedon = $request.getparameter("modifiedon"))
+    #set($modifiedonurl = "modifiedon=$!{modifiedon}")
+    #set($_dummy = $urllist.add("modifiedon=$!{modifiedon}"))
+#end
+
+#set($show = 20)
+#set($page = $request.getparameter("p"))
+#if(! $utilmethods.isset($page))
+    #set($page = 0)
+#end
+#set($page = $math.add($page, 0))
+#if($page < 0)
+    #set($page = 0)
+#end
+
+#set($offset = $math.mul($page, $show))
+#set($end = $math.mul($math.add($page,1), $show))
+
+
+#if($utilmethods.isset($request.getparameter("q")))
+
+## query =============
+    #set($runq = $q.replaceall("\"", ""))
+    #set($newq = "")
+    #if(!$runq.contains("+"))
+    #foreach($xx in $runq.split(" "))
+        #set($newq = " $newq +(content:$xx title:$xx $xx*) ")
+        #end
+        #set($runq = "$newq")
+        #end
+
+        #if($utilmethods.isset($mimetype))
+    #set($runq = "$runq +mimetype:$mimetype")
+    #end
+
+    #if($utilmethods.isset($keyword))
+        #if($keyword.contains(" "))
+            #set($runq = "$runq +keywords:${esc.q}$keyword${esc.q}")
+        #else
+            #set($runq = "$runq +keywords:$keyword")
+        #end
+    #end
+
+    #if($utilmethods.isset($modifiedon))
+        #set($runq = "$runq +modified:$modifiedon")
+    #end
+
+    #set($runq = "$runq $exclude")
+
+
+##calling search viewtool =======
+##set($indextosearch = "site search")
+## null for the first argument searches the 'default' index
+    #set($searchresults = $sitesearch.search($indextosearch, $!runq, $offset, $end))
+
+
+##pagination variables =============
+    ##set($numberofpages = $math.div($searchresults.totalresults,$show))
+    #set($numberofpages = $math.div($searchresults.totalhits,$show))
+    #set($intpages = $math.tointeger($numberofpages))
+    #if($intpages < $numberofpages)
+        #set($numberofpages = $math.add($intpages, 1))
+    #end
+
+
+## aggregations ==========
+## if there are quotes, we need to escape them
+## for an aggregation query
+    #if($runq.contains('"'))
+        #set($runq = $runq.replaceall("\"", "\\\""))
+    #end
+
+    #set($mimeaggregationsqry = '{
+        "query" : { "query_string" : {"query" : "$runq"} },
+        "aggs" : {
+            "mimetype" : { "terms" : {"field" : "mimetype"} }
+         }
+        }')
+
+        #set($mimeaggregationsqry = $render.eval($context, $mimeaggregationsqry ))
+        #set($mimeaggregations = $sitesearch.getaggregations($indextosearch, $mimeaggregationsqry))
+
+        #set($dateaggregations = '{
+        "query" : { "query_string" : {"query" : "$runq"} },
+        "aggs" : {
+            "modified" : { "date_histogram" : {"field" : "modified","interval" : "month","order": {"_key": "desc"} }}
+        }
+    }')
+
+        #set($dateaggregations = $render.eval($context, $dateaggregations ))
+        #set($dateaggregations = $sitesearch.getaggregations($indextosearch, $dateaggregations))
+
+    ##keywords aggregation
+        #set($kwaggregationsqry = '  {
+        "query" : { "query_string" : {"query" : "$runq"} },
+        "aggs" : {
+            "keywords" : { "terms" : { "field" : "keywords", "size" : 10 } }
+        }
+    }')
+
+        #set($kwaggregationsqry = $render.eval($context,$kwaggregationsqry))
+        #set($kwaggregations = $sitesearch.getaggregations($indextosearch, $kwaggregationsqry))
+    #end
+
+
+<style>
+    #resultssearchbox{padding:10px;padding-bottom:1px;}
+    #mainresultsnum{padding-left:15px;padding-top:1px;padding-bottom:10px;font-size:80%;margin-bottom:10px;border-bottom:1px #eeeeee solid;}
+    .resultsnum{padding:1px 15px 0 15px;font-size:80%;}
+    .resultresult{padding:7px;padding-left:15px;word-wrap: break-word;}
+    .resulttitle a{font-size:110%;font-weight:bold;}
+    .resultsummary{padding-left:5px;}
+    .resulturl{padding-left:5px;color:steelblue;}
+    .resultsummary em{background: #ffffcc;}
+    .resultsummary .ellipsis{display:none;}
+
+    #resultsnone{padding:20px;font-weight:bold;}
+    #resultsmisspell{padding:20px;}
+</style>
+
+<div class="row search-results">
+
+#if($searchresults.results.size() > 0)
+
+    <div class="col-sm-9 main-content">
+
+        <p class="results-info">we found <b>$searchresults.results.size()</b> results in your search</p>
+        <ul class="media-list search-results">
+
+            #set($i =0)
+            #foreach($result in $searchresults.results)
+            ##printing each search result
+            <li>
+                <h4><a href="$result.uri">$result.title</a></h4>
+                <p class="url">http://$result.url</p>
+                ##<p>$utilmethods.shortenstring("$result.description", 160)</p>
+                #foreach($highlight in $result.highlights)
+                    <p class="resultsummary">$highlight...</p>
+                    #break
+                #end
+                <p class="resultsnum">modified: $result.modified</p>
+                <p class="resultsnum">${result.highlights.size()} match(es) in document</p>
+
+                #set($i =$math.add($i, 1))
+                #if($i==$show)
+                    #break
+                #end
+            </li>
+            #end
+        </ul>
+
+        #if ($numberofpages > 1)
+            <div class="text-center">
+
+                #set($paginationurl = "")
+                #foreach($url in $urllist)
+                    #set($paginationurl = "$!{paginationurl}&$!{url}")
+                #end
+
+                <ul class="pagination">
+                    #set($prev = $page - 1)
+                    #if ($prev > 0)
+                        <li><a href="?$!{qurl}$!{paginationurl}&p=$prev">«</a></li>
+                    #end
+
+                    #foreach ($i in [0..$numberofpages])
+                        #if ($math.add($i,1) <= $numberofpages)
+                        <li #if ($page == $i)class="active"#end><a href="?$!{qurl}$!{paginationurl}&p=$!{i}">$math.add($i,1)</a></li>
+                        #end
+                    #end
+                    #set($next = $math.add($page,1))
+                    #if ($next < $numberofpages)
+                        <li><a href="?$!{qurl}$!{paginationurl}&p=$next">»</a></li>
+                    #end
+                </ul>
+            </div>
+        #end
+    </div>
+
+    <div class="col-sm-3 sidebar">
+        #set($mimeaggregationsurl = "")
+        #foreach($url in $urllist)
+            #if (!$url.contains('mimetype'))
+                #set($mimeaggregationsurl = "$!{mimeaggregationsurl}&$!{url}")
+            #end
+        #end
+        #if ($utilmethods.isset($mimeaggregations) && $mimeaggregations.size() > 0)
+            #foreach($aggregation in $mimeaggregations.entryset())
+                #if(!$utilmethods.isset($aggregation.value.buckets) || $aggregation.value.buckets.size() == 0)
+                    <div class="alert alert-info">no results</div>
+                #else
+                    <h5>by type:</h5>
+                    <div class="list-group">
+                        #foreach($term in $aggregation.value.buckets)
+                            #set($strstart = $term.key.indexof("/") +1)
+                            #set($strend = $term.key.length())
+                            #set($termterm  = $term.key.substring($strstart, $strend))
+                            #if($termterm.contains("document"))
+                            #set($termterm = "document")
+                            #end
+                            #if($utilmethods.isset($mimetype))
+                                <a class="list-group-item active" href="?q=$!{q}$!{mimeaggregationsurl}"><i class="glyphicon glyphicon-remove clear-icon"></i> $termterm</a>
+                            #else
+                                <a href="?q=$!{q}$!{mimeaggregationsurl}&mimetype=$term.key" class="list-group-item">
+                                    $termterm
+                                    <span class="badge">$term.doccount</span>
+                                </a>
+                            #end
+                        #end
+                    </div>
+                #end
+            #end
+        #end
+
+        #if ($dateaggregations)
+            #set($dateaggregationsurl = "")
+            #foreach($url in $urllist)
+                #if (!$url.contains('modifiedon'))
+                    #set($dateaggregationsurl = "$!{dateaggregationsurl}&$!{url}")
+                #end
+            #end
+            #foreach($aggregation in $dateaggregations.entryset())
+                #if(!$utilmethods.isset($aggregation.value.buckets) || $aggregation.value.buckets.size() == 0)
+                    <div class="alert alert-info">no results</div>
+                #else
+                    <h5>month modified:</h5>
+                    <div class="list-group">
+                        #set($startdate = $date.getdate())
+                        #foreach($t in $aggregation.value.buckets)
+                            #if($t.doccount > 0)
+                                #set($x = $date.getdate())
+                                ${x.settime($t.key.millis)}
+                                #set($nextday = $date.getdate())
+                                $nextday.settime($math.add($x.time, 86400000))
+                                #if($utilmethods.isset($modifiedon))
+                                    <a class="list-group-item active" href="?q=$!{q}$!{dateaggregationsurl}"><i class="glyphicon glyphicon-remove clear-icon"></i>$date.format('mmm y', $nextday)</a>
+                                #else
+                                    <a href="?q=$!{q}$!{dateaggregationsurl}&modifiedon=[$date.format('yyyy-mm-dd', $nextday) to $date.format('yyyy-mm-dd', $startdate)]" class="list-group-item">
+                                        $date.format('mmm y', $nextday)
+                                        <span class="badge">$t.doccount</span>
+                                    </a>
+                                #end
+                                #set($startdate = $x)
+                            #end
+                        #end
+                    </div>
+                #end
+            #end
+        #end
+
+        #if($utilmethods.isset($kwaggregations) && $kwaggregations.size() > 0)
+            #set($keywordurl = "")
+            #foreach($url in $urllist)
+                #if (!$url.contains('keyword'))
+                    #set($keywordurl = "$!{keywordurl}&$!{url}")
+                #end
+            #end
+            #foreach($aggregation in $kwaggregations.entryset())
+                #if($aggregation.value.buckets.size() > 0)
+                    <h5>by keyword:</h5>
+                    <div class="list-group">
+                        #foreach($term in $aggregation.value.buckets)
+                            #if($utilmethods.isset($term.key))
+                                #if($utilmethods.isset($keyword) && $term.key == $keyword)
+                                    <a class="list-group-item active" href="?q=$!{q}$!{keywordurl}"><i class="glyphicon glyphicon-remove clear-icon"></i>$term.key</a>
+                                #else
+                                    <a href="?q=$!{q}$!{keywordurl}&keyword=$term.key" class="list-group-item #if($keyword == $term.key)active#end">$term.key <span class="badge">$term.doccount</span></a>
+                                #end
+                            #end
+                        #end
+                    </div>
+                #end
+            #end
+        #else
+            <div class="alert alert-info">no results</div>
+        #end
+    </div>
+#else
+#if($utilmethods.isset($q))
+    #set($title = "no results found for '$!{q}'")
+    #set($placeholder = "why don't you try again with other keywords?")
+        #else
+            #set($title = "what are you looking for?")
+            #set($placeholder = "")
+        #end
+        <div class="col-sm-12">
+            <div class="jumbotron">
+                <h3>$title</h3>
+                <form id="searchformbody" name="searchformbody" action="/home/site-search" class="search-body">
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <input id="search-input-body" name="q" type="text" autocomplete="off" placeholder="$placeholder" class="form-control input-lg">
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="submit" alt="search" value="search" name="search" class="btn btn-lg btn-primary btn-search">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    #end
+</div>
+e = "no results found for '$!{q}'")
+ 

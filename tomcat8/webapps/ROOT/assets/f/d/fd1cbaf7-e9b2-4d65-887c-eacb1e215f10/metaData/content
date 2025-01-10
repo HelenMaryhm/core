@@ -1,0 +1,86 @@
+#set ($id = $request.getparameter("newsid"))
+
+#if($id)
+	#set($newsitem = $dotcontent.find($id))
+	<div class="news-detail">
+		<h1 class="news-detail-title">$newsitem.title</h1>
+		<div class="post-info">
+			<div class="add-this news-add-this header-add-this pull-right">
+				#dotparse('/application/vtl/widgets/add-this/add-this.vtl')
+			</div>
+			<time datetime="$date.format('yyyy-mm-dd',$newsitem.syspublishdate)t$date.format('hh:mm:ss',$newsitem.syspublishdate)" class="date">$date.format('mmm dd yyyy',$newsitem.syspublishdate) at $date.format('hh:mm z',$newsitem.syspublishdate)</time>
+			<span class="comments">
+				<a href="#comments">
+					#if($newsitem.commentscount > 0)
+						$newsitem.commentscount comments
+					#else
+						no comments
+					#end
+				</a>
+			</span>
+		</div>
+
+		#if($newsitem.isset($urlmapcontent.image) && $utilmethods.isset($newsitem.image.file))
+			<div class="news-detail-image">
+				<img src='/contentasset/image/$newsitem.inode/image/byinode/1/filter/resize/resize_w/300' alt="$newsitem.title" />
+				#if($utilmethods.isset($newsitem.caption))
+					<span class="news-detail-caption">$newsitem.caption</span>
+				#end
+			</div>
+		#end
+
+		$newsitem.story
+
+
+		<div class="post-info-footer">
+			<div class="add-this news-add-this footer-add-this pull-right">
+				#dotparse('/application/vtl/widgets/add-this/add-this.vtl')
+			</div>
+		</div>
+
+		<div id="comments" class="news-comments">
+			<!-- uncomment desired settings -->
+			##set($commentsmoderation="news publisher") 
+			##set($commentforcelogin = 'true')
+			##set($commentdatedescending = true)
+			##set($copmmentstriphtml = 'true')
+			#set($mycontent = $newsitem.inode)
+			#set($commenttitle = 'comments')
+			#set($commentusecaptcha = 'true')
+			#set($commentautopublish = 'true')
+			#set($maxdepth = 2)
+			#set($commentsourcecode = '/application/vtl/macros/comments.vtl')
+			#comment($mycontent)
+		</div>
+	</div>
+#else
+	#set($newslist = $dotcontent.pull("+structurename:news +(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797 conhost:system_host)",10,"news.syspublishdate desc"))
+	<h2>investor news</h2>
+	<ul class="list-unstyled news-listing">
+		#foreach($item in $newslist)
+			<li>
+				<a href="/intranet/news/?newsid=$item.identifier">
+					<span class="news-title">$item.title</span>
+					<time class="news-date" datetime="$!{item.syspublishdate}">$date.format('mmmm d, yyyy', $item.syspublishdate)</time>
+					<span class="news-lead">$item.lead</span>
+				</a>
+			</li>
+		#end
+	</ul>
+#end
+
+			##set($commentsmoderation="news publisher") 
+			##set($commentforcelogin = 'true')
+			##set($commentdatedescending = true)
+			##set($copmmentstriphtml = 'true')
+			#set($mycontent = $newsitem.inode)
+			#set($commenttitle = 'comments')
+			#set($commentusecaptcha = 'true')
+			#set($commentautopublish = 'true')
+			#set($maxdepth = 2)
+			#set($commentsourcecode = '/application/vtl/macros/comments.vtl')
+			#comment($mycontent)
+		</div>
+	</div>
+#else
+	#set($newslist = $dotcontent.pull("+structurename:news +(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797 conhost:system_host)",10,"news.syspub

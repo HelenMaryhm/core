@@ -1,0 +1,46 @@
+.image-gallery {
+    @include make-row();
+    font-size: 0;
+    list-style: none;
+    padding: 0;
+
+    h5 {
+        line-height: 1.5;
+        padding: 0 $padding-base-horizontal;
+
+        a {
+            text-decoration: none;
+        }
+        .qty {
+            background-color: lighten($gray-darker, 80%);
+            border-radius: 10px;
+            color: $gray-light;
+            font-size: $font-size-small;
+            padding: 2px 5px;
+        }
+    }
+
+    li {
+        display: inline-block;
+        font-size: $font-size-base;
+        margin-bottom: $padding-base-vertical;
+        padding: 0 $padding-base-vertical / 2;
+        vertical-align: top;
+        width: 10%;
+        
+        @media (min-width: $screen-tablet) {
+            width: 12.5%;
+        }
+
+        @media (min-width: $screen-desktop) {
+            width: 10%
+        }
+    }
+
+}
+
+.col-sm-4 .image-gallery  li,
+.col-sm-3 .image-gallery  li,
+.col-sm-2 .image-gallery  li {
+  width: 33%;
+}

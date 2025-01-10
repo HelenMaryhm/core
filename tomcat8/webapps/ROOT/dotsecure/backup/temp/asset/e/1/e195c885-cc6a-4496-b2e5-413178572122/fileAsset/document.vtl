@@ -1,0 +1,29 @@
+<div class="media">
+    <div class="media-badge pull-left">
+		## IF IMAGE
+	    #if ($UtilMethods.isSet(${fileAssetBinaryFileURI})) 
+	      <a href="/contentAsset/resize-image/${ContentIdentifier}/fileAsset?w=560" class="thumb image-thumb js-fancybox-img" title="${title}">
+	        <img src="/contentAsset/resize-image/${ContentIdentifier}/fileAsset?w=150" />
+	      </a>
+	    #end
+	</div>
+	<div class="media-body">
+		<span class="label label-default pull-right">Document</span>
+    	<div class="media-heading">${title}</div>
+	    #if ($UtilMethods.isSet($description1))
+	      <p>$description1</p>
+	    #end
+		#if ($UtilMethods.isSet($sysPublishDate) || $topic.size() > 0 || $UtilMethods.isSet($tags))
+			<dl class="dl-horizontal document-detail-meta">
+				#if ($UtilMethods.isSet($sysPublishDate))
+					<div class="item-line">
+						<dt>Publish on:</dt>
+						<dd><time>$date.format('MM/dd/yyyy',$sysPublishDate)</time></dd>
+					</div>
+				#end
+			</dl>
+		#end
+	</div>
+</div>
+
+<hr>

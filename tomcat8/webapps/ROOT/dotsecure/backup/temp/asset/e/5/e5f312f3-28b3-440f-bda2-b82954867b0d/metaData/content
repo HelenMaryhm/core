@@ -1,0 +1,65 @@
+#set($_qk = "+structurename:fileasset +confolder:$!{folder1}*")
+#set($cons = $dotcontent.pull(${_qk},$!{numberofresults},"document.syspublishdate desc"))
+
+#if($cons.size() > 0)
+	<div id="slider1" class="carousel slide" data-ride="carousel">
+		<!-- wrapper for slides -->
+		<div class="carousel-inner">
+			#set($count = 0)
+			#foreach($con in $cons)
+				#if($count == 0)
+					<div class="carousel-item active">
+				#else
+					<div class="carousel-item">
+				#end
+					<img class="img-fluid" src="/contentasset/resize-image/$con.identifier/fileasset" alt="$!{con.title}">
+				</div>
+				#set($count = $count + 1)
+			#end
+		</div>
+	</div>
+	
+	<!-- indicators -->
+	<ol class="carousel-indicators list-inline li-pic mr-0 ml-0">
+		#set($count = 0)
+		#foreach($con in $cons)
+			<li data-target="#slider1" data-slide-to="$count">
+				<div class="item"><img class="img-fluid" src="/contentasset/image/${con.identifier}/fileasset/filter/thumbnail/thumbnail_h/50/" alt="$!{con.title}"></div>
+			</li>
+			#set($count = $count + 1)
+		#end
+	</ol>
+#else
+  <div class="alert alert-info">
+    there currently no images in the folder.
+  </div>
+#end
+mberofresults},"document.syspublishdate desc"))
+
+#if($cons.size() > 0)
+	<div id="slider1" class="carousel slide" data-ride="carousel">
+		<!-- wrapper for slides -->
+		<div class="carousel-inner">
+			#set($count = 0)
+			#foreach($con in $cons)
+				#if($count == 0)
+					<div class="carousel-item active">
+				#else
+					<div class="carousel-item">
+				#end
+					<img class="img-fluid" src="/contentasset/resize-image/$con.identifier/fileasset" alt="$!{con.title}">
+				</div>
+				#set($count = $count + 1)
+			#end
+		</div>
+	</div>
+	
+	<!-- indicators -->
+	<ol class="carousel-indicators list-inline li-pic mr-0 ml-0">
+		#set($count = 0)
+		#foreach($con in $cons)
+			<li data-target="#slider1" data-slide-to="$count">
+				<div class="item"><img class="img-fluid" src="/contentasset/image/${con.identifier}/fileasset/filter/thumbnail/thumbnail_h/50/" alt="$!{con.title}"></div>
+			</li>
+			#set($count = $count + 1)
+		#end

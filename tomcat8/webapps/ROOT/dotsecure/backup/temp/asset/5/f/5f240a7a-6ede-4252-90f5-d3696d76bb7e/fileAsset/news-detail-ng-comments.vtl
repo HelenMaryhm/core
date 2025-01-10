@@ -1,0 +1,56 @@
+#if ($UtilMethods.isSet($URLMapContent))
+  #set ($content = $URLMapContent)
+#elseif ($UtilMethods.isSet($request.getParameter('id')))
+  #set($id = $request.getParameter("id"))
+  #getContentMapDetail($id)
+#end
+
+#if($content.inode && $content.sysPublishDate.before($date.date))
+<div class="news-detail">
+  #editContentlet($content.inode)
+  <h1 class="news-detail-title">
+    #dotedit($$content.inode, $content.title)
+  </h1>
+  <div class="post-info">
+    <div class="add-this news-add-this header-add-this pull-right">
+      #dotParse('/application/vtl/widgets/add-this/add-this.vtl')
+    </div>
+    <time datetime="$date.format('yyyy-MM-dd',$content.sysPublishDate)T$date.format('hh:mm:ss',$content.sysPublishDate)" class="date">$date.format('MMM dd yyyy',$content.sysPublishDate) at $date.format('HH:mm z',$content.sysPublishDate)</time>
+      <span class="comments">
+        <a href="#comments">
+          #set ($commentsCount = $dotcontent.count("+structureName:Comments +News-Comments:$content.identifier"))
+          #if($webapi.parseInt($commentsCount) > 0)
+            $commentsCount Comments
+          #else
+            No Comments
+          #end
+        </a>
+      </span>
+  </div>
+
+  #if($UtilMethods.isSet($content.image) && $UtilMethods.isSet($content.image.file))
+    <div class="news-detail-image">
+      <img src='/contentAsset/image/$content.inode/image/byInode/1/filter/Resize/resize_w/500' alt="$!{con.title}" />
+      #if($UtilMethods.isSet($content.caption))
+        <span class="news-detail-caption">$content.caption</span>
+      #end
+    </div>
+  #end
+
+  #dotedit($content.inode,$content.story)
+
+  <div class="post-info-footer">
+    <div class="add-this news-add-this footer-add-this pull-right">
+      #dotParse('/application/vtl/widgets/add-this/add-this.vtl')
+    </div>
+  </div>
+
+  <div id="comments" class="news-comments" ng-app="commentsApp">
+    <comment-list content-id="'$content.identifier'" content-title="'$content.title'"></comment-list>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="/application/comments/angular/comments.js"></script>
+  </div>
+</div>
+#else
+  <div class="alert alert-info">We are sorry, but the story you are looking for is no longer available. <a href="/news-events/news/">Click here to see all news stories</a>.</div>
+#end

@@ -1,0 +1,70 @@
+<header class="header-wrap">
+	<div class="header-tools d-none d-md-block d-lg-block d-xl-block">
+		<div class="container">
+			<div class="col-md-12">
+				<div class="header-tools-wrapper">
+					#if(!$user)
+						<a href="/dotCMS/login?referrer=/intranet/">Login</a>
+					#else
+						<a href="/dotCMS/logout?referrer=/">Logout</a>
+					#end
+					<a href="/about-us/locations/">Find A Branch</a>
+					<a href="/contact-us/" class="hidden-xs">Contact Us</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="branding">
+	    <div class="container">
+    	    <div class="row">
+    			<div class="col-md-9 col-sm-12">
+                      <a class="header-logo navbar-brand" href="/"><img src="${dotTheme.path}images/layout/logo.png" alt="Quest | dotCMS Starter Site"></a>
+                </div>
+                <div class="col-md-3 col-sm-12">				
+    				<form id="searchForm" name="searchForm" action="/home/site-search.html" class="searchForm-header ">
+    					<input id="search-input" name="q" type="text" autocomplete="off" placeholder="Site Search" />
+    					<input class="btn btn-small btn-primary" type="submit" alt="Search" value="Search" name="search" />
+    				</form>
+                </div>
+            </div>
+    	</div>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-toggleable-md navbar-dark bg-dark pb-0 pt-0" >
+        <div class="container">
+            <button type="button" class="navbar-toggler ml-auto" data-toggle="collapse" data-target="#navbarMain" aria-label="Toggle navigation">
+    			 <span class="navbar-toggler-icon"></span>
+    		</button>
+            
+            <!-- navbar-header -->
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <ul class="navbar-nav">
+                    #set($list = $navtool.getNav("/intranet"))
+                    #foreach($n in $list)
+                        #set($children = $n.children)
+                        #if($children && $children.size() > 0)
+                            <li class="nav-item  dropdown #if($n.active) active #end">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown-toggle" id="dropdown01" aria-haspopup="true" aria-expanded="false">${n.title} <b class="caret"></b></a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdown01">
+                                    #foreach($ch in $children)
+                                        <li #if($ch.active) class="active" #end><a class="dropdown-item" href='${ch.href}'>${ch.title}</a></li>
+                                    #end
+                                </ul>
+                            </li>
+                        #else
+                            <li class="nav-item #if($n.active) active #end"><a class="nav-link" href='${n.href}'>${n.title}</a></li>
+                        #end
+                    #end
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        #if(!$user)
+		            		<td><a class="nav-link" href="/dotCMS/login?referrer=/intranet/">Login</a></td>
+		            	#else
+		            		<td><a class="nav-link" href="/dotCMS/logout?referrer=/home/">Logout</a></td>
+		            	#end
+                    </li>
+                </ul>
+            </div><!-- nav-collapse -->
+        </div><!-- container -->
+    </nav><!-- navbar -->
+</header>

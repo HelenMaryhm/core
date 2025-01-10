@@ -1,0 +1,37 @@
+.location-address {
+    border-bottom: solid 1px $gray-lighter;
+    color: $gray;
+    font-size: $font-size-small;
+
+    address {
+        margin-bottom: 0;
+        font-style: italic;
+    }
+    // Had to recreate the dd and dt classes here because
+    // in bootstrap breaks by default on $grid-float-breakpoint
+    dd {
+        margin-left: $component-offset-horizontal;
+        @include clearfix(); // Clear the floated `dt` if an empty `dd` is present
+    }
+    dt {
+        color: $brand-primary;
+        float: left;
+        width: ($component-offset-horizontal - 20);
+        clear: left;
+        text-align: right;
+        @include text-overflow();
+    }
+    .item-line {
+        border-top: solid 1px $gray-lighter;
+        padding: $padding-base-vertical / 2 0;
+    }
+}
+.location-map {
+    @include thumb-frame;
+    height: 250px;
+    margin-top: $padding-base-vertical * 2;
+
+    @media (min-width: $screen-tablet) {
+        margin-top: 0;
+    }
+}

@@ -1,0 +1,42 @@
+#if($UtilMethods.isSet($URLMapContent.title))
+    #set($pageTitle = $URLMapContent.title)
+    #set($crumbTitle = $URLMapContent.title)
+#else
+    #set($pageTitle = $dotPageContent.title)
+#end
+#set($dotRelativeThemePath=$dotTheme.path)
+#if($dotRelativeThemePath.startsWith("//"))
+	#set($dotRelativeThemePath=$dotRelativeThemePath.substring(2))
+	#set($dotRelativeThemePath=$dotRelativeThemePath.substring($dotRelativeThemePath.indexOf("/")))
+#end
+#if("0" == $request.getParameter("com.dotmarketing.persona.id"))
+	${visitor.clearTags()}
+#end
+
+<title>$pageTitle</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta charset="UTF-8">
+<meta name="application-name" content="dotCMS dotcms.com">
+<meta name="description" content="$!dotPageContent.seodescription">
+<meta name="keywords" content="$!dotPageContent.seokeywords">
+<meta name="author" content="$!dotPageContent.pagemetadata">
+<meta name="lastModifiedDate" content="$!dotPageContent.modDate">
+<meta name="application-name" content="dotcms.com" />
+<meta name="generator" content="dotCMS" />
+#if($UtilMethods.isSet($dotPageContent.canonicalUrl))
+<link rel="canonical" href="//demo.dotcms.com$!{dotPageContent.canonicalUrl}" />
+#else
+<link rel="canonical" href="//demo.dotcms.com$!{request.getAttribute("javax.servlet.forward.request_uri")}" />
+#end
+
+<!-- Touch Icons -->
+<link rel="shortcut icon" href="//dotcms.com/favicon.ico" type="image/x-icon">
+
+<!-- CSS Styles -->
+
+<link rel="stylesheet" href="${dotTheme.path}sass/main.dotsass">
+<link rel="stylesheet" href="${dotTheme.path}css/animate.css">
+
+<!-- Web Fonts -->
+<link href='//fonts.googleapis.com/css?family=Merriweather:400,300' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>

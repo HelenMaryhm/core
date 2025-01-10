@@ -1,0 +1,92 @@
+<footer>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 col-lg-6">
+				<div class="media">
+					<a href="//dotcms.com" class="mr-2"><img src="${dottheme.path}img/logo-footer.png"></a>
+					<div class="media-body">
+						<h4 class="media-heading" style="margin-top: 15px;">resort patrols/aeds</h4>
+						the patrol is here for your benefit and its members have been trained in emergency and life saving medical procedures. you will see these individuals out on the mountain administering medical assistance, enforcing the safety code, educating and conducting speed control.
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3 ml-auto p-2 d-none d-lg-block d-xl-block">
+				<address>
+					<strong>bear mountain private ski resort</strong><br>
+					2300 claw circle<br>bear moutain, co 80487<br>
+					<abbr title="phone">p:</abbr> 615.620.2050
+				</address>
+			</div>
+		</div>
+	</div>
+</footer>
+
+<!-- javascript -->
+<script src="${dottheme.path}js/jquery-2.1.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-apnbgh9b+y1qktv3rn7w3mgpxhu9k/scqsap7huibx39j7fakfpskvxusvfa0b4q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-jzr6spejh4u02d8jot6vlehfe/jqgirrsqqxsffwpi1mquvdayjuar5+76pvcmyl" crossorigin="anonymous"></script>
+<script src="${dottheme.path}js/jquery.stellar.min.js"></script>
+<script src="${dottheme.path}js/jquery.smooth-scroll.min.js"></script>
+<script src="${dottheme.path}js/wow.min.js"></script>
+<script src="${dottheme.path}js/scrolling-nav.js"></script>
+
+<script src="${dottheme.path}js/toc.js"></script>
+
+
+
+<script type="text/javascript">  
+    $(function(){
+    	$('#toc').toc();
+    	
+		$.stellar({
+			horizontalscrolling: false,
+			verticaloffset: 0
+		});
+		
+		$('.nav-link').smoothscroll({
+			easing: 'swing',
+			speed: 800
+		});
+	});
+	
+	$('.carousel').carousel({
+	  interval: 2000,
+	  pause: "hover",
+	  wrap:	 false
+	})
+	
+	new wow().init();
+</script>
+e.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-apnbgh9b+y1qktv3rn7w3mgpxhu9k/scqsap7huibx39j7fakfpskvxusvfa0b4q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-jzr6spejh4u02d8jot6vlehfe/jqgirrsqqxsffwpi1mquvdayjuar5+76pvcmyl" crossorigin="anonymous"></script>
+<script src="${dottheme.path}js/jquery.stellar.min.js"></script>
+<script src="${dottheme.path}js/jquery.smooth-scroll.min.js"></script>
+<script src="${dottheme.path}js/wow.min.js"></script>
+<script src="${dottheme.path}js/scrolling-nav.js"></script>
+
+<script src="${dottheme.path}js/toc.js"></script>
+
+
+
+<script type="text/javascript">  
+    $(function(){
+    	$('#toc').toc();
+    	
+		$.stellar({
+			horizontalscrolling: false,
+			verticaloffset: 0
+		});
+		
+		$('.nav-link').smoothscroll({
+			easing: 'swing',
+			speed: 800
+		});
+	});
+	
+	$('.carousel').carousel({
+	  interval: 2000,
+	  pause: "hover",
+	  wrap:	 false
+	})
+	
+	new wow().

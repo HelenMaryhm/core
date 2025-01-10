@@ -1,0 +1,222 @@
+##pull by persona and tags
+#foreach($con in $dotcontent.pullpersonalized("+contenttype:calltoaction +(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797 conhost:system_host)",1))
+	<div class="call-to-action mt-4" style="background-image: url('/contentasset/image/$!con.inode/image/byinode/1/filter/resize/resize_w/900');">
+		<div class="container">
+			<div class="col-sm-12">
+				<div class="call-out text-center">
+					<h2>$con.title</h2>
+					<p>$con.body</p>
+					<a href="$con.link" class="btn btn-lg btn-warning">learn more</a>
+				</div>
+			</div>
+		</div>
+	</div>
+#end
+
+<div class="footer-social">
+	<div class="container">
+		<div class="col-xs-12">
+	        <a class="social-icon" href="//dotcms.com/community/rss-feeds.html" target="_blank" title="rss feed"> <i class="fas fa-rss-square"></i></a>
+            <a class="social-icon" href="//twitter.com/#!/dotcms" target="_blank" title="follow us on twitter"><i class="fab fa-twitter-square"></i></a>
+            <a class="social-icon" href="//www.facebook.com/dotcms" target="_blank" title="follow us on facebook"> <i class="fab fa-facebook-square"></i> </a>
+            <a class="social-icon" href="//www.addthis.com/bookmark.php" title="send to a friend"> <i class="fas fa-envelope-square"></i> </a>
+            <a class="social-icon" href="//www.addthis.com/bookmark.php" title="add this">  <i class="far fa-plus-square"></i> </a>
+	    </div>
+	</div>
+</div>
+
+<footer class="footer-wrapper">
+    <div class="container">
+        <div class="row footer-nav">
+            <div class="col-sm-2 hidden-xs">
+                <h4>our company</h4>
+                <ul>
+                    <li><a href="/about-us/">about us</a></li>
+                    <li><a href="/about-us/our-team/">our team</a></li>
+                    <li><a href="/about-us/locations/">locations</a></li>
+                    <li><a href="/contact-us/">contact us</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-2 hidden-xs">
+                <h4>news & events</h4>
+                <ul>
+                <li><a href="/news-events/news/">recent news</a></li>
+                <li><a href="/news-events/events/">upcoming events</a></li>
+                <li><a href="/blogs/">insight blog</a></li>
+                </ul>
+            </div>
+
+            <div class="col-sm-4 hidden-xs">
+                <h4>for clients</h4>
+                <ul>
+                    <li><a href="/application/login?referrer=/intranet/">intranet</a></li>
+                    <li><a href="/resources/">resources</a></li>
+                    <li><a href="/resources/videos">videos</a></li>
+                    <li><a href="/demos/mobile-apps" target="_blank">mobile app</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-4 col-xs-10">
+                <h4>newsletter sign up</h4>
+                <form id="newsletter-form" class="footer-newsletter-form" method="post" action="https://visitor.r20.constantcontact.com/manage/optin/ea?v=0014yakv_pymb9rfwl2bmslamcaxewuidzdqx9rgogjk5rlzqohhlempfpgvduwnrjs">
+                    <input type="hidden" name="ref" value="http://dotcms.com/">
+                    <input id="emailaddr" name="emailaddr" type="text">
+                    <a class="footer-newsletter-btn" onclick="document.getelementbyid('newsletter-form').submit()">subscribe</a>
+                    <p><a href="#" onclick="document.getelementbyid('newsletter-form').submit()" class="footer-newsletter-unsubscribe">unsubscribe</a></p>
+                </form>
+                <div class="copyright">
+	                powered by: <a href="//www.dotcms.com" target="_blank">dotcms</a> — © $date.get('yyyy')  all rights reserved.
+	            </div>
+            </div>
+            
+        </div>
+    </div>
+</footer>
+
+#if(!$edit_mode && !$preview_mode)
+<!-- include user information tab -->
+<div id="userinfo" class="user-info hidden-xs">
+  <div class="controle">
+  	<a class="trigger">more <i class="fa fa-caret-right"></i></a>
+  	<div class="persona-selector">
+  		#if($request.getparameter("com.dotmarketing.persona.id") =="0")
+  			##foreach($tag in $visitor.accruedtags)
+				##$visitor.removetag($tag)
+			##end
+			<a class="active" href="?com.dotmarketing.persona.id=0">
+		#else
+  			<a href="?com.dotmarketing.persona.id=0">
+  		#end
+  			<img src="/html/images/persona/default-persona.png" style="width:50px;background: #fff;" class="img-circle" data-toggle="tooltip" data-placement="top" title="defualt">
+  		</a>
+  		
+		#foreach($con in $dotcontent.pull("+contenttype:persona +(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797 conhost:system_host)",10,"persona.name"))
+			#if("$visitor.persona.keytag" == "$con.keytag")
+				<a class="active" href="?com.dotmarketing.persona.id=$con.identifier">
+			#else
+				<a href="?com.dotmarketing.persona.id=$con.identifier">
+			#end
+
+
+      #if($utilmethods.isset($con.photo.rawuri))
+        <img src="/da/$!con.inode/photo/50w/$!con.photo.name" class="img-circle" data-toggle="tooltip" data-placement="top" title="$con.name">
+      #elseif($utilmethods.isset($con.name))
+        <img src="/html/images/persona/default-persona.png"  style="width:50px;" class="img-circle" data-toggle="tooltip" data-placement="top" title="$con.name">
+      #else
+        <img src="/html/images/persona/default-persona.png"  style="width:50px;" class="img-circle" data-toggle="tooltip" data-placement="top" title="default">
+      #end
+				
+			</a>
+		#end
+	</div>
+  </div>
+  <span id="userinfodata"></span>
+</div>
+#end
+
+<!-- google analytics: set your site's id in the host verable. -->
+<script>
+	(function(i,s,o,g,r,a,m){i['googleanalyticsobject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new date();a=s.createelement(o),
+	m=s.getelementsbytagname(o)[0];a.async=1;a.src=g;m.parentnode.insertbefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', '${host.googleanalytics}', 'auto');
+	
+	#if($visitor.persona)
+		ga('send', 'pageview', {'dimension1': '$visitor.persona.name'});
+	#else
+		ga('send', 'pageview', {'dimension1': 'defualt'});
+	#end
+</script>
+
+
+<!--
+bootstrap v4.0, contains all the jquery plugins.
+more information at: http://getbootstrap.com/javascript/
+-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-apnbgh9b+y1qktv3rn7w3mgpxhu9k/scqsap7huibx39j7fakfpskvxusvfa0b4q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-jzr6spejh4u02d8jot6vlehfe/jqgirrsqqxsffwpi1mquvdayjuar5+76pvcmyl" crossorigin="anonymous"></script>
+
+
+<!--
+bootstrap v3.1.1, contains all the jquery plugins.
+more information at: http://getbootstrap.com/javascript/
+-->
+## <script src="${dottheme.path}js/vendors/bootstrap.js"></script>
+
+<!--
+underscore.js (1.6.0) is a javascript library that provides a whole mess of useful functional programming helpers without extending any built-in objects
+more information at: http://underscorejs.org/
+-->
+<script src="${dottheme.path}js/vendors/underscore.js"></script>
+
+<!--
+fancybox 2.1.5 is a tool that offers a nice and elegant way to add zooming functionality for images, html content and multi-media on your webpages.
+more information at: http://fancyapps.com/fancybox/
+-->
+<script src="${dottheme.path}js/vendors/fancybox.js"></script>
+
+<!--
+video.js - open source html5 & flash video player
+more information at: http://www.videojs.com
+-->
+<script src="${dottheme.path}js/vendors/video.js"></script>
+
+<!--
+tablesorter 2.14.5 - client-side table sorting with ease!
+more information at: https://github.com/mottie/tablesorter
+-->
+<script src="${dottheme.path}js/vendors/jquery.tablesorter.js"></script>
+
+<!--
+chosen, a select box enhancer for jquery and prototype
+more information at: https://github.com/harvesthq/chosen
+-->
+<script src="${dottheme.path}js/vendors/chosen.jquery.js"></script>
+
+<!--
+a jquery flickr feed plugin
+more information at: http://www.newmediacampaigns.com/page/jquery-flickr-plugin
+-->
+<script src="${dottheme.path}js/vendors/jflickrfeed.js"></script>
+
+<!--
+jquery hc-sticky
+more information at: https://github.com/somewebmedia/hc-sticky
+-->
+<script src="${dottheme.path}js/vendors/jquery.hc-sticky.min.js"></script>
+
+
+<script src="${dottheme.path}js/main.js"></script>
+
+-->
+<script src="${dottheme.path}js/vendors/fancybox.js"></script>
+
+<!--
+video.js - open source html5 & flash video player
+more information at: http://www.videojs.com
+-->
+<script src="${dottheme.path}js/vendors/video.js"></script>
+
+<!--
+tablesorter 2.14.5 - client-side table sorting with ease!
+more information at: https://github.com/mottie/tablesorter
+-->
+<script src="${dottheme.path}js/vendors/jquery.tablesorter.js"></script>
+
+<!--
+chosen, a select box enhancer for jquery and prototype
+more information at: https://github.com/harvesthq/chosen
+-->
+<script src="${dottheme.path}js/vendors/chosen.jquery.js"></script>
+
+<!--
+a jquery flickr feed plugin
+more information at: http://www.newmediacampaigns.com/page/jquery-flickr-plugin
+-->
+<script src="${dottheme.path}js/vendors/jflickrfeed.js"></script>
+
+<!--
+jquery hc-sticky
+more information at: https://github.com/somewebmedia/hc-sticky
+-->

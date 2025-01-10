@@ -1,0 +1,154 @@
+<style>
+  #videoresultsdiv{}
+  #myresults{padding:8px 10px 8px 10px;width:530px; height:400px;overflow-x: hidden; overflow-y: auto;}
+  #myresults ul{margin:0;padding:0;font-family:arial, helvetica, sans-serif;font-size:12px;line-height:16px;}
+  #myresults ul li{position:relative;display:block;list-style:none;padding:0;padding:10px 10px 20px 140px;border-bottom:1px dashed #ccc;cursor:pointer;}
+  #myresults ul li:hover{background:#c3e1eb;}
+  #myresults ul li span{display:block;position:absolute;left:10px; top:10px; width:120px; height:90px;}
+  .videothumbnail{width: 640px;height: 380px;overflow: hidden;border: 1px solid #efefef;margin: 30px 0;padding:0;}
+</style>
+
+<script type="text/javascript" src="//www.google.com/jsapi"></script>
+
+<script type="text/javascript">
+
+	dojo.addonload( function(){
+		var x = dojo.byid("thumbnail2").value;
+		if(x != ""){
+			var y = dojo.byid("url").value;
+            y = y.replace('watch?v=', 'embed/');
+            y = y.replace('http', 'https');
+            dijit.byid("thumbnailimage").set("content", dojo.create("iframe", {
+                "src": y + "?rel=0",
+                "style": "border: 0; width: 100%; height: 100%"
+            }));
+		}
+	});
+	
+    function init() {
+        gapi.client.setapikey('aizasyc_djjyoj1a-96f3rtw8nakuhcf_lp152y');
+    }
+
+    function convert_time(timed) {
+        return timed.replace("pt","").replace("h",":").replace("m",":").replace("s","")
+    }
+
+    function searchclicked(){
+		var mysearch = document.getelementbyid("inputsearchstrid").value;
+		if(mysearch.length < 1){
+			alert("please enter search term");
+			document.getelementbyid('inputsearchstrid').focus();
+		}else{
+			dijit.byid('videoresultsdiv').show();
+        	document.getelementbyid("myresults").innerhtml = 'loading youtube videos ...';
+        	gapi.client.load('youtube', 'v3', function(){
+                var videosrequest = gapi.client.youtube.search.list({
+                  q: mysearch,
+                  part: "id,snippet",
+                  maxresults: 10
+                  //channelid: 'uc3g2xlsdmxypnkebaocevlq'
+                });
+
+
+                videosrequest.execute(function(response) {
+                    //showmyvideos(response);
+                    var videos = response.items;
+                    var videosids = "";
+                    for (var i = 0; i < videos.length; i++) {
+                        videosids += videos[i].id.videoid + (i < videos.length - 1 ? ',' : '');
+                    }
+
+                    var listrequest = gapi.client.youtube.videos.list({
+                        id: videosids,
+                        part: "snippet,contentdetails"
+                    });
+
+                    listrequest.execute(function(response) {
+                        showmyvideos(response)
+                        //console.log(response);
+                    })
+                });
+
+
+            });
+        }
+    }
+
+    function showmyvideos(data){
+        var entries = data.items || [];
+        var html = ['<ul>'];
+        for (var i = 0; i < entries.length; i++)
+        {
+            var entry = entries[i];
+            var title = entry.snippet.title;
+            var lnk = '//www.youtube.com/watch?v=' + entry.id;
+            var published = entry.snippet.publishedat;
+            var length = convert_time(entry.contentdetails.duration); //entry.media$group.media$thumbnail[1].time;
+            var by = entry.snippet.channeltitle;
+            var picsm = entry.snippet.thumbnails.default.url;
+            var piclg = entry.snippet.thumbnails.high.url;
+			var passvar = " ' " + lnk + " ' , ' " + picsm + "' , '" + piclg + "' , '" + title + "' , '" + by + "' , '" + length + "' , '" + published + " ' ";
+            html.push('<li onclick=\"setfields(', passvar , ');\"><span style=\"background:url(', picsm, ') no-repeat;\"></span><b>' , title , '</b><br><b>author: </b>', by ,'<br><b>length: </b>', length, '<br><b>published: </b>', published , '</li>');
+        }
+        html.push('</ul>');
+        document.getelementbyid('myresults').innerhtml = html.join('');  
+    }
+    
+    
+    function setfields(lnk,picsm,piclg,title,by,length,published){
+    	dijit.byid('videoresultsdiv').hide();
+    	dojo.byid("widgettitle").value=title;
+    	dojo.byid("author").value=by;
+    	dojo.byid("length").value=length;
+    	dojo.byid("thumbnail").value=picsm;
+    	dojo.byid("thumbnail2").value=piclg;
+    	dojo.byid("published").value=published;
+    	dojo.byid("url").value=lnk.trim();
+    	dojo.byid("inputsearchstrid").value="";
+
+        var y = dojo.byid("url").value;
+        y = y.replace('watch?v=', 'embed/');
+        y = y.replace('http', 'https');
+        dijit.byid("thumbnailimage").set("content", dojo.create("iframe", {
+            "src": y + "?rel=0",
+            "style": "border: 0; width: 100%; height: 100%"
+        }));
+    }
+
+</script>
+
+
+<div>
+    <div>                  
+        <input name="searchstr" id="inputsearchstrid" type="text" dojotype="dijit.form.textbox" style="width:400px;" placeholder="search for videos on youtube" />
+    	<button dojotype="dijit.form.button" onclick="searchclicked()" iconclass="searchicon">search</button>
+    </div>
+    
+    <div id="thumbnailimage" class="videothumbnail" data-dojo-type="dijit/layout/contentpane"></div>
+    
+    <div id="videoresultsdiv" dojotype="dijit.dialog" style="display: none">
+		<div id="myresults"></div>
+    </div>
+    
+</div>
+
+<script src="//apis.google.com/js/client.js?onload=init"></script>
+yid("url").value=lnk.trim();
+    	dojo.byid("inputsearchstrid").value="";
+
+        var y = dojo.byid("url").value;
+        y = y.replace('watch?v=', 'embed/');
+        y = y.replace('http', 'https');
+        dijit.byid("thumbnailimage").set("content", dojo.create("iframe", {
+            "src": y + "?rel=0",
+            "style": "border: 0; width: 100%; height: 100%"
+        }));
+    }
+
+</script>
+
+
+<div>
+    <div>                  
+        <input name="searchstr" id="inputsearchstrid" type="text" dojotype="dijit.form.textbox" style="width:400px;" placeholder="search for videos on youtube" />
+    	<button dojotype="dijit.form.button" onclick="searchclicked()" iconclass="search

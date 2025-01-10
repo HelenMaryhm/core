@@ -1,0 +1,342 @@
+#*
+   widget: google map search locations
+   
+   description: this widget allows to display locations, using the google map javascript api.
+   also allows to search locations near a direction provided in a search form
+   in a radius of x miles.  the results will show all the matches from the
+   dotcms "location" structure that are in that radius distance.
+   
+   author: oswaldo gallango (dotcms)
+*#
+<!-- google map search locations - start -->
+##gets all the existing locations in dotcms
+#set($_qk = "+structurename:location +(conhost:$host.identifier conhost:system_host)")
+#set($cons = $dotcontent.pull(${_qk},30,"location.country desc"))
+
+<!-- uses google map api 3 and requires a different key than the host key -->
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=${host.googlemap}&sensor=true"></script>
+<script type="text/javascript">
+  var buildings = new array();
+  var buildingsmarkers = new array();
+  var markers = new array();
+  var map = null;
+  var markeroptions = null;  
+  
+  function validatedirection(){
+    var direction = document.getelementbyid('direction').value;
+      if(direction.length < 2){
+        alert('a direction, zip code or city/state should be set');
+        return false;
+      }else{
+        return true;
+      }      
+  }
+    
+    //this function  shows the locations info below the map 
+    function showlocations(from, amount){
+      var strhtml="";
+        var count=0;
+        var location ="";
+        for(var i=from; i < (from + amount) && (i < buildings.length); i++){  
+          count=count+1;
+          console.log(buildings[i].image);
+          strhtml+='<li><article>';
+            strhtml+='<a href="/locations/' + buildings[i].urltitle + '">';
+              if(buildings[i].image != null){
+                  strhtml+='<img src=\'/contentasset/image/'+buildings[i].inode+'/image/byinode/1/filter/resize/resize_w/300/filter/crop/crop_w/300/crop_h/200/\' alt="'+buildings[i].title+'" />';
+              }
+              strhtml+='<div class="location-body">'
+              strhtml+='<h3>'+buildings[i].title+'</h3>';
+              strhtml+='<address>';
+              strhtml+=  buildings[i].address1+'<br/>';
+              if(buildings[i].address2 != null && buildings[i].address2 !=''){
+                strhtml+=  buildings[i].address2+'<br/>';
+              }
+              strhtml+=  buildings[i].city+',';
+              if(buildings[i].country == "united states" || buildings[i].country == "canada"){
+                strhtml+=  buildings[i].state+' '+buildings[i].zip;
+              }else {
+                strhtml+=  buildings[i].country;
+              }
+              strhtml+='</address>';
+
+              strhtml+='<h4>services</h4>';
+              strhtml+='<ul class="services">';
+              strhtml+=buildings[i].segment;
+              strhtml+='</ul>';
+              strhtml+='</div>';
+              strhtml+='<span class="show-map">show on map</span>';
+            strhtml+='</a>';
+          strhtml+='</article></li>';
+        }
+        document.getelementbyid('locations-results').innerhtml=strhtml;
+        var strhtml2="";
+        //pagination        
+        strhtml2+='<div style="text-align:center;">';
+        var index = from - amount;
+        if(index >= 0){
+          strhtml2+='<a style="text-decoration:none;" href="javascript:showlocations('+index+','+amount+')">&#60&#60 previous</a>&nbsp;&nbsp;';
+        }
+        var index2 = from + amount;
+        if(index2 < buildings.length){
+          strhtml2+='<a style="text-decoration:none;" href="javascript:showlocations('+index2+','+amount+')">next &#62&#62</a>';
+        }   
+        strhtml2+='</div>';  
+        document.getelementbyid('locations-results-pagination').innerhtml=strhtml2;
+  }
+  
+  //this function initialize the google map 
+  function initmap(){
+    document.getelementbyid('maparea').style.display="";
+         var myoptions = {
+           zoom: ${zoomlevel},
+          maptypeid: google.maps.maptypeid.roadmap,    
+          // add controls
+          #if($maptype == true)
+              maptypecontrol: true,
+              maptypecontroloptions: {
+                maptypeids: [
+                  google.maps.maptypeid.roadmap, 
+                    google.maps.maptypeid.satellite,
+                    google.maps.maptypeid.hybrid
+                ],
+                style: google.maps.maptypecontrolstyle.dropdown_menu
+              },
+          #end
+          #if($mapoverview == true)
+              overviewmapcontrol: true,
+              overviewmapcontroloptions: {
+                  opened: true
+              },
+          #end
+          #if($mapcontrol == true)
+              zoomcontrol:true,
+              zoomcontroloptions:{
+                style: google.maps.zoomcontrolstyle.large
+              },
+          #end
+          scalecontrol: true
+      };         
+        map = new google.maps.map(document.getelementbyid('map_canvas'), myoptions);  
+        
+        #if($utilmethods.isset($markerimage) && $!{markerimage} != "")     
+           markeroptions = {
+          url: "$markerimageimageuri",
+          size: new google.maps.size($markerwidth, $markerheight),
+          origin: new google.maps.point(0,0)          
+      };
+        #end
+  }  
+  
+  //this function creates the locations markers
+    function createmarker(latlng,markertitle, message) {
+      if(map.getcenter() ==null){
+          map.setcenter(latlng);
+        }
+        var marker = new google.maps.marker({
+          map : map, 
+          position : latlng,
+          #if($utilmethods.isset($markerimage) && $!{markerimage} != "") 
+            icon: markeroptions,
+          #end
+          title: markertitle
+        });
+        //add info window
+        google.maps.event.addlistener(marker, 'click', function() {
+               var infowindow = new google.maps.infowindow({
+                   //size: new google.maps.size(260,250)
+                   content: message,
+                   height: 315,
+                   maxwidth: 256
+                 });
+               //infowindow.setcontent(message);
+               infowindow.open(map, marker);
+        });
+        return marker;
+    }
+    
+    //this function activate the info window from a link outside the map
+    function showmarker(index){
+      var message = buildingsmarkers[index];
+        var location = buildings[index];
+        map.setcenter(new google.maps.latlng(location.lat, location.lon));
+        map.setzoom(15);
+        var infowindow = new google.maps.infowindow({
+          //size: new google.maps.size(260,250)
+            content: message,
+            height: 315,
+            maxwidth: 256
+        });
+        //infowindow.setcontent(message);
+        infowindow.open(map, markers[index]);
+        document.getelementbyid('map_canvas').scrollintoview();      
+    }
+    
+    //calculate de distances between two lat/lng
+  function distance(lat1,lon1,lat2,lon2) {
+    var r = 3959; // 3959miles = 6371 km (change this constant to get miles or kilometers)
+        var dlat = (lat2-lat1) * math.pi / 180;
+        var dlon = (lon2-lon1) * math.pi / 180;
+        var a = math.sin(dlat/2) * math.sin(dlat/2) +
+          math.cos(lat1 * math.pi / 180 ) * math.cos(lat2 * math.pi / 180 ) *
+          math.sin(dlon/2) * math.sin(dlon/2);
+        var c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a));
+        var d = r * c;
+        return math.round(d);
+  }            
+  
+    //this function initialize the map and marker rendering
+  function initialize(){            
+      var geocoder = new google.maps.geocoder();  
+      var direction = document.getelementbyid('direction').value;      
+        if(direction != '' && direction != null){            
+              geocoder.geocode({'address': direction }, function(point, status){
+                var directionlatlong = point[0].geometry.location;
+                if (status != google.maps.geocoderstatus.ok) {
+                alert('geocoding failed. ' + status);
+              } else {
+                #foreach($con in $cons)
+                #if($!{con.country.selectvalue} == "united states" || $!{con.country.selectvalue} == "canada")
+                  #set($location = "${con.address1} $!{con.address2} $!{con.city}, $!{con.state.selectvalue} $!{con.zip}")
+                #else
+                  #set($location = "${con.address1} $!{con.address2} $!{con.city}, $!{con.country.selectvalue}")
+                #end            
+                               
+                var mark${velocitycount} = '${location}';            
+                html${velocitycount} = '<div class="map-balloon">';            
+                #if ($utilmethods.isset($con.image.rawuri))
+                  html${velocitycount} += '<span class="image"><img src="/contentasset/image/$con.inode/image?byinode=1&filter=resize&resize_w=200" alt="${con.title}" /></span>';
+                #end            
+                #if ($utilmethods.isset($con.description))
+                    html${velocitycount} += '<h2><a href="/locations/${con.urltitle}">$!{con.title}</a></h2>';
+                #else
+                    html${velocitycount} += '<h2>$!{con.title}</h2>';
+                #end            
+                html${velocitycount} += mark${velocitycount} + '</div>';
+                                  
+                geocoder.geocode({'address': mark${velocitycount} }, function(point, status){
+                  if (status != google.maps.geocoderstatus.ok) {
+                      alert('geocoding failed. ' + status);
+                    } else {
+                    
+                      var miledistance = distance(directionlatlong.lat(),directionlatlong.lng(),point[0].geometry.location.lat(),point[0].geometry.location.lng());
+                                   var milesradio = parseint(document.getelementbyid('milesr').value);
+                                   if(miledistance <= milesradio){
+                          if(map == null){
+                            initmap();
+                          }
+                          var marker = createmarker(point[0].geometry.location,"$!{con.title}" ,html${velocitycount});
+                          
+                          var segments='';
+                              var image=null;
+                              #if ($utilmethods.isset($con.image.rawuri))
+                                image="$con.image.rawuri";
+                              #end
+                              #foreach($cat in $!{con.segment})
+                                segments+="<li>$cat.categoryname</li>";
+                              #end
+                              var location = {lat: point[0].geometry.location.lat(), lon:point[0].geometry.location.lng(), image:image , segment:segments , inode:"$!{con.inode}", title:"$!{con.title}",urltitle:"$!{con.urltitle}", address1:"$!{con.address1}", address2:"$!{con.address2}", zip:"$!{con.zip}", city: "$!{con.city}", state:"$!{con.state.selectvalue}", country:"$!{con.country.selectvalue}", phone:"$!{con.phone}", fax:"$!{con.fax}", distance:"" };
+                              buildings[buildings.length]= location;
+                              buildingsmarkers[buildingsmarkers.length]=html${velocitycount};
+                              markers[markers.length]=marker;
+                              showlocations(0, 8);
+                            }
+                  }
+                });                                                  
+            #end    
+            }
+          });   
+        }else {                    
+        #foreach($con in $cons)
+          #if($!{con.country.selectvalue} == "united states" || $!{con.country.selectvalue} == "canada")
+            #set($location = "${con.address1} $!{con.address2} $!{con.city}, $!{con.state.selectvalue} $!{con.zip}")
+          #else
+            #set($location = "${con.address1} $!{con.address2} $!{con.city}, $!{con.country.selectvalue}")
+          #end            
+                         
+          var mark${velocitycount} = '${location}';            
+          html${velocitycount} = '<div class="map-balloon">';            
+          #if ($utilmethods.isset($con.image.rawuri))
+            html${velocitycount} += '<span class="image"><img src="/contentasset/image/$con.inode/image?byinode=1&filter=resize&resize_w=200" alt="${con.title}" /></span>';
+          #end            
+          #if ($utilmethods.isset($con.description))
+              html${velocitycount} += '<h2><a href="/locations/${con.urltitle}">$!{con.title}</a></h2>';
+          #else
+              html${velocitycount} += '<h2>$!{con.title}</h2>';
+          #end            
+          html${velocitycount} += mark${velocitycount} + '</div>';
+                            
+          geocoder.geocode({'address': mark${velocitycount} }, function(point, status){
+            if (status != google.maps.geocoderstatus.ok) {
+                alert('geocoding failed. ' + status);
+              } else {
+                  if(map == null){
+                    initmap();
+                  }
+                  var marker = createmarker(point[0].geometry.location,"$!{con.title}" ,html${velocitycount});
+                  
+                  var segments='';
+                      var image=null;
+                      #if ($utilmethods.isset($con.image.rawuri))
+                        image="$con.image.rawuri";
+                      #end
+                      #foreach($cat in $!{con.segment})
+                        segments+="<li>$cat.categoryname</li>";
+                      #end
+                      var location = {lat: point[0].geometry.location.lat(), lon:point[0].geometry.location.lng(), image:image , segment:segments , inode:"$!{con.inode}", title:"$!{con.title}",urltitle:"$!{con.urltitle}", address1:"$!{con.address1}", address2:"$!{con.address2}", zip:"$!{con.zip}", city: "$!{con.city}", state:"$!{con.state.selectvalue}", country:"$!{con.country.selectvalue}", phone:"$!{con.phone}", fax:"$!{con.fax}", distance:"" };
+                      buildings[buildings.length]= location;
+                      buildingsmarkers[buildingsmarkers.length]=html${velocitycount};
+                      markers[markers.length]=marker;
+                      showlocations(0, 8);
+            }
+          });                                                  
+      #end
+    }
+  }
+  
+  jquery(function() {
+     initialize();
+   });
+</script>
+<div class="row">
+  <div class="col-sm-12">
+    <h2>zip code or city, state / your search results:</h2>
+    <form action="${vtlservlet_uri}" id="google-map-search-location-form" name="google-map-search-location-form" class="form-inline location-search">
+      <div class="form-group">
+        <input type="text" id="direction" name="direction" value="$!{request.getparameter('direction')}" class="form-control" />
+      </div>
+      <div class="form-group"><label for="">within</label></div>
+      <div class="form-group">
+        <input type="text" id="milesr" name="milesr" style="width:50px;" value="#if($utilmethods.isset($request.getparameter('milesr')))$request.getparameter('milesr')#{else}${getbuildingsinradio}#{end}" class="form-control" />
+      </div>
+      <div class="form-group"><label for="">miles</label></div>
+      <button type="submit" class="btn btn-primary">submit</button>
+    </form>
+  </div>
+</div>
+<div class="row">
+  <div id="maparea" style="display:none;" class="col-sm-12">
+    <div id="map_canvas" class="location-map" style="width:${mapwidth}; height:${mapheight}; overflow:hidden;">
+      <div style="width:100%;height:100%;background:url(/images/icons/loader-big.gif) no-repeat center center;"></div>
+    </div>
+  </div>
+</div>
+<ul id="locations-results" class="location-listing">
+  <li class="col-sm-12">
+    <div class="alert alert-danger">please enter a valid zip or city,state.</div>
+  </li>
+</ul>
+<div id="locations-results-pagination">
+</div>
+<!-- google map search locations - end -->
+v class="form-group">
+        <input type="text" id="milesr" name="milesr" style="width:50px;" value="#if($utilmethods.isset($request.getparameter('milesr')))$request.getparameter('milesr')#{else}${getbuildingsinradio}#{end}" class="form-control" />
+      </div>
+      <div class="form-group"><label for="">miles</label></div>
+      <button type="submit" class="btn btn-primary">submit</button>
+    </form>
+  </div>
+</div>
+<div class="row">
+  <div id="maparea" style="display:none;" class="col-sm-12">
+    <

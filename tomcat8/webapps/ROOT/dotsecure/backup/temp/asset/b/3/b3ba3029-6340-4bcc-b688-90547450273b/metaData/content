@@ -1,0 +1,126 @@
+'use strict';
+
+/**
+ * @ngdoc function
+ * @name commentsapp.controller:commentsctrl
+ * @description
+ * # mainctrl
+ * controller of the commentsapp
+ */
+
+var commentsapp = angular.module('commentsapp', []);
+
+commentsapp.directive('commentlist', [
+  function () {
+    return {
+      restrict: 'e',
+      scope: {
+        contentid: '=',
+        contenttitle: '='
+      },
+      templateurl: '/application/comments/angular/comments-list.html',
+      controller: 'commentsctrl',
+      controlleras: 'comments'
+    };
+  }])
+  .directive('commentform', [
+  function () {
+    return {
+      restrict: 'e',
+      templateurl: '/application/comments/angular/comments-form.html',
+      controller: 'commentsformctrl',
+      controlleras: 'commentsform'
+    };
+  }]);
+
+commentsapp.service('commentsservice', ['$http', function($http) {
+  this.getcomments = function(id) {
+    return $http.get('/api/content/render/false/type/json/query/+structurename:comments%20+(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797%20conhost:system_host)%20+news-comments:' + id + '%20+languageid:1%20+deleted:false%20+working:true/orderby/moddate%20desc')
+      .success(function(data) {
+        angular.foreach(data.contentlets, function(item) {
+          item.datepublished = new date(item.datepublished);
+        });
+      })
+      .error(function(data, status) {
+        console.log('error: ' + status + '. we can\'t get the comments right now, please try again later');
+      });
+  };
+
+  this.postcomment = function(data) {
+    return $http.post('/api/content/publish/1', data)
+      .success(function() {
+        console.log('comment was post successfully');
+      })
+      .error(function() {
+        console.log('there was an error posting the comment');
+      });
+  };
+}]);
+
+commentsapp.controller('commentsctrl', ['$scope', 'commentsservice', function($scope, commentsservice) {
+
+  commentsservice.getcomments($scope.contentid)
+    .then(function(response) {
+      $scope.comments = response.data.contentlets;
+    });
+
+}]);
+
+commentsapp.controller('commentsformctrl', ['$scope', 'commentsservice', function($scope, commentsservice) {
+  $scope.c = {};
+  $scope.c.datepublished = new date();
+  $scope.c.alert = false;
+
+  $scope.commentform = {};
+  $scope.commentform.hide = true;
+
+  $scope.submitcomment = function(comments) {
+    $scope.c.alert = false;
+
+    var data = {
+      'author': $scope.c.author,
+      'comment': $scope.c.comment,
+      'datepublished': $scope.c.datepublished.getfullyear() + '-' + ($scope.c.datepublished.getmonth() + 1) + '-' + $scope.c.datepublished.getdate() + ' ' + $scope.c.datepublished.gethours() + ':' + $scope.c.datepublished.getminutes() + ':' + $scope.c.datepublished.getseconds(),
+      'email': $scope.c.email,
+      'languageid': 1,
+      'news-comments': '+structurename:news +identifier:' + $scope.contentid,
+      'stname': 'comments',
+      'title': 'comment re: ' + $scope.contenttitle
+    };
+
+    commentsservice.postcomment(data)
+      .then(function() {
+        $scope.commentsform.$setpristine();
+        comments.splice(0, 0, $scope.c);
+        $scope.c = {};
+        $scope.commentform.hide = true
+      }, function() {
+        $scope.c.alert = true;
+      });
+  };
+
+  $scope.togglecommentform = function() {
+    $scope.commentform.hide = !$scope.commentform.hide;
+  };
+}]);
+
+commentsapp.filter('htmlstrip', function(){
+  return function(text) {
+    return text ? string(text).replace(/<[^>]+>/gm, '') : '';;
+  }
+})
+
+
+'datepublished': $scope.c.datepublished.getfullyear() + '-' + ($scope.c.datepublished.getmonth() + 1) + '-' + $scope.c.datepublished.getdate() + ' ' + $scope.c.datepublished.gethours() + ':' + $scope.c.datepublished.getminutes() + ':' + $scope.c.datepublished.getseconds(),
+      'email': $scope.c.email,
+      'languageid': 1,
+      'news-comments': '+structurename:news +identifier:' + $scope.contentid,
+      'stname': 'comments',
+      'title': 'comment re: ' + $scope.contenttitle
+    };
+
+    commentsservice.postcomment(data)
+      .then(function() {
+        $scope.commentsform.$setpristine();
+        comments.splice(0, 0, $scope.c);
+        $s

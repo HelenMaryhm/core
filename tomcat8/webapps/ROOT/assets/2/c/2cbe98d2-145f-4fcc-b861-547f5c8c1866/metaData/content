@@ -1,0 +1,151 @@
+<style>
+  #videoresultsdiv{}
+  #myresults{padding:8px 10px 8px 10px;width:530px; height:400px;overflow-x: hidden; overflow-y: auto;}
+  #myresults ul{margin:0;padding:0;font-family:arial, helvetica, sans-serif;font-size:12px;line-height:16px;}
+  #myresults ul li{position:relative;display:block;list-style:none;padding:0;padding:10px 10px 20px 140px;border-bottom:1px dashed #ccc;cursor:pointer;}
+  #myresults ul li:hover{background:#c3e1eb;}
+  #myresults ul li span{display:block;position:absolute;left:10px; top:10px; width:120px; height:90px;}
+  .videothumbnail{width: 640px;height: 380px;overflow: hidden;border: 1px solid #efefef;margin: 30px 0;padding:0;}
+</style>
+
+<script type="text/javascript">
+
+    dojo.addonload( function() {
+        var y = dojo.byid("url").value;
+        if (y.length < 1) {
+            document.getelementbyid('inputsearchstrid').focus();
+        } else {
+            var videoid = y.replace("https://vimeo.com/", "");
+            var videoembdedurl = "https://player.vimeo.com/video/" + videoid;
+            dijit.byid("thumbnailimage").set("content", dojo.create("iframe", {
+                "src": videoembdedurl,
+                "style": "border: 0; width: 100%; height: 100%"
+            }));
+        }
+    });
+
+    function searchclicked() {
+        // todo: you need to request a vimeo token, more info: https://developer.vimeo.com/api/authentication
+        var vimeotoken = "a150ef9d3a7de3d1d3d6f2d60cc34f19";
+        var mysearch = document.getelementbyid("inputsearchstrid").value;
+        if (mysearch.length < 1) {
+            alert("please enter search term");
+            document.getelementbyid('inputsearchstrid').focus();
+        } else {
+            var url = '//api.vimeo.com/videos?query=' + mysearch + '&access_token=' + vimeotoken;
+
+            var reqargs = {
+                url: url,
+                    headers: {
+                  "x-requested-with": ""
+                },
+                load: function(data) {
+                    showmyvideos(json.parse(data));
+                },
+                error: function(error) {
+                    alert('something is wrong with vimeo\'s api, try again later');
+                }
+            }
+            dojo.xhrget(reqargs);
+        }
+    }
+
+    function showmyvideos(results) {
+        dijit.byid('videoresultsdiv').show();
+        var entries = results.data || [];
+        var html = ['<ul>'];
+        for (var i = 0; i < entries.length; i++) {
+            var entry = entries[i];
+            var title = entry.name;
+            var lnk = entry.link;
+            var published = entry.created_time.replace("+", ".");
+            var length = formatduration(entry.duration);
+            var by = entry.user.name;
+            var picsm = entry.pictures.sizes[0].link;
+            var piclg = entry.pictures.sizes[entry.pictures.sizes.length - 1].link;
+            var passvar = " ' " + lnk + " ' , ' " + picsm + "' , '" + piclg + "' , '" + title + "' , '" + by + "' , '" + length + "' , '" + published + " ' ";
+            html.push('<li onclick=\"setfields(', passvar , ');\"><span style=\"background:url(', picsm, ') no-repeat;\"></span><b>' , title , '</b><br><b>author: </b>', by ,'<br><b>length: </b>', length, '<br><b>published: </b>', published , '</li>');
+        }
+        html.push('</ul>');
+        document.getelementbyid('myresults').innerhtml = html.join('');
+    }
+
+    function formatduration(time) {
+        // minutes and seconds
+        var mins = ~~(time / 60);
+        var secs = time % 60;
+
+        // hours, minutes and seconds
+        var hrs = ~~(time / 3600);
+        var mins = ~~((time % 3600) / 60);
+        var secs = time % 60;
+
+        // output like "1:01" or "4:03:59" or "123:03:59"
+        ret = "";
+
+        if (hrs > 0)
+            ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+
+        ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+        ret += "" + secs;
+        return ret;
+    }
+
+    function setfields(lnk, picsm, piclg, title, by, length, published) {
+        dijit.byid("videoresultsdiv").hide();
+        dojo.byid("widgettitle").value = title;
+        dojo.byid("author").value = by;
+        dojo.byid("length").value = length;
+        dojo.byid("thumbnail").value = picsm;
+        dojo.byid("thumbnail2").value = piclg;
+        dojo.byid("published").value = published;
+        dojo.byid("url").value = lnk.trim();
+        dojo.byid("inputsearchstrid").value = "";
+        
+        var y = dojo.byid("url").value;
+        var videoid = y.replace("https://vimeo.com/", "");
+        var videoembdedurl = "https://player.vimeo.com/video/" + videoid;
+        dijit.byid("thumbnailimage").set("content", dojo.create("iframe", {
+            "src": videoembdedurl,
+            "style": "border: 0; width: 100%; height: 100%"
+        }));
+    }
+
+</script>
+
+
+<div>
+    <div>
+        <input name="searchstr" id="inputsearchstrid" type="text" dojotype="dijit.form.textbox" style="width:400px;" placeholder="search for videos on vimeo" />
+        <button dojotype="dijit.form.button" onclick="searchclicked()" iconclass="searchicon">search</button>
+    </div>
+
+    <div id="thumbnailimage" class="videothumbnail" data-dojo-type="dijit/layout/contentpane"></div>
+
+    <div id="videoresultsdiv" dojotype="dijit.dialog" style="display: none">
+        <div id="myresults"></div>
+    </div>
+</div>
+= published;
+        dojo.byid("url").value = lnk.trim();
+        dojo.byid("inputsearchstrid").value = "";
+        
+        var y = dojo.byid("url").value;
+        var videoid = y.replace("https://vimeo.com/", "");
+        var videoembdedurl = "https://player.vimeo.com/video/" + videoid;
+        dijit.byid("thumbnailimage").set("content", dojo.create("iframe", {
+            "src": videoembdedurl,
+            "style": "border: 0; width: 100%; height: 100%"
+        }));
+    }
+
+</script>
+
+
+<div>
+    <div>
+        <input name="searchstr" id="inputsearchstrid" type="text" dojotype="dijit.form.textbox" style="width:400px;" placeholder="search for videos on vimeo" />
+        <button dojotype="dijit.form.button" onclick="searchclicked()" iconclass="searchicon">search</button>
+    </div>
+
+    <div i

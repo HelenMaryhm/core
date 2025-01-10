@@ -1,0 +1,49 @@
+.event-detail {
+    @include make-row();
+}
+
+.event-detail-add-this {
+    margin: 7px 10px 0 0;
+}
+
+.event-detail-actions {
+    float: right; margin-top: 21px;
+}
+
+.event-detail-main {
+    @include make-sm-column(8);
+}
+
+.event-detail-meta {
+    border-bottom: solid 1px $gray-lighter;
+
+    .item-line {
+        border-top: solid 1px $gray-lighter;
+        padding: $padding-base-vertical 0;
+    }
+}
+
+.event-detail-title {
+    margin-top: 0;
+}
+
+.event-detail-sidebar {
+    @include make-sm-column(4);
+}
+
+.events-related {
+    border-top: dashed 1px $gray-lighter;
+    margin-top: $padding-base-vertical * 5;
+
+    h3 {
+      margin-top: $line-height-computed;
+    }
+
+    .media {
+        border-bottom: dashed 1px $gray-lighter;
+    }
+}
+
+.related-events-title {
+    margin: $padding-base-vertical 0 $padding-base-vertical * 2;
+}

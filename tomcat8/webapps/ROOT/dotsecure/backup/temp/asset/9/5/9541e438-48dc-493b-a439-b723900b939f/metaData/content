@@ -1,0 +1,174 @@
+ /*!
+ * thumbnail helper for fancybox
+ * version: 1.0.7 (mon, 01 oct 2012)
+ * @requires fancybox v2.0 or later
+ *
+ * usage:
+ *     $(".fancybox").fancybox({
+ *         helpers : {
+ *             thumbs: {
+ *                 width  : 50,
+ *                 height : 50
+ *             }
+ *         }
+ *     });
+ *
+ */
+(function ($) {
+	//shortcut for fancybox object
+	var f = $.fancybox;
+
+	//add helper object
+	f.helpers.thumbs = {
+		defaults : {
+			width    : 50,       // thumbnail width
+			height   : 50,       // thumbnail height
+			position : 'bottom', // 'top' or 'bottom'
+			source   : function ( item ) {  // function to obtain the url of the thumbnail image
+				var href;
+
+				if (item.element) {
+					href = $(item.element).find('img').attr('src');
+				}
+
+				if (!href && item.type === 'image' && item.href) {
+					href = item.href;
+				}
+
+				return href;
+			}
+		},
+
+		wrap  : null,
+		list  : null,
+		width : 0,
+
+		init: function (opts, obj) {
+			var that = this,
+				list,
+				thumbwidth  = opts.width,
+				thumbheight = opts.height,
+				thumbsource = opts.source;
+
+			//build list structure
+			list = '';
+
+			for (var n = 0; n < obj.group.length; n++) {
+				list += '<li><a style="width:' + thumbwidth + 'px;height:' + thumbheight + 'px;" href="javascript:jquery.fancybox.jumpto(' + n + ');"></a></li>';
+			}
+
+			this.wrap = $('<div id="fancybox-thumbs"></div>').addclass(opts.position).appendto('body');
+			this.list = $('<ul>' + list + '</ul>').appendto(this.wrap);
+
+			//load each thumbnail
+			$.each(obj.group, function (i) {
+				var href = thumbsource( obj.group[ i ] );
+
+				if (!href) {
+					return;
+				}
+
+				$("<img />").load(function () {
+					var width  = this.width,
+						height = this.height,
+						widthratio, heightratio, parent;
+
+					if (!that.list || !width || !height) {
+						return;
+					}
+
+					//calculate thumbnail width/height and center it
+					widthratio  = width / thumbwidth;
+					heightratio = height / thumbheight;
+
+					parent = that.list.children().eq(i).find('a');
+
+					if (widthratio >= 1 && heightratio >= 1) {
+						if (widthratio > heightratio) {
+							width  = math.floor(width / heightratio);
+							height = thumbheight;
+
+						} else {
+							width  = thumbwidth;
+							height = math.floor(height / widthratio);
+						}
+					}
+
+					$(this).css({
+						width  : width,
+						height : height,
+						top    : math.floor(thumbheight / 2 - height / 2),
+						left   : math.floor(thumbwidth / 2 - width / 2)
+					});
+
+					parent.width(thumbwidth).height(thumbheight);
+
+					$(this).hide().appendto(parent).fadein(300);
+
+				}).attr('src', href);
+			});
+
+			//set initial width
+			this.width = this.list.children().eq(0).outerwidth(true);
+
+			this.list.width(this.width * (obj.group.length + 1)).css('left', math.floor($(window).width() * 0.5 - (obj.index * this.width + this.width * 0.5)));
+		},
+
+		beforeload: function (opts, obj) {
+			//remove self if gallery do not have at least two items
+			if (obj.group.length < 2) {
+				obj.helpers.thumbs = false;
+
+				return;
+			}
+
+			//increase bottom margin to give space for thumbs
+			obj.margin[ opts.position === 'top' ? 0 : 2 ] += ((opts.height) + 15);
+		},
+
+		aftershow: function (opts, obj) {
+			//check if exists and create or update list
+			if (this.list) {
+				this.onupdate(opts, obj);
+
+			} else {
+				this.init(opts, obj);
+			}
+
+			//set active element
+			this.list.children().removeclass('active').eq(obj.index).addclass('active');
+		},
+
+		//center list
+		onupdate: function (opts, obj) {
+			if (this.list) {
+				this.list.stop(true).animate({
+					'left': math.floor($(window).width() * 0.5 - (obj.index * this.width + this.width * 0.5))
+				}, 150);
+			}
+		},
+
+		beforeclose: function () {
+			if (this.wrap) {
+				this.wrap.remove();
+			}
+
+			this.wrap  = null;
+			this.list  = null;
+			this.width = 0;
+		}
+	}
+
+}(jquery));
+is.width + this.width * 0.5)));
+		},
+
+		beforeload: function (opts, obj) {
+			//remove self if gallery do not have at least two items
+			if (obj.group.length < 2) {
+				obj.helpers.thumbs = false;
+
+				return;
+			}
+
+			//increase bottom margin to give space f

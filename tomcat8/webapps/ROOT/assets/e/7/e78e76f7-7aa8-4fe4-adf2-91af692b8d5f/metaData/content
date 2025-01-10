@@ -1,0 +1,140 @@
+
+  
+    
+      
+      
+        
+      
+    
+
+    
+        all
+        image
+        video
+        docs
+    ##   
+    ##      all
+    ##   
+    ##   
+    ##      image
+    ##   
+    ##   
+    ##      video
+    ##   
+    ##   
+    ##      docs
+    ##   
+    
+
+  
+
+  
+    topics
+
+
+    
+      #foreach($con in $categories.getchildrencategoriesbykey("topic"))
+        $!{con.categoryname}
+      #end
+    
+
+  
+
+  
+    tags
+
+
+    
+    
+    
+		##set the tagcontenttype to the velocity variable name of the content type to generate the tag cloud for
+		#set($tagcontenttype="news")
+
+		##set the number of tags to display in the cloud
+		#set($numoftags=10)
+
+		##set the es query string (using es aggregates)
+		#set($esquery='{
+				"query": {
+					"query_string": {
+						"query": "+contenttype:$tagcontenttype"
+					}
+				},
+				"aggs" : {
+					"tag" : {
+						"terms" : {
+							"field": "tags",
+							"size" : $numoftags
+						}
+					}
+				},
+				"size":0
+			}'
+		)
+
+		##retrieve and display each of the tags retrieved by the query
+
+		#set($results = $estool.search($render.eval($esquery)))
+		#set($tagcloud = $json.generate($results.response))
+
+
+      #foreach($tag in $tagcloud.aggregations.asmap.tag.buckets)
+       	$tag.key ($tag.doccount)
+		#end
+
+    
+
+  
+
+
+     docs
+    ##   
+    
+
+  
+
+  
+    topics
+
+
+    
+      #foreach($con in $categories.getchildrencategoriesbykey("topic"))
+        $!{con.categoryname}
+      #end
+    
+
+  
+
+  
+    tags
+
+
+    
+    
+    
+		##set the tagcontenttype to the velocity variable name of the content type to generate the tag cloud for
+		#set($tagcontenttype="news")
+
+		##set the number of tags to display in the cloud
+		#set($numoftags=10)
+
+		##set the es query string (using es aggregates)
+		#set($esquery='{
+				"query": {
+					"query_string": {
+						"query": "+contenttype:$tagcontenttype"
+					}
+				},
+				"aggs" : {
+					"tag" : {
+						"terms" : {
+							"field": "tags",
+							"size" : $numoftags
+						}
+					}
+				},
+				"size":0
+			}'
+		)
+
+		##retrieve and display each of the tags retrieved by the query

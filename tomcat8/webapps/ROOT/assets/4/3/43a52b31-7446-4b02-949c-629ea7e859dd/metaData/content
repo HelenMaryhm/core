@@ -1,0 +1,159 @@
+## number of results
+#if($edit_mode)
+    #set($number_of_results = "4")
+#else 
+    #set($number_of_results = "1")
+#end
+
+
+#if($edit_mode)
+	<div class="alert alert-success">the banners are personalized based on tags and/or personas assigned to the visitor.</div>
+	<div class="carousel-edit-mode">
+#else
+	#set($slideslist = $contents.getemptylist())
+	<div id="carousel-home" class="carousel-default carousel carousel-banner slide hidden-xs blue-gradient" data-ride="carousel" style=" margin-bottom: 40px;">
+		<!-- wrapper for slides -->
+		<div class="carousel-inner">
+#end
+
+
+
+#foreach($con in $dotcontent.pullpersonalized("+contenttype:banner +(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797 conhost:system_host)",1))
+
+	#if($edit_mode)
+		<div style="margin: 20px 10px;float:left;width: 250px;min-height: 275px;border: 1px solid #ddd;background: $con.backgroundcolor;">
+			#editcontentlet($con.inode)
+			<div style="height: 150px;width:250px;overflow: hidden;"><img src="/da/$con.shorty/image/300h/jpegp/$con.image.name" alt="$!{con.title}" style="width:250px;"></div>
+			<div style="padding: 10px;margin-bottom:20px;color:$!{con.textcolor.selectvalue};">
+				<b>$!{con.title}</b><br>
+				<i>layout: $con.layout</i>
+			</div>
+		</div>
+	#else
+
+		#if($velocitycount > 1)
+			#set($classitem = 'item layout' + $con.layout)
+		#else
+			#set($classitem = 'item active layout' + $con.layout)
+		#end
+		
+		#if($con.layout == 1)
+			<div class="$!{classitem}" style="background: $con.backgroundcolor;">
+				<div class="container">
+					<div class="row flex-row-reverse">
+						<div class="col-md-6">
+							<img src="/da/$con.shorty/image/600h/jpeg/$con.image.name" alt="$!{con.title}" style="float:right;">
+						</div>
+						<div class="col-md-6 banner-caption" style="color: $!{con.textcolor.selectvalue};">
+							$!{con.caption1}
+						</div>
+					</div>
+				</div>
+			</div>
+		#elseif($con.layout == 2)
+			<div class="$!{classitem}" style="background: $con.backgroundcolor;">
+				<div class="container">
+					<div class="row flex-row-reverse">
+						<div class="col-md-6 banner-caption" style="color: $!{con.textcolor.selectvalue};">
+							$!{con.caption1}
+						</div>
+						<div class="col-md-6">
+							<img src="/da/$con.shorty/image/600h/jpeg/$con.image.name" alt="$!{con.title}" style="float:left;">
+						</div>
+					</div>
+				</div>
+			</div>
+		#elseif($con.layout == 3)
+			<div class="$!{classitem}" style="background: $con.backgroundcolor url('/da/$con.shorty/image/1200h/jpeg/$con.image.name') no-repeat center center;background-size:cover;">
+				<div class="container">
+					<div class="row flex-row-reverse">
+						<div class="col-md-8 banner-caption">
+							<div style="height:370px;margin-top: 80px; color: $!{con.textcolor.selectvalue};">
+								$con.caption1
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		#elseif($con.layout == 4)
+			<div class="$!{classitem}">
+				<div class="bg-wrapper" style="background-color: $con.backgroundcolor; background-image: url('/da/$con.shorty/image/1200h/jpegp/$con.image.name'); background-size:cover;">
+					<div class="container">
+						<div class="row flex-row-reverse">
+							<div class="col-md-7 col-md-offset-5 banner-caption" style="margin-top: 120px;color: $!{con.textcolor.selectvalue};">
+								$!{con.caption1}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		#end
+		
+	#end
+	#set($dummy = $slideslist.add("$!{con.contentidentifier}"))
+#end
+
+#if($edit_mode)
+    </div>
+#else
+		</div>
+
+		#if($number_of_results != 1)
+			<!-- indicators -->
+			<ol class="carousel-indicators">
+				#set($classindicator = ' class="active"')
+				#foreach($slide in $slideslist)
+					#if($velocitycount > 1)
+						#set($classindicator = '')
+					#end
+					<li data-target="#carousel-home" data-slide-to="$math.sub($velocitycount, 1)"$!{classindicator}></li>
+				#end
+			</ol>
+			
+			<!-- controls -->
+			<a class="left carousel-control" href="#carousel-home" data-slide="prev">
+				<span class="fa fa-angle-left fa-2x"></span>
+			</a>
+			<a class="right carousel-control" href="#carousel-home" data-slide="next">
+				<span class="fa fa-angle-right fa-2x"></span>
+			</a>
+		#end
+	</div>
+#end
+e">
+							<div class="col-md-7 col-md-offset-5 banner-caption" style="margin-top: 120px;color: $!{con.textcolor.selectvalue};">
+								$!{con.caption1}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		#end
+		
+	#end
+	#set($dummy = $slideslist.add("$!{con.contentidentifier}"))
+#end
+
+#if($edit_mode)
+    </div>
+#else
+		</div>
+
+		#if($number_of_results != 1)
+			<!-- indicators -->
+			<ol class="carousel-indicators">
+				#set($classindicator = ' class="active"')
+				#foreach($slide in $slideslist)
+					#if($velocitycount > 1)
+						#set($classindicator = '')
+					#end
+					<li data-target="#carousel-home" data-slide-to="$math.sub($velocitycount, 1)"$!{classindicator}></li>
+				#end
+			</ol>
+			
+			<!-- controls -->
+			<a class="left carousel-control" href="#carousel-home" data-slide="prev">
+				<span class="fa fa-angle-left fa-2x"></span>
+			</a>
+			<a class="right carousel-control" href="#carousel-home" data-slide="next">
+				<span class="fa f

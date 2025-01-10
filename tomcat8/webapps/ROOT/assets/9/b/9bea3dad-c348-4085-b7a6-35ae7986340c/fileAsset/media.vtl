@@ -1,0 +1,79 @@
+<div class="row">
+    <div class="col-md-7">
+		<span class="label label-default pull-right">Media</span>
+    	<div class="media-heading">$!{title}</div>
+    	<div class="risk-system risk$!{averageRating}" style="float: none;" title="$!{averageRating}"></div>
+    	$!{description}
+	</div>
+
+	<div class="col-md-5">
+			    #if ($UtilMethods.isSet(${fileBinaryFileURI}))
+			      #set ($filePath = $!{fileBinaryFileURI} + '/' + $!{fileBinaryFileTitle})
+			    #else
+			      #set ($filePath = $url)
+			    #end
+			    #if ($UtilMethods.getFileExtension($filePath) != 'mp3')
+			
+			      #if ($UtilMethods.isImage($filePath))
+			        <article>
+			          <a href="${filePath}" class="js-fancybox-img thumb image-thumb" title="$!{title}">
+			            #if ($UtilMethods.isImage($file))
+			              <img src="/contentAsset/resize-image/${ContentIdentifier}/file/w/325" alt="$!{title}" />
+			            #else
+			              <img src="/contentAsset/resize-image/${ContentIdentifier}/thumbnail/w/325" alt="$!{title}" />
+			            #end
+			          </a>
+			        </article>
+			      #else
+			        #if ($UtilMethods.isSet(${fileBinaryFileURI}))
+			          <article>
+			            <a href="#$!{ContentIdentifier}" class="js-fancybox-media-file thumb media-thumb" title="$!{title}">
+			              #if ($UtilMethods.isSet(${thumbnailBinaryFileURI}))
+			                <img src="/contentAsset/resize-image/${ContentIdentifier}/thumbnail/w/325" alt="$!{title}" />
+			              #else
+			                $!{title}
+			              #end
+			            </a>
+			            <div class="hidden">
+			              <video id="$!{ContentIdentifier}" class="video-js vjs-default-skin vjs-big-play-centered"
+			                controls preload="auto" width="640" height="480"
+			                poster="/contentAsset/resize-image/${ContentIdentifier}/thumbnail/w/640"
+			                data-setup='{ "controls": true, "autoplay": false, "preload": "metadata" }'>
+			                <source src="$!{filePath}" type='video/$!{UtilMethods.getFileExtension($filePath)}' />
+			              </video>
+			            </div>
+			          </article>
+			        #else
+			          <article>
+			            <a href="$!{filePath}" class="js-fancybox-media-link thumb media-thumb" title="$!{title}">
+			              #if ($UtilMethods.isSet(${thumbnailBinaryFileURI}))
+			                <img src="/contentAsset/resize-image/${ContentIdentifier}/thumbnail/w/325" alt="$!{title}" />
+			              #else
+			                $!{title}
+			              #end
+			            </a>
+			          </article>
+			        #end
+			      #end
+			
+			    #else
+			      <article>
+			        <a href="#$!{ContentIdentifier}" class="js-fancybox-media-file thumb media-thumb" title="$!{title}">
+			          #if ($UtilMethods.isSet(${thumbnailBinaryFileURI}))
+			            <img src="/contentAsset/resize-image/${ContentIdentifier}/thumbnail/w/325" alt="$!{title}" />
+			          #else
+			            $!{title}
+			          #end
+			        </a>
+			        <div class="hidden">
+			          <audio id="$!{ContentIdentifier}" class="video-js vjs-default-skin vjs-big-play-centered"
+			            controls preload="auto" width="640" height="480">
+			            <source src="$!{filePath}" type='audio/$!{UtilMethods.getFileExtension($filePath)}' />
+			          </audio>
+			        </div>
+			      </article>
+			    #end
+	</div>
+</div>
+
+<hr>

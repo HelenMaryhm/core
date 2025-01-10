@@ -1,0 +1,38 @@
+.home-page {
+
+    .content-wrap {
+      margin-top: 105px;
+    }
+  
+    .large-column {
+      margin-bottom: 30px;
+    }
+  
+    .news-listing {
+      margin-bottom: $padding-base-vertical * 3;
+      padding-left: 0;
+  
+      @media (min-width: $screen-tablet) {
+        margin-bottom: 0;
+      }
+    }
+  
+    .news-title {
+      font-size: $font-size-base;
+      font-weight: normal;
+    }
+  
+    .row-lined{
+        margin-bottom: $padding-base-vertical * 2;
+        border-bottom: dotted 1px $gray-lighter;
+        padding-bottom: $padding-base-vertical;
+    }
+  }
+
+  @include media-breakpoint-down(lg) {
+    .home-page {
+      .content-wrap {
+        margin-top: 75px;
+      }
+    }
+  }

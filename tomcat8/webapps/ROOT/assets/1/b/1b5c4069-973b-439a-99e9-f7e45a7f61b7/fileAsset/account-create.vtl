@@ -1,0 +1,179 @@
+#set($session = $request.getSession())
+#set($createAccountForm = $request.getAttibute("createAccountForm"))
+
+<div class="generic-form-error">
+  #parse('/static/messages.html')
+</div>
+
+<script languaje="javascript">
+  function submitForm(){
+    var fm = document.getElementById("createAccountForm");
+    fm.submit();
+  }
+  function cancel(){
+      window.location = "/";
+  }
+</script>
+<form id="createAccountForm" class="form-horizontal create-account-form" id="create-account" role="form" action="/dotCMS/createAccount">
+  <input type="hidden" name="dispatch" value="quickCreate">
+  <input type="hidden" id="return" name="return" value="/application/createaccount/thank_you">
+  <fieldset class="profile-info">
+    <legend>Profile information</legend>
+
+    <div class="form-group prefix-group">
+      <label for="prefix" class="control-label">Prefix</label>
+      <div class="control-field">
+        #set( $mr = "")
+        #set( $mrs = "")
+        #set( $miss = "")
+        #set( $dr = "")
+        #if($!{createAccountForm.prefix} == "mr")
+          #set($mr = "selected")
+        #end
+        #if($!{createAccountForm.prefix} == "mrs")
+          #set($mrs = "selected")
+        #end
+        #if($!{createAccountForm.prefix} == "miss")
+          #set($miss = "selected")
+        #end
+        #if($!{createAccountForm.prefix} == "dr")
+          #set($dr = "selected")
+        #end
+        <select class="form-control" tabindex="1" name="prefix" value="$!{createAccountForm.prefix}">
+          <option value="mr" $!{mr}>Mr.</option>
+          <option value="mrs" $!{mrs}>Mrs.</option>
+          <option value="miss" $!{miss}>Ms.</option>
+          <option value="dr" $!{dr}>Dr.</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group firstname-group">
+      <label for="firstName" class="control-label">First Name</label>
+      <div class="control-field">
+        <input class="form-control" tabindex="2" type="text" name="firstName" value="$!{createAccountForm.firstName}" />
+      </div>
+    </div>
+    <div class="form-group lastname-group">
+      <label for="lastName" class="control-label">Last Name</label>
+      <div class="control-field">
+        <input class="form-control" tabindex="3" type="text" name="lastName" value="$!{createAccountForm.lastName}" />
+      </div>
+    </div>
+    <div class="form-group suffix-group">
+      <label for="suffix" class="control-label">Suffix</label>
+      <div class="control-field">
+        <input class="form-control" tabindex="4" type="text" name="suffix" value="$!{createAccountForm.suffix}" />
+      </div>
+    </div>
+    <div class="form-group title-group">
+      <label for="title" class="control-label">Title</label>
+      <div class="control-field">
+        <input class="form-control" tabindex="5" type="text" name="title" value="$!{createAccountForm.title}" />
+      </div>
+    </div>
+    <div class="form-group email-group">
+      <label for="emailAddress" class="control-label">Email</label>
+      <div class="control-field">
+        <input class="form-control" tabindex="6" type="text" name="emailAddress" size="30" value="$!{createAccountForm.emailAddress}" />
+      </div>
+    </div>
+    <div class="form-group password-group">
+      <label for="password1" class="control-label">Password</label>
+      <div class="control-field">
+        <input class="form-control" tabindex="7" type="password" maxlength="20" name="password1" value="$!{createAccountForm.password}" />
+      </div>
+    </div>
+    <div class="form-group verifypassword-group">
+      <label for="verifyPassword" class="control-label">Verify Password</label>
+      <div class="control-field">
+        <input class="form-control" tabindex="8" type="password" maxlength="20"  onchange="passFieldChanged()" name="verifyPassword" value="$!{createAccountForm.verifyPassword}" />
+      </div>
+    </div>
+  </fieldset>
+  <fieldset class="address-info">
+    <legend id="address-title"><span>Home Address</span>
+      <div class="js-address-type btn-group address-type" data-toggle="buttons">
+        #set( $work = "")
+        #set( $home = "")
+        #if($!{createAccountForm.description} == "work")
+          #set( $work = "checked")
+        #end
+        #if($!{createAccountForm.description} == "home")
+          #set( $home = "checked")
+        #end
+        <label class="btn btn-default btn-xs active">
+          <input type="radio" name="options" id="all" checked> Home
+        </label>
+        <label class="btn btn-default btn-xs">
+          <input type="radio" name="options" id="image"> Work
+        </label>
+      </div>
+    </legend>
+    <div class="form-group street1-group">
+      <label for="street1" class="control-label">Street 1</label>
+      <div class="control-field">
+        <input class="form-control" tabindex="9" type="text" name="street1" value="$!{createAccountForm.street1}" />
+      </div>
+    </div>
+    <div class="form-group street2-group">
+      <label for="street2" class="control-label">Street 2</label>
+      <div class="control-field">
+        <input class="form-control" tabindex="10" type="text" name="street2" value="$!{createAccountForm.street2}" />
+      </div>
+    </div>
+    <div class="form-group city-group">
+      <label for="city" class="control-label">City</label>
+      <div class="control-field">
+        <input class="form-control" tabindex="11" type="text" name="city" id="city">
+      </div>
+    </div>
+    <div class="form-group state-group">
+      <label for="state" class="control-label">State</label>
+      <div class="control-field">
+        <input class="form-control" tabindex="12" type="text" name="state" value="$!{createAccountForm.state}" />
+      </div>
+    </div>
+    <div class="form-group country-group">
+      <label for="country" class="control-label">Country</label>
+      <div class="control-field">
+        ##<input class="form-control" tabindex="14" type="text" name="country" value="$!{createAccountForm.country}" />
+        <script language="javascript" type="text/javascript" src='/html/js/states_and_countries.js'></script>
+        <script language="javascript">
+          writeCountriesSelect('country','$!myAccountForm.country');
+        </script>
+      </div>
+    </div>
+    <div class="form-group zip-group">
+      <label for="zip" class="control-label">Zip</label>
+      <div class="control-field">
+        <input class="form-control" tabindex="15" type="text" name="zip" value="$!{createAccountForm.zip}" />
+      </div>
+    </div>
+    <div class="form-group phone-group">
+      <label for="phone" class="control-label">Phone</label>
+      <div class="control-field">
+        <input class="form-control" tabindex="16" type="text" name="phone" value="$!{createAccountForm.phone}">
+      </div>
+    </div>
+    <div class="form-group fax-group">
+      <label for="fax" class="control-label">Fax</label>
+      <div class="control-field">
+        <input class="form-control" tabindex="17" type="text" name="fax" value="$!{createAccountForm.fax}" />
+      </div>
+    </div>
+    <div class="form-group button-group">
+      <div class="control-field">
+        <button onclick="cancel();" type="button" class="btn btn-lg btn-danger btn-cancel">Cancel</button>
+        <button onclick="submitForm();" type="button" class="btn btn-lg btn-primary btn-create-account">Next Step</button>
+      </div>
+    </div>
+  </fieldset>
+
+  <!-- My Profile And Preferences -->
+  #if($UtilMethods.isSet($theCategories))
+    Please select the areas that interest you most.
+    $theCategories
+  #end
+  <!-- END My Profile And Preferences -->  
+
+</form>

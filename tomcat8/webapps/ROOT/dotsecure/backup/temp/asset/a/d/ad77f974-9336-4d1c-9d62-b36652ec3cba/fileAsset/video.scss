@@ -1,0 +1,24 @@
+.featured-video {
+    @include make-row();
+
+    .video-info {
+        @include make-sm-column(8);
+    }
+    .video-item {
+        @include make-sm-column(4);
+    }
+}
+
+.media-content {
+    @include make-row();
+    padding-top: 1px;
+
+    article {
+        @include make-sm-column(12);
+        margin: $padding-base-vertical 0;
+
+        &:first-child {
+          margin-top: 0;
+        }
+    }
+}

@@ -1,0 +1,55 @@
+<script>
+
+dojo.addOnLoad(checkFileExtension);
+dojo.connect(dijit.byId("file"), "onchange", null, "checkFileExtension");
+
+
+function checkFileExtension(){
+
+	if(dojo.byId('mediaType').value == "") {
+		var filename = dojo.query('[name="binary3"]').attr('value')[0];
+		if(filename != undefined && (filename != null || filename != "") && filename.indexOf("removed") < 0) {
+			filename = filename.substring(filename.lastIndexOf(".")+1, filename.length).toLowerCase();
+			
+			if(filename == 'ogg' || filename == '3gp' || filename == 'mp4' || filename == 'webm' || filename == 'avi' || filename == 'mov' ||  filename == 'flv' || filename == 'swf') {
+				//video file
+				dojo.byId('mediaType').value = 'video';
+				dojo.byId('mediaType_dropDown').set('value','video');
+				dojo.byId('mediaType_dropDown').set('displayedValue','video');
+			}
+			else if(filename == 'mp3' || filename == 'wav' || filename == 'wma' || filename == 'ogg' || filename == 'midi') {
+				//audio file
+				dojo.byId('mediaType').value = "audio";
+				dojo.byId('mediaType_dropDown').value="audio";
+			}
+			else if(filename == 'jpg' || filename == 'jpeg' || filename == 'bmp' || filename == 'png' || filename == 'gif' || filename == 'svg') {
+				//image file
+				dojo.byId('mediaType').value = "image";
+				dojo.byId('mediaType_dropDown').value="image";
+			}
+			else {
+				//unsupported media file
+			}
+		}
+
+	}else {
+		
+		var x = dojo.byId('mediaType').value;
+		dojo.attr('mediaType_dropDown', 'value', x);
+		dojo.attr('mediaType_dropDown', 'displayedValue', x);
+		
+	}
+}
+
+function updateHiddenFields() {
+	dojo.byId('mediaType').value = dijit.byId('mediaType_dropDown').get('value');
+}
+
+</script>
+
+<select id="mediaType_dropDown" name="mediaType_dropDown" dojoType="dijit.form.FilteringSelect" autocomplete="true" onchange="updateHiddenFields()">
+	<option value="" selected="selected">Select a value</option>
+	<option value="audio">Audio</option>
+	<option value="image">Image</option>
+	<option value="video">Video</option>
+</select>

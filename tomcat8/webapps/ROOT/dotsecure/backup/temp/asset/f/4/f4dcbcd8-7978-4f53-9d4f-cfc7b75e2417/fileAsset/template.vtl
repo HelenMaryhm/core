@@ -1,0 +1,133 @@
+## INTRANET THEME **
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
+<head>
+    #if($dotTheme.htmlHead)
+        #dotParse("${dotTheme.path}html_head.vtl")
+    #end
+</head>
+
+#set($utilClass = $pageTitle.toLowerCase().replace(' ', '-'))
+
+<body class="$dotThemeLayout.title.replace("--",'-') $utilClass">
+
+    #if($dotThemeLayout.header)
+        #dotParse("${dotTheme.path}header.vtl")
+    #end
+
+
+    <div class="content-wrap">
+        <div class="container body-container">
+        ##Main column
+        #set ($mainColumn = $dotThemeLayout.body)
+
+        ##Sidebar
+        #set ($sidebar = $dotThemeLayout.sidebar)
+
+        ############################
+        ## SIDEBAR - (IF PRESENT) ##
+        ############################
+        #if ($sidebar && $sidebar.location != "")
+            
+            <div class="row">
+
+            #if ($sidebar.width == 'small')
+                #set ($sidebarColumn1Span = "col-sm-2")
+                #set ($sidebarColumn2Span = "col-sm-10")
+            #elseif ($sidebar.width == 'medium')
+                #set ($sidebarColumn1Span = "col-sm-3")
+                #set ($sidebarColumn2Span = "col-sm-9")
+            #elseif ($sidebar.width == 'large')
+                #set ($sidebarColumn1Span = "col-sm-4")
+                #set ($sidebarColumn2Span = "col-sm-8")
+            #else
+                #set ($sidebarColumn1Span = "")
+                #set ($sidebarColumn2Span = "")
+            #end
+
+            #if ($sidebar.location == "left")
+                <div class="$sidebarColumn1Span">
+                    ##Draw the column content
+                    $render.eval($sidebar.draw())
+                </div><!--/div sidebar left-->
+                <div class="$sidebarColumn2Span">
+            #else
+                <div class="$sidebarColumn2Span">
+            #end
+
+        #end
+
+        #########################################
+        ## ADDING THE ROWS FOR THE MAIN COLUMN ##
+        #########################################
+        #if ($mainColumn.rows)
+
+            #set($count = 0)
+            #foreach($row in $mainColumn.rows)
+                #set($count = $count + 1)
+                #set($rowLeftOffset = 1)
+                ##Every row will have a number of columns, lets add one by one using bootstrap grid layout
+                #foreach($column in $row.columns)
+                    #if($velocityCount == 1)
+                    <div class="row-wrapper-$!{count}">
+                        <div class="row">
+                    #end
+
+                    ##Now..., depending on the width of the column lets try to use bootstrap layout styles
+                    #set ($currentColumnSpan = "col-md-${column.width}")
+		    #set ($offset = 0)
+                    
+                    ## Set the bootstrap Offset of each column based on the left offset of the row. 
+                    #if ($rowLeftOffset == $column.leftOffset)
+                        #set($columnOffset = "")
+                    #else
+                        #set($offset = $column.leftOffset - $rowLeftOffset)
+                        #set($columnOffset = "offset-sm-${offset}")
+                    #end
+                    #set($rowLeftOffset = $rowLeftOffset + $column.width + $offset)
+                    
+                    
+                    <div class="$currentColumnSpan $columnOffset">
+                        ##Draw the column content
+                        $render.eval($column.draw())
+                    </div><!--/span-->
+
+                    #if($velocityCount == $row.columns.size())
+                        </div><!--/row-->
+                    </div><!-- /row-wrapper-->
+                    #end
+                #end
+            #end
+        #end
+
+        ############################
+        ## SIDEBAR - (IF PRESENT) ##
+        ############################
+        #if ($sidebar && $sidebar.location != "")
+            #if ($sidebar.location == "left")
+                </div><!--/div columns-->
+            #else
+                </div><!--/div columns-->
+                <div class="$sidebarColumn1Span">
+                    ##Draw the column content
+                    $render.eval($sidebar.draw())
+                </div><!--/div sidebar right-->
+            #end
+            </div><!--/div row-->
+        #end
+
+        </div><!-- /container-->
+
+    </div><!-- /Content Wrapper-->
+
+    #if($dotThemeLayout.footer)
+        #dotParse("${dotTheme.path}footer.vtl")
+    #end
+
+	<a href="http://www.dotcms.com" class="powered-by">Powered by Dotcms - The Leading Open Source Java Content Management System</a>
+</body>
+</html>

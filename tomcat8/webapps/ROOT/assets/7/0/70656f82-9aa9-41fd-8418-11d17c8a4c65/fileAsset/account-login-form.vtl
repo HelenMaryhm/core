@@ -1,0 +1,74 @@
+#if($UtilMethods.isSet($_loginMacroCSS))
+  <link rel="stylesheet" href="$_loginMacroCSS" type="text/css" media="screen" />
+#end
+
+#if($UtilMethods.isSet($cmsuser))
+   $cmsuser.doLoginMacro($request, $response)
+#else
+  Please enable the cmsUuser API in your toolbox.xml
+#end
+
+#set($session = $request.getSession())
+#set($user = $session.getAttribute("cms.user"))
+
+#if($UtilMethods.isSet($user))
+  #set($_redirectPage = $request.session.getAttribute("REDIRECT_AFTER_LOGIN"))
+  #if($_redirectPage)
+    $response.sendRedirect($_redirectPage)
+    #stop
+  #end
+#else
+
+<div class="login-form">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title">Already a Client</h3>
+		</div>
+		<div class="panel-body">
+			<form method="post" class="form-horizontal" id="login-form" role="form" action="${VTLSERVLET_URI}">
+				<input type="hidden" name="_loginAction" value="login" />
+				<div id="macro-login-message">$glossary.get("$!{_loginMessage}")</div>
+				
+				<div class="form-group email-group">
+					<label for="emailAddress" class="control-label">$glossary.get("dotcms_macro_login_login")</label>
+					<div class="control-field">
+						<input type="text" class="form-control" name="_loginUserName" id="macro-login-user-name" tabindex="1"  value="$xsstool.escapeHTMLAttrib($request.getParameter('_loginUserName'))" />
+					</div>
+				</div>
+	
+				<div class="form-group password-group">
+					<label for="password1" class="control-label">$glossary.get("dotcms_macro_login_password")</label>
+					<div class="control-field">
+						<input class="form-control" type="password" name="_loginPassword" value="" id="macro-login-password" class="text" tabindex="2" />
+					</div>
+				</div>
+	
+				<div class="form-group remember-group">
+					<div class="control-field">
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" value="true" name="_loginRememberMe" id="macro-login-remember-me" tabindex="3" />
+								$glossary.get("dotcms_macro_login_rememberMe")
+							</label>
+						</div>
+					</div>
+				</div>
+	
+				<div class="form-group button-group">
+					<div class="control-field">
+						<button type="submit" id="macro-login-button" class="btn btn-primary btn-login" name="_loginButton" tabindex="4">
+							$glossary.get("dotcms_macro_login_button")
+						</button>
+					</div>
+				</div>
+	
+				<div class="form-group forgot-password">
+					<p class="forgot-password">
+						<a href="/application/login/forgot_password.html">Forgot password?</a>
+					</p>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+#end

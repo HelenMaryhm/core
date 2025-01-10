@@ -1,0 +1,36 @@
+<div class="media">
+    <a class="pull-left" href="/news-events/events/$urlTitle">
+		<div class="date-badge">
+      		<span class="date-month">$date.format('MMMM', ${startDate})</span>
+      		<span class="date-day">$date.format('d', ${startDate})</span>
+      	</div>
+	</a>
+	<div class="media-body">
+		<span class="label label-default pull-right">Event</span>
+    	<div class="media-heading"><a href="/news-events/events/$urlTitle">$title</a></div>
+		<div class="media-subheading" datetime="$date.format('yyyy-M-dd',$event.startDate)">
+			#set($startDateV = $date.format('MMMM d, h:mm a', ${startDate}))
+			#set($endDateV = $date.format('MMMM d, h:mm a', ${endDate}))
+			
+			#if($startDate == $endDate)
+				<time>$startDateV</time>
+			#elseif($date.format('EEE, MMMM d yyyy',$startDateV) == $date.format('EEE, MMMM d yyyy',$endDateV))
+				#if($date.format('h:mm a',$startDate) == '12:00 AM' && $date.format('h:mm a',$endDate) == '11:59 PM' )
+					$date.format('MMMM d', ${endDate}) (all day event)
+				#else
+					$startDateV - $date.format('h:mm a',$endDate)
+				#end
+			#else
+				$startDateV - $endDateV
+			#end
+		</div>
+	
+
+		## This trims the HTML and shorts the description field 200 character
+		#set($y = $description.replaceAll("<[^>]*>", ""))
+		#set($y = $UtilMethods.prettyShortenString("$y", 200))
+		<p>$y</p>
+	</div>
+</div>
+
+<hr>

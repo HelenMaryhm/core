@@ -1,0 +1,49 @@
+#if($urlmapcontent.inode && $urlmapcontent.syspublishdate.before($date.date))
+#foreach($tag in $urlmapcontent.tags)
+$!visitor.addtag($tag)
+#end
+<div class="news-detail">
+  #editcontentlet($urlmapcontent.inode)
+  <h1 class="news-detail-title">
+    #dotedit($!urlmapcontent.inode,$!urlmapcontent.title)
+  </h1>
+  <div class="post-info">
+    <div class="add-this news-add-this header-add-this pull-right">
+      #dotparse('/application/vtl/widgets/add-this/add-this.vtl')
+    </div>
+    <time datetime="$date.format('yyyy-mm-dd',$!urlmapcontent.syspublishdate)t$date.format('hh:mm:ss',$!urlmapcontent.syspublishdate)" class="date">$date.format('mmm dd yyyy',$!urlmapcontent.syspublishdate) at $date.format('hh:mm z',$!urlmapcontent.syspublishdate)</time>
+      <span class="comments">
+        <a href="#comments">
+          #set ($commentscount = $dotcontent.count("+structurename:comments +news-comments:$content.identifier"))
+          #if($webapi.parseint($commentscount) > 0)
+            $commentscount comments
+          #else
+            no comments
+          #end
+        </a>
+      </span>
+  </div>
+
+  #if($utilmethods.isset($urlmapcontent.image) && $utilmethods.isset($urlmapcontent.image.file))
+    <div class="news-detail-image">
+      <img src='/da/$!urlmapcontent.shorty/image/500w' alt="$!{con.title}" />
+      #if($utilmethods.isset($urlmapcontent.caption))
+        <span class="news-detail-caption">$!urlmapcontent.caption</span>
+      #end
+    </div>
+  #end
+
+  #dotedit($!urlmapcontent.inode,$!urlmapcontent.story)
+
+
+</div>
+#else
+  <div class="alert alert-info">we are sorry, but the story you are looking for is no longer available. <a href="/news-events/news/">click here to see all news stories</a>.</div>
+#end
+hh:mm z',$!urlmapcontent.syspublishdate)</time>
+      <span class="comments">
+        <a href="#comments">
+          #set ($commentscount = $dotcontent.count("+structurename:comments +news-comments:$content.identifier"))
+          #if($webapi.parseint($commentscount) > 0)
+            $commentscount comments
+          #

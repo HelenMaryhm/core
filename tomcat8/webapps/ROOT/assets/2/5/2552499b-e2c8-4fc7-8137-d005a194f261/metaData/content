@@ -1,0 +1,136 @@
+#set($clickstream  = $session.getattribute("clickstream"))
+
+#set($geolocationfromsession = $session.getattribute("geolocation"))
+#if(!$utilmethods.isset($geolocationfromsession))
+	#set($locationurl = "http://www.geoplugin.net/json.gp?ip=$request.getremoteaddr()")
+	#set($geolocation = $json.fetch("$!locationurl"))
+	$session.setattribute("geolocation", $geolocation)
+#else
+	#set($geolocation = $session.getattribute("geolocation"))
+#end
+
+#if($visitor.persona)
+	#foreach($con in $dotcontent.pull("+contenttype:persona +(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797 conhost:system_host) +persona.keytag:*${visitor.persona.keytag}*",1,"moddate"))
+	<div class="text-center" style="margin: 15px 10px;">
+		#if($utilmethods.isset($con.photo.rawuri))
+			<img src="/da/$!con.inode/photo/150w/$!con.photo.name" class="img-circle">
+		#else
+			<img src="/html/images/persona/default-persona.png"  style="width:150px;" class="img-circle">
+		#end
+		<h2>$con.name</h2>
+	</div>
+		<p style="padding: 0 15px;">$!{con.description}</p>
+	#end
+#else
+	<h2>default persona</h2>
+#end
+
+<table>
+	<tr>
+		<td>accrued tags</td>
+		<td>
+			#if($visitor.accruedtags)
+				<div class="tagbox">
+					#foreach($tag in $visitor.accruedtags)
+						$!{tag}<br>
+					#end
+				</div>
+			#else
+			 	no tags
+			#end
+		</td>
+	</tr>
+	
+	<tr>
+		<td>selected language</td>
+		<td>$!{visitor.selectedlanguage}</td>
+	</tr>
+	
+	<tr>
+		<td>new visitor</td>
+		<td>$visitor.newvisitor</td>
+	</tr>
+	
+	<tr>
+		<td>refer:</td>
+		<td>$!visitor.referrer</td>
+	</tr>
+	
+	<tr>
+		<td>device:</td>
+		<td>$!visitor.device</td>
+	</tr>
+	
+	<tr>
+		<td>user agent:</td>
+		<td>$!visitor.useragent</td>
+	</tr>
+	#if(!$utilmethods.isset($geolocation))
+		<tr><td colspan="2">no geolocation data available.</td></tr>
+	#else
+		<tr>
+			<td colspan="2">
+				<img src="//maps.google.com/maps/api/staticmap?zoom=10&amp;size=285x150&amp;maptype=roadmap&amp;markers=color:blue|label:s|${geolocation.geoplugin_latitude},${geolocation.geoplugin_longitude}&amp;sensor=false" alt="your location" />
+			</td>
+		</tr>
+	#end
+</table>
+
+	<div class="text-center"><a class="js-fancybox-inline btn btn-warning" href="#clicktrail">see click trails</a></div>
+</div>
+
+
+
+<div style="display:none;">
+	<div id="clicktrail">
+		<div style="height:400px;width:650px;overflow-y:scroll;">
+			
+			#if(!$clickstreamrequests || $clickstreamrequests.size() !=0)
+				<table>
+					<tr>
+						<th style="width:40px;">click</th>
+						<th>page</th>
+						<th>&nbsp;</th>
+						<th style="width:100px;text-align:center;">time</th>
+					</tr>
+					
+					#set($counter = 0)
+					#foreach($click in $clickstreamrequests)
+						#set($counter = $math.add($counter, 1))
+						#set($diff = "")
+						#if($counter < $clickstreamrequests.size())
+							#set($next = $clickstreamrequests.get($counter))
+							#set($diff = $next.timestamp.gettime() - $click.timestamp.gettime() )
+							#set($diff = $math.tointeger($math.div($diff, 1000)))
+							#if($diff >60)
+								#set($diff = "$math.tointeger(${math.div($diff, 60)})m $math.tointeger(${math.mod($diff, 60)})s")
+							#else
+								#set($diff = "$math.tointeger(${math.add($diff, 1)})s")
+							#end
+						#end
+						<tr>
+							<td style="width:20px;text-align:center;">$counter</td>
+							<td><a href="$click.requesturi?$!click.querystring" target="_blank">$click.requesturi</a></td>
+							<td style="width:20px;text-align:center;">
+								#set($language = $languagewebapi.getlanguage("$!click.languageid"))
+								<img src="/html/images/languages/${language.languagecode}_${language.countrycode}.gif" alt="${language.countrycode}" />
+							</td>
+							<td style="width:80px;text-align:center;">$!diff</td>
+						</tr>
+					#end
+	    		</table>
+			#else
+				<table><tr><td colspan="4">no data</td></tr></table>
+			#end
+	
+		</div>
+	</div>
+</div>
+
+get($counter))
+							#set($diff = $next.timestamp.gettime() - $click.timestamp.gettime() )
+							#set($diff = $math.tointeger($math.div($diff, 1000)))
+							#if($diff >60)
+								#set($diff = "$math.tointeger(${math.div($diff, 60)})m $math.tointeger(${math.mod($diff, 60)})s")
+							#else
+								#set($diff

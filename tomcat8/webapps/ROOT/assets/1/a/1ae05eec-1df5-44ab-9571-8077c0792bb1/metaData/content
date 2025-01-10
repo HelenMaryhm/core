@@ -1,0 +1,47 @@
+#if($request.getparameter("cat"))
+	#set($catvar=$request.getparameter("cat"))
+	#set($catquery = "+(categories:$catvar)")
+#end
+
+
+#set($nowsers= $date.format('yyyymmddhhmmss', $date.getdate()))
+#set($finalquery = "+structurename:blog $!{catquery} +blog.syspublishdate:[19001010101000 to $nowsers]")
+
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0" xmlns:jf="http://${host.hostname}/blogs/rss">
+<channel>
+<title>quest financial blogs</title>
+<link>http://${host.hostname}/blogs/</link>
+<description>most recent $!{catvar} - quest financial blog</description>
+<language>en-us</language>
+<pubdate>$!{date.format('yyyy-mm-dd', $date.getdate())}t$!{date.format('hh:mm:ss', $date.getdate())}</pubdate>
+		
+#set($blogcontent= $dotcontent.pull("${finalquery}",50,"blog.syspublishdate desc"))	
+#foreach($blogentry in $blogcontent)
+<item>
+	<title>$webapi.xmlescape($!{blogentry.title})</title>
+	<description>$webapi.xmlescape($utilmethods.prettyshortenstring("$blogentry.body", 200))</description>
+	<link>http://${host.hostname}/blog/$blogentry.urltitle</link>
+	<pubdate>$!{date.format('yyyy-mm-dd', $blogentry.syspublishdate)}t$!{date.format('hh:mm:ss', $blogentry.syspublishdate)}</pubdate>
+	<guid>http://${host.hostname}/blog/$blogentry.urltitle</guid>
+</item>
+#end
+</channel>
+</rss>
+date:[19001010101000 to $nowsers]")
+
+<?xml version="1.0" encoding="utf-8"?> 
+<rss version="2.0" xmlns:jf="http://${host.hostname}/blogs/rss">
+<channel>
+<title>quest financial blogs</title>
+<link>http://${host.hostname}/blogs/</link>
+<description>most recent $!{catvar} - quest financial blog</description>
+<language>en-us</language>
+<pubdate>$!{date.format('yyyy-mm-dd', $date.getdate())}t$!{date.format('hh:mm:ss', $date.getdate())}</pubdate>
+		
+#set($blogcontent= $dotcontent.pull("${finalquery}",50,"blog.syspublishdate desc"))	
+#foreach($blogentry in $blogcontent)
+<item>
+	<title>$webapi.xmlescape($!{blogentry.title})</title>
+	<description>$webapi.xmlescape($utilmethods.prettyshortenstring("$blogentry.body", 200))</description>
+	<link>http://${host.hostnam

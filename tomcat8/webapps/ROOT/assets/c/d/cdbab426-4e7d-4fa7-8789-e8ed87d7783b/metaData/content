@@ -1,0 +1,85 @@
+#if($urlmapcontent.inode)
+
+  <div class="blog-detail">
+    <h1 class="blog-detail-title">
+      #dotedit($!urlmapcontent.inode,$!urlmapcontent.title)
+      #editcontentlet($urlmapcontent.inode)
+    </h1>
+    <div class="post-info">
+      <div class="add-this blog-add-this header-add-this pull-right">
+        #dotparse('/application/vtl/widgets/add-this/add-this.vtl')
+      </div>
+      <time datetime="$date.format('yyyy-mm-dd',$!urlmapcontent.syspublishdate)t$date.format('hh:mm:ss',$!urlmapcontent.syspublishdate)" class="date">$date.format('mmm dd yyyy',$!urlmapcontent.syspublishdate) at $date.format('hh:mm z',$!urlmapcontent.syspublishdate)</time>
+      <span class="author">$urlmapcontent.author</span>
+      <span class="comments">
+        <a href="#comments">
+          #if($urlmapcontent.commentscount > 0)
+            $urlmapcontent.commentscount comments
+          #else
+            no comments
+          #end
+        </a>
+      </span>
+    </div>
+    #dotedit($!urlmapcontent.inode,$!urlmapcontent.body)
+    <div class="post-info-footer">
+      <div class="add-this blog-add-this header-add-this pull-right">
+        #dotparse('/application/vtl/widgets/add-this/add-this.vtl')
+      </div>
+      #if($!urlmapcontent.tags.size() > 0)
+        <div class="blog-tags">
+          <i class="fa fa-tag"></i>
+          #foreach($tag in $!urlmapcontent.tags)
+            <a href="/blogs/?tag=${utilmethods.encodeurl($tag.trim())}">$tag</a>
+          #end
+        </div>
+      #end
+    </div>
+
+    <div id="comments" class="dotcms-comments">
+      #set($mycontent = $urlmapcontent.inode)
+      #set($commenttitle = 'comments')
+      #set($commentusecaptcha = 'true')
+      #set($commentautopublish = 'true')
+      #set($maxdepth = 3)
+      #set($commentsourcecode = '/application/vtl/widgets/comments/comments.vtl')
+      #comment($mycontent)
+    </div>
+  </div></div>
+
+#else
+
+  <div class="alert alert-info">
+    we are sorry, but the blog you are looking for is no longer available. <a href="/blogs/">click here to see recent blog posts</a>.
+  </div>
+
+#end
+info-footer">
+      <div class="add-this blog-add-this header-add-this pull-right">
+        #dotparse('/application/vtl/widgets/add-this/add-this.vtl')
+      </div>
+      #if($!urlmapcontent.tags.size() > 0)
+        <div class="blog-tags">
+          <i class="fa fa-tag"></i>
+          #foreach($tag in $!urlmapcontent.tags)
+            <a href="/blogs/?tag=${utilmethods.encodeurl($tag.trim())}">$tag</a>
+          #end
+        </div>
+      #end
+    </div>
+
+    <div id="comments" class="dotcms-comments">
+      #set($mycontent = $urlmapcontent.inode)
+      #set($commenttitle = 'comments')
+      #set($commentusecaptcha = 'true')
+      #set($commentautopublish = 'true')
+      #set($maxdepth = 3)
+      #set($commentsourcecode = '/application/vtl/widgets/comments/comments.vtl')
+      #comment($mycontent)
+    </div>
+  </div></div>
+
+#else
+
+  <div class="alert alert-info">
+    we are sorry, but the blog you are looking for is no longer available. <a href="/blogs/">click here to see recent blog posts</a>

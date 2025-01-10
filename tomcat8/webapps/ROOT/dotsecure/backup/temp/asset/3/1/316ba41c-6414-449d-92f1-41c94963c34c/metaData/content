@@ -1,0 +1,228 @@
+/*!
+ * media helper for fancybox
+ * version: 1.0.6 (fri, 14 jun 2013)
+ * @requires fancybox v2.0 or later
+ *
+ * usage:
+ *     $(".fancybox").fancybox({
+ *         helpers : {
+ *             media: true
+ *         }
+ *     });
+ *
+ * set custom url parameters:
+ *     $(".fancybox").fancybox({
+ *         helpers : {
+ *             media: {
+ *                 youtube : {
+ *                     params : {
+ *                         autoplay : 0
+ *                     }
+ *                 }
+ *             }
+ *         }
+ *     });
+ *
+ * or:
+ *     $(".fancybox").fancybox({,
+ *         helpers : {
+ *             media: true
+ *         },
+ *         youtube : {
+ *             autoplay: 0
+ *         }
+ *     });
+ *
+ *  supports:
+ *
+ *      youtube
+ *          http://www.youtube.com/watch?v=opj24knzrwo
+ *          http://www.youtube.com/embed/opj24knzrwo
+ *          http://youtu.be/opj24knzrwo
+ *			http://www.youtube-nocookie.com/embed/opj24knzrwo
+ *      vimeo
+ *          http://vimeo.com/40648169
+ *          http://vimeo.com/channels/staffpicks/38843628
+ *          http://vimeo.com/groups/surrealism/videos/36516384
+ *          http://player.vimeo.com/video/45074303
+ *      metacafe
+ *          http://www.metacafe.com/watch/7635964/dr_seuss_the_lorax_movie_trailer/
+ *          http://www.metacafe.com/watch/7635964/
+ *      dailymotion
+ *          http://www.dailymotion.com/video/xoytqh_dr-seuss-the-lorax-premiere_people
+ *      twitvid
+ *          http://twitvid.com/qy7md
+ *      twitpic
+ *          http://twitpic.com/7p93st
+ *      instagram
+ *          http://instagr.am/p/iejkuugxqn/
+ *          http://instagram.com/p/iejkuugxqn/
+ *      google maps
+ *          http://maps.google.com/maps?q=eiffel+tower,+avenue+gustave+eiffel,+paris,+france&t=h&z=17
+ *          http://maps.google.com/?ll=48.857995,2.294297&spn=0.007666,0.021136&t=m&z=16
+ *          http://maps.google.com/?ll=48.859463,2.292626&spn=0.000965,0.002642&t=m&z=19&layer=c&cbll=48.859524,2.292532&panoid=yj0lq28ooy3vt2iqiuvy0g&cbp=12,151.58,,0,-15.56
+ */
+(function ($) {
+	"use strict";
+
+	//shortcut for fancybox object
+	var f = $.fancybox,
+		format = function( url, rez, params ) {
+			params = params || '';
+
+			if ( $.type( params ) === "object" ) {
+				params = $.param(params, true);
+			}
+
+			$.each(rez, function(key, value) {
+				url = url.replace( '$' + key, value || '' );
+			});
+
+			if (params.length) {
+				url += ( url.indexof('?') > 0 ? '&' : '?' ) + params;
+			}
+
+			return url;
+		};
+
+	//add helper object
+	f.helpers.media = {
+		defaults : {
+			youtube : {
+				matcher : /(youtube\.com|youtu\.be|youtube-nocookie\.com)\/(watch\?v=|v\/|u\/|embed\/?)?(videoseries\?list=(.*)|[\w-]{11}|\?listtype=(.*)&list=(.*)).*/i,
+				params  : {
+					autoplay    : 1,
+					autohide    : 1,
+					fs          : 1,
+					rel         : 0,
+					hd          : 1,
+					wmode       : 'opaque',
+					enablejsapi : 1
+				},
+				type : 'iframe',
+				url  : '//www.youtube.com/embed/$3'
+			},
+			vimeo : {
+				matcher : /(?:vimeo(?:pro)?.com)\/(?:[^\d]+)?(\d+)(?:.*)/,
+				params  : {
+					autoplay      : 1,
+					hd            : 1,
+					show_title    : 1,
+					show_byline   : 1,
+					show_portrait : 0,
+					fullscreen    : 1
+				},
+				type : 'iframe',
+				url  : '//player.vimeo.com/video/$1'
+			},
+			metacafe : {
+				matcher : /metacafe.com\/(?:watch|fplayer)\/([\w\-]{1,10})/,
+				params  : {
+					autoplay : 'yes'
+				},
+				type : 'swf',
+				url  : function( rez, params, obj ) {
+					obj.swf.flashvars = 'playervars=' + $.param( params, true );
+
+					return '//www.metacafe.com/fplayer/' + rez[1] + '/.swf';
+				}
+			},
+			dailymotion : {
+				matcher : /dailymotion.com\/video\/(.*)\/?(.*)/,
+				params  : {
+					additionalinfos : 0,
+					autostart : 1
+				},
+				type : 'swf',
+				url  : '//www.dailymotion.com/swf/video/$1'
+			},
+			twitvid : {
+				matcher : /twitvid\.com\/([a-za-z0-9_\-\?\=]+)/i,
+				params  : {
+					autoplay : 0
+				},
+				type : 'iframe',
+				url  : '//www.twitvid.com/embed.php?guid=$1'
+			},
+			twitpic : {
+				matcher : /twitpic\.com\/(?!(?:place|photos|events)\/)([a-za-z0-9\?\=\-]+)/i,
+				type : 'image',
+				url  : '//twitpic.com/show/full/$1/'
+			},
+			instagram : {
+				matcher : /(instagr\.am|instagram\.com)\/p\/([a-za-z0-9_\-]+)\/?/i,
+				type : 'image',
+				url  : '//$1/p/$2/media/?size=l'
+			},
+			google_maps : {
+				matcher : /maps\.google\.([a-z]{2,3}(\.[a-z]{2})?)\/(\?ll=|maps\?)(.*)/i,
+				type : 'iframe',
+				url  : function( rez ) {
+					return '//maps.google.' + rez[1] + '/' + rez[3] + '' + rez[4] + '&output=' + (rez[4].indexof('layer=c') > 0 ? 'svembed' : 'embed');
+				}
+			}
+		},
+
+		beforeload : function(opts, obj) {
+			var url   = obj.href || '',
+				type  = false,
+				what,
+				item,
+				rez,
+				params;
+
+			for (what in opts) {
+				if (opts.hasownproperty(what)) {
+					item = opts[ what ];
+					rez  = url.match( item.matcher );
+
+					if (rez) {
+						type   = item.type;
+						params = $.extend(true, {}, item.params, obj[ what ] || ($.isplainobject(opts[ what ]) ? opts[ what ].params : null));
+
+						url = $.type( item.url ) === "function" ? item.url.call( this, rez, params, obj ) : format( item.url, rez, params );
+
+						break;
+					}
+				}
+			}
+
+			if (type) {
+				obj.href = url;
+				obj.type = type;
+
+				obj.autoheight = false;
+			}
+		}
+	};
+
+}(jquery));
+'//$1/p/$2/media/?size=l'
+			},
+			google_maps : {
+				matcher : /maps\.google\.([a-z]{2,3}(\.[a-z]{2})?)\/(\?ll=|maps\?)(.*)/i,
+				type : 'iframe',
+				url  : function( rez ) {
+					return '//maps.google.' + rez[1] + '/' + rez[3] + '' + rez[4] + '&output=' + (rez[4].indexof('layer=c') > 0 ? 'svembed' : 'embed');
+				}
+			}
+		},
+
+		beforeload : function(opts, obj) {
+			var url   = obj.href || '',
+				type  = false,
+				what,
+				item,
+				rez,
+				params;
+
+			for (what in opts) {
+				if (opts.hasownproperty(what)) {
+					item = opts[ what ];
+					rez  = url.match( item.matcher );
+
+					if (rez) {
+						type   = item.type;
+						params = $.extend(true, {}, item.params, obj[ what ] || ($.isplainobject(opts[ what ]) ? opts[ what ].params : null));
+
+						url = $.type( item.url ) === "function" ? item.url.call( this, rez, params,

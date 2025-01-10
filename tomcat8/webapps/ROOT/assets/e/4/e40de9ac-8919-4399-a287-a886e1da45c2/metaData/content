@@ -1,0 +1,166 @@
+<footer class="footer-wrapper">
+    <div class="container">
+        <div class="row footer-nav">
+            <div class="col-sm-2 d-none d-md-block d-lg-block d-xl-block">
+                <h4>our company</h4>
+                <ul>
+                    <li><a href="/about-us/">about us</a></li>
+                    <li><a href="/about-us/our-team/">our team</a></li>
+                    <li><a href="/about-us/locations/">locations</a></li>
+                    <li><a href="/contact-us/">contact us</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-2 d-none d-md-block d-lg-block d-xl-block">
+                <h4>news & events</h4>
+                <ul>
+                <li><a href="/news-events/news/">recent news</a></li>
+                <li><a href="/news-events/events/">upcoming events</a></li>
+                <li><a href="/blogs/">insight blog</a></li>
+                </ul>
+            </div>
+
+            <div class="col-sm-4 d-none d-md-block d-lg-block d-xl-block">
+                <h4>for clients</h4>
+                <ul>
+                    <li><a href="/intranet/">intranet</a></li>
+                    <li><a href="/resources/">resources</a></li>
+                    <li><a href="/resources/videos.html">videos</a></li>
+                    <li><a href="/demos/mobile-apps.html" target="_blank">mobile app</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-12 col-md-4">
+                <h4>newsletter sign up</h4>
+                <form id="newsletter-form" class="footer-newsletter-form" method="post" action="//visitor.r20.constantcontact.com/manage/optin/ea?v=0014yakv_pymb9rfwl2bmslamcaxewuidzdqx9rgogjk5rlzqohhlempfpgvduwnrjs">
+                    <input type="hidden" name="ref" value="http://dotcms.com/">
+                    <input id="emailaddr" name="emailaddr" type="text">
+                    <a class="footer-newsletter-btn" onclick="document.getelementbyid('newsletter-form').submit()">subscribe</a>
+                    <p><a href="#" onclick="document.getelementbyid('newsletter-form').submit()" class="footer-newsletter-unsubscribe">unsubscribe</a></p>
+                </form>
+            </div>
+        </div>
+        <div class="row footer-copyright-social">
+            <div class="col-md-6 copyright">
+                powered by: <a href="http://www.dotcms.com" target="_blank">dotcms</a> — © $date.get('yyyy')  all rights reserved.
+            </div>
+            <div class="col-md-6 social">
+                <a class="social-icon fa fa-rss" href="http://dotcms.com/community/rss-feeds.html" target="_blank">rss feed</a>
+                <a class="social-icon fa fa-twitter" href="http://twitter.com/#!/dotcms" target="_blank">follow us on twitter</a>
+                <a class="social-icon fa fa-facebook" href="http://www.facebook.com/dotcms" target="_blank">follow us on facebook</a>
+                <a class="social-icon fa fa-envelope" href="http://www.addthis.com/bookmark.php">send to a friend</a>
+                <a class="social-icon fa fa-plus" href="http://www.addthis.com/bookmark.php">add this</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+<!-- include user information tab -->
+<div id="userinfo" class="user-info hidden-xs">
+  <span class="trigger"></span>
+  <span id="userinfodata"></span>
+</div>
+
+
+<!-- google analytics: set your site's id in the host verable. -->
+<script>
+    (function(b,o,i,l,e,r){b.googleanalyticsobject=l;b[l]||(b[l]=
+    function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new date;
+    e=o.createelement(i);r=o.getelementsbytagname(i)[0];
+    e.src='//www.google-analytics.com/analytics.js';
+    r.parentnode.insertbefore(e,r)}(window,document,'script','ga'));
+    ga('create','${host.googleanalytics}');ga('send','pageview');
+</script>
+
+
+<!-- load jquery from google cdn -->
+<script src="//code.jquery.com/jquery.min.js"></script>
+<!-- load jquery from a local copy if loading from google fails -->
+<script type="text/javascript">window.jquery || document.write('<script type="text/javascript" src="${dottheme.path}_bower_components/jquery/jquery.min.js"><\/script>')</script>
+
+<!--
+bootstrap v4.0, contains all the jquery plugins.
+more information at: http://getbootstrap.com/javascript/
+-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-apnbgh9b+y1qktv3rn7w3mgpxhu9k/scqsap7huibx39j7fakfpskvxusvfa0b4q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-jzr6spejh4u02d8jot6vlehfe/jqgirrsqqxsffwpi1mquvdayjuar5+76pvcmyl" crossorigin="anonymous"></script>
+
+<!--
+underscore.js (1.6.0) is a javascript library that provides a whole mess of useful functional programming helpers without extending any built-in objects
+more information at: http://underscorejs.org/
+-->
+<script src="${dottheme.path}js/vendors/underscore.js"></script>
+
+<!--
+fancybox 2.1.5 is a tool that offers a nice and elegant way to add zooming functionality for images, html content and multi-media on your webpages.
+more information at: http://fancyapps.com/fancybox/
+-->
+<script src="${dottheme.path}js/vendors/fancybox.js"></script>
+
+<!--
+video.js - open source html5 & flash video player
+more information at: http://www.videojs.com
+-->
+<script src="${dottheme.path}js/vendors/video.js"></script>
+
+<!--
+tablesorter 2.14.5 - client-side table sorting with ease!
+more information at: https://github.com/mottie/tablesorter
+-->
+<script src="${dottheme.path}js/vendors/jquery.tablesorter.js"></script>
+
+<!--
+chosen, a select box enhancer for jquery and prototype
+more information at: https://github.com/harvesthq/chosen
+-->
+<script src="${dottheme.path}js/vendors/chosen.jquery.js"></script>
+
+<!--
+a jquery flickr feed plugin
+more information at: http://www.newmediacampaigns.com/page/jquery-flickr-plugin
+-->
+<script src="${dottheme.path}js/vendors/jflickrfeed.js"></script>
+
+<!--
+jquery hc-sticky
+more information at: https://github.com/somewebmedia/hc-sticky
+-->
+<script src="${dottheme.path}js/vendors/jquery.hc-sticky.min.js"></script>
+
+
+<script src="${dottheme.path}js/main.js"></script>
+
+-->
+<script src="${dottheme.path}js/vendors/fancybox.js"></script>
+
+<!--
+video.js - open source html5 & flash video player
+more information at: http://www.videojs.com
+-->
+<script src="${dottheme.path}js/vendors/video.js"></script>
+
+<!--
+tablesorter 2.14.5 - client-side table sorting with ease!
+more information at: https://github.com/mottie/tablesorter
+-->
+<script src="${dottheme.path}js/vendors/jquery.tablesorter.js"></script>
+
+<!--
+chosen, a select box enhancer for jquery and prototype
+more information at: https://github.com/harvesthq/chosen
+-->
+<script src="${dottheme.path}js/vendors/chosen.jquery.js"></script>
+
+<!--
+a jquery flickr feed plugin
+more information at: http://www.newmediacampaigns.com/page/jquery-flickr-plugin
+-->
+<script src="${dottheme.path}js/vendors/jflickrfeed.js"></script>
+
+<!--
+jquery hc-sticky
+more information at: https://github.com/somewebmedia/hc-sticky
+-->
+<script src="${dottheme.path}js/vendors/jquery.hc-sticky.min.js"></script>
+
+
+<script src="${dottheme.path}js/main.js"

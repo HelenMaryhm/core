@@ -1,0 +1,26 @@
+.challenge-question {
+
+    .alert-info,
+    .alert-warning {
+        margin-top: $padding-base-vertical * 2;
+    }
+
+    .challenge-question-form {
+        @include media-breakpoint-up(xs) {
+            @include make-col(12);
+        }
+        @include media-breakpoint-up(sm) {
+            @include make-col(6);
+        }
+        @include media-breakpoint-up(sm) {
+            @include make-col-offset(3);
+        }
+    }
+
+    .info-text {
+        @media (min-width: $screen-tablet) {
+            margin: 0 auto $padding-base-vertical * 4;
+            width: 50%;
+        }
+    }
+}

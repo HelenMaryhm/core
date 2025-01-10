@@ -1,0 +1,70 @@
+#set ($id = $request.getParameter("newsId"))
+
+#if($id)
+	#set($newsItem = $dotcontent.find($id))
+	<div class="news-detail">
+		<h1 class="news-detail-title">$newsItem.title</h1>
+		<div class="post-info">
+			<div class="add-this news-add-this header-add-this pull-right">
+				#dotParse('/application/vtl/widgets/add-this/add-this.vtl')
+			</div>
+			<time datetime="$date.format('yyyy-MM-dd',$newsItem.sysPublishDate)T$date.format('hh:mm:ss',$newsItem.sysPublishDate)" class="date">$date.format('MMM dd yyyy',$newsItem.sysPublishDate) at $date.format('HH:mm z',$newsItem.sysPublishDate)</time>
+			<span class="comments">
+				<a href="#comments">
+					#if($newsItem.commentscount > 0)
+						$newsItem.commentscount Comments
+					#else
+						No Comments
+					#end
+				</a>
+			</span>
+		</div>
+
+		#if($newsItem.isSet($URLMapContent.image) && $UtilMethods.isSet($newsItem.image.file))
+			<div class="news-detail-image">
+				<img src='/contentAsset/image/$newsItem.inode/image/byInode/1/filter/Resize/resize_w/300' alt="$newsItem.title" />
+				#if($UtilMethods.isSet($newsItem.caption))
+					<span class="news-detail-caption">$newsItem.caption</span>
+				#end
+			</div>
+		#end
+
+		$newsItem.story
+
+
+		<div class="post-info-footer">
+			<div class="add-this news-add-this footer-add-this pull-right">
+				#dotParse('/application/vtl/widgets/add-this/add-this.vtl')
+			</div>
+		</div>
+
+		<div id="comments" class="news-comments">
+			<!-- Uncomment desired settings -->
+			##set($commentsModeration="News Publisher") 
+			##set($commentForceLogin = 'true')
+			##set($commentDateDescending = true)
+			##set($copmmentStripHTML = 'true')
+			#set($myContent = $newsItem.inode)
+			#set($commentTitle = 'Comments')
+			#set($commentUseCaptcha = 'true')
+			#set($commentAutoPublish = 'true')
+			#set($maxDepth = 2)
+			#set($commentSourceCode = '/application/vtl/macros/comments.vtl')
+			#comment($myContent)
+		</div>
+	</div>
+#else
+	#set($newsList = $dotcontent.pull("+structureName:News +(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797 conhost:SYSTEM_HOST)",10,"News.sysPublishDate desc"))
+	<h2>Investor News</h2>
+	<ul class="list-unstyled news-listing">
+		#foreach($item in $newsList)
+			<li>
+				<a href="/intranet/news/?newsId=$item.identifier">
+					<span class="news-title">$item.title</span>
+					<time class="news-date" datetime="$!{item.sysPublishDate}">$date.format('MMMM d, yyyy', $item.sysPublishDate)</time>
+					<span class="news-lead">$item.lead</span>
+				</a>
+			</li>
+		#end
+	</ul>
+#end

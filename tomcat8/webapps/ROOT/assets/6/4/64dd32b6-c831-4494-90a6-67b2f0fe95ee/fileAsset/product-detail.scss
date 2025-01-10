@@ -1,0 +1,218 @@
+.down, .up {
+    &:before {
+        @include add-icon(0);
+    }
+}
+
+.down {
+    color: $brand-danger;
+
+    &:before {
+        content: "\f175";
+    }
+}
+
+.up {
+    color: $brand-success;
+
+    &:before {
+        content: "\f176";
+    }
+}
+
+.product-title {
+  font-size: $font-size-x-large;
+}
+.product-detail {
+    @include make-row();
+
+    .product-detail-chart {
+        text-align: center;
+
+        img {
+            display: inline;
+            padding: $padding-base-vertical * 2;
+            max-width: 100%;
+            @media (max-width: $screen-desktop) {
+                padding: 0;
+            }
+        }
+    }
+
+    .product-detail-main {
+        @include make-sm-column(8);
+    }
+
+    .product-detail-sidebar {
+        @include make-sm-column(4);
+        margin-top: $padding-base-vertical * 4;
+
+        @media (min-width: $screen-tablet) {
+            margin-top: 0;
+        }
+    }
+
+    .product-info,
+    .performance-risk {
+        margin-bottom: $padding-base-vertical * 4;
+    }
+
+     .product-nav {
+         padding: 0 10px;
+     }
+
+
+    .table-side-heading {
+        td {
+            font-weight: bold;
+        }
+        th {
+            font-weight: normal;
+        }
+    }
+
+    .top-heading {
+        th {
+            border-top: none;
+            color: $gray-light;
+            font-size: $font-size-x-small;
+        }
+    }
+
+    .Investment-Inter-term,
+    .Large-Cap-Value,
+    .Small-Cap-Value,
+    .Treasury-Long-term,
+    .Mid-Cap-Value,
+    .Small-Cap-Growth,
+    .Large-Cap-Growth,
+    .Large-Cap-Blend,
+    .Treasury-Inter-term,
+    .Treasury-Short-term,
+    .Mid-Cap-Blend,
+    .Small-Cap-Blend,
+    .Investment-Short-term,
+    .Investment-Long-term,
+    .Low-quality-Inter-term,
+    .Low-quality-Short-term,
+    .Low-quality-Long-term,
+    .Mid-Cap-Growth {
+        width:170px;
+        height:130px;
+        background:url('/application/themes/quest/images/layout/box-sprite.png') no-repeat;
+    }
+
+    .Investment-Inter-term {
+        background-position: -175px -560px;
+    }
+
+    .Large-Cap-Value {
+        background-position: 0 0;
+    }
+
+    .Small-Cap-Value {
+        background-position: 0 -280px;
+    }
+
+    .Treasury-Long-term {
+        background-position: -350px -420px;
+    }
+
+    .Mid-Cap-Value {
+        background-position: 0 -140px;
+    }
+
+    .Small-Cap-Growth {
+        background-position: -350px -280px;
+    }
+
+    .Large-Cap-Growth {
+        background-position: -350px 0;
+    }
+
+    .Large-Cap-Blend {
+        background-position: -175px 0;
+    }
+
+    .Treasury-Inter-term {
+        background-position: -175px -420px;
+    }
+
+    .Treasury-Short-term {
+        background-position: 0 -420px;
+    }
+
+    .Mid-Cap-Blend {
+        background-position: -175px -140px;
+    }
+
+    .Small-Cap-Blend {
+        background-position: -175px -280px;
+    }
+
+    .Investment-Short-term {
+        background-position: 0 -560px;
+    }
+
+    .Investment-Long-term {
+        background-position: -350px -560px;
+    }
+
+    .Low-quality-Inter-term {
+        background-position: -175px -700px;
+    }
+
+    .Low-quality-Short-term {
+        background-position: 0 -700px;
+    }
+
+    .Low-quality-Long-term {
+        background-position: -350px -700px;
+    }
+
+    .Mid-Cap-Growth {
+        background-position: -350px -140px;
+    }
+}
+
+.chart-nav {
+  border-bottom: 1px dashed $gray;
+  padding: 5px;
+  li {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  li.active {
+      font-weight: 700;
+      a {
+        color: $brand-secondary;
+      }
+  }
+}
+
+.risk-lg-system {
+    display: block;
+    width: 150px;
+    height: 35px;
+    background-image: url('/application/themes/quest/images/layout/risk-lg-sprite.png');
+}
+
+.risk5-lg {
+    background-position: 0 -300px;
+}
+
+.risk4-lg {
+    background-position: 0 -240px;
+}
+
+.risk3-lg {
+    background-position: 0 -180px;
+}
+
+.risk2-lg {
+    background-position: 0 -120px;
+}
+
+.risk1-lg {
+    background-position: 0 -60px;
+}

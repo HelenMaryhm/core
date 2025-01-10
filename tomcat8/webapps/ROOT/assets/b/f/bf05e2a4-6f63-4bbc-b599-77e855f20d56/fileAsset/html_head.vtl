@@ -1,0 +1,63 @@
+#if($UtilMethods.isSet($URLMapContent.title))
+    #set($pageTitle = $URLMapContent.title)
+    #set($crumbTitle = $URLMapContent.title)
+#else
+    #set($pageTitle = $dotPageContent.title)
+#end
+#set($dotRelativeThemePath=$dotTheme.path)
+#if($dotRelativeThemePath.startsWith("//"))
+	#set($dotRelativeThemePath=$dotRelativeThemePath.substring(2))
+	#set($dotRelativeThemePath=$dotRelativeThemePath.substring($dotRelativeThemePath.indexOf("/")))
+#end
+#if("0" == $request.getParameter("com.dotmarketing.persona.id"))
+	${visitor.clearTags()}
+#end
+
+<title>$pageTitle</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta charset="UTF-8">
+<meta name="application-name" content="dotCMS dotcms.com">
+<meta name="description" content="$!dotPageContent.seodescription">
+<meta name="keywords" content="$!dotPageContent.seokeywords">
+<meta name="author" content="$!dotPageContent.pagemetadata">
+<meta name="lastModifiedDate" content="$!dotPageContent.modDate">
+<meta name="application-name" content="dotcms.com" />
+<meta name="generator" content="dotCMS" />
+#if($UtilMethods.isSet($dotPageContent.canonicalUrl))
+<link rel="canonical" href="//demo.dotcms.com$!{dotPageContent.canonicalUrl}" />
+#else
+<link rel="canonical" href="//demo.dotcms.com$!{request.getAttribute("javax.servlet.forward.request_uri")}" />
+#end
+
+
+<link rel="shortcut icon" href="//dotcms.com/favicon.ico" type="image/x-icon">
+<link href='//fonts.googleapis.com/css?family=Kameron|Oxygen:300,400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="${dotRelativeThemePath}sass/main.dotsass" type='text/css'>
+
+## Importing 3rd party plugins styles
+<link rel="stylesheet" href="${dotTheme.path}_bower_components/fancybox/source/jquery.fancybox.css">
+<link rel="stylesheet" href="${dotTheme.path}_bower_components/fancybox/source/helpers/jquery.fancybox-buttons.css">
+<link rel="stylesheet" href="${dotTheme.path}_bower_components/fancybox/source/helpers/jquery.fancybox-thumbs.css">
+<link rel="stylesheet" href="${dotTheme.path}_bower_components/video.js/video-js.css">
+<link rel="stylesheet" href="${dotTheme.path}_bower_components/chosen/public/chosen.css">
+
+<!--[if lt IE 9]>
+    <script src="_bower_components/respond/respond.min.js"></script>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<!-- Load jQuery from Google CDN -->
+<script src="//code.jquery.com/jquery.min.js"></script>
+<!-- Load jQuery from a local copy if loading from Google fails -->
+<script type="text/javascript">window.jQuery || document.write('<script type="text/javascript" src="${dotTheme.path}_bower_components/jquery/jquery.min.js"><\/script>')</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+<script>
+	WebFont.load({
+		google : {
+			families : ['Open Sans:300,700', 'Roboto Slab:100,500,700']
+		}
+	});
+</script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous"></script>

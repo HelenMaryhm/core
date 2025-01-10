@@ -1,0 +1,71 @@
+#set($navList = $navtool.getNav("/"))
+<h2 class="page-header">Sitemap</h2>
+<div class="row">
+	<ul class="sitemaps">
+		#foreach($menuItem in $navList)
+			<li class="col-lg-2">
+				<a href='${menuItem.href}'>${menuItem.title}</a>
+				#set($children1 = $menuItem.children)
+				#if( $children1 && $children.size() > 0 )
+					<ul>
+						#foreach($level1 in $children1)
+							<li>
+								<a href='${level1.href}'>${level1.title}</a>
+								#set($children2 = $level1.children)
+								#if( $children2 && $children2.size() > 0 )
+									<ul>
+										#foreach($level2 in $children2)
+											<li>
+												<a href='${level2.href}'>${level2.title}</a>
+												#set($children3 = $level2.children)
+												#if( $children3 && $children3.size() > 0 )
+													<ul>
+														#foreach($level3 in $children3)
+															<li>
+																<a href='${level3.href}'>${level3.title}</a>
+																#set($children4 = $level3.children)
+																#if( $children4 && $children4.size() > 0 )
+																	<ul>
+																		#foreach($level4 in $children4)
+																			<li>
+																				<a href='${level4.href}'>${level4.title}</a>
+																				#set($children5 = $level4.children)
+																				#if( $children5 && $children5.size() > 0 )
+																					<ul>
+																						#foreach($level5 in $children5)
+																							<li>
+																								<a href='${level5.href}'>${level5.title}</a>
+																								#set($children6 = $level5.children)
+																								#if( $children6 && $children6.size() > 0 )
+																									<ul>
+																										#foreach($level6 in $children6)
+																											<li>
+																												<a href='${level6.href}'>${level6.title}</a>
+																											</li>
+																										#end
+																									</ul>
+																								#end
+																							</li>
+																						#end
+																					</ul>
+																				#end
+																			</li>
+																		#end
+																	</ul>
+																#end
+															</li>
+														#end
+													</ul>
+												#end
+											</li>
+										#end
+									</ul>
+								#end
+							</li>
+						#end
+					</ul>
+				#end
+			</li>
+		#end
+	</ul>
+</div>

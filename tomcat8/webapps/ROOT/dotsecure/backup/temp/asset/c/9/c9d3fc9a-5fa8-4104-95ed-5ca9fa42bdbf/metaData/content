@@ -1,0 +1,281 @@
+#if($commentdatedescending == 'true' || $commentdatedescending == true)
+  #set($commentdatedescending = true)
+#else
+  #set($commentdatedescending = false)
+#end
+
+##this macro is only used inside the comments macro to display the comments threading
+#dotparse("/application/vtl/macros/comments.vm")
+
+#set($superparentinode = $_commentcontentinode)
+#set($user = $session.getattribute("cms_user"))
+#set($commentform = $session.getattribute("commentsform"))
+$session.removeattribute("commentsform")
+#set ($relatedmatches = $commentsapi.getcomments($_commentcontentinode, $commentdatedescending))
+#if(!$webapi.isset($emailtemplate))
+  #set($emailtemplate = 'static/comments/comments_email_template.html')  
+#end
+
+#if(!$utilmethods.isset($commentreferer))
+  #if($urlmapcontent)
+    #set($commentreferer =  $contents.geturlmapforcontentlet($urlmapcontent.identifier))
+  #else
+    #set($commentreferer =  "${vtlservlet_uri}?$!{request.getquerystring()}")
+  #end
+#end
+
+#if($pdfexport == false)
+
+  #if($commentusecaptcha == 'true' || $commentusecaptcha == true)
+    #set($commentusecaptcha = true)
+  #else
+    #set($commentusecaptcha = false)
+  #end
+
+  #if($commentuseaudiocaptcha == 'true' || $commentuseaudiocaptcha == true)
+    #set($commentuseaudiocaptcha = true)
+  #else
+    #set($commentuseaudiocaptcha = false)
+  #end
+
+<script>
+  //this function deals with the replies and new comments
+  function _dotreply(commentinode){
+
+    document.getelementbyid('contentinode').value=commentinode;
+    var commentform =  document.getelementbyid('commentform');
+    if(commentform){
+      commentform.style.display="";
+    }
+    var namefield = document.getelementbyid('name');
+    if(namefield){
+      namefield.focus();
+    }
+  }
+
+  //this function creates the form for posting the comments. output html is returned at the end of the function since
+  //there are different parts on the page that use this html to open a form to write a comment. when a link is clicked
+  //to post a new comment, the div id just following the link is passed as an argument to this function.
+
+  function _createpostcommentplace(activateddiv) {
+    //activediv is the div which is being worked on. it gets its value from the hidden field selecteddiv which is initially
+    var activediv = document.getelementbyid("selecteddiv").value;
+        html = "<form action=\"/dotcms/comments\" method=\"post\" id=\"commentsform\" name=\"commentsform\" class=\"form-horizontal comments-form\">";
+        html += "<fieldset>";
+        html += "<legend>post a comment</legend>";
+        html += "<input type=\"hidden\" id=\"dispatch\" name=\"dispatch\" value=\"savecomments\" />";
+        html += "<input type=\"hidden\" id=\"commentautopublish\" name=\"commentautopublish\" value=\"$!commentautopublish\" />";
+        html += "<input type=\"hidden\" id=\"commentusecaptcha\" name=\"commentusecaptcha\" value=\"$!commentusecaptcha\" />";
+        html += "<input type=\"hidden\" id=\"commentstriphtml\" name=\"commentstriphtml\" value=\"$!commentstriphtml\" />";
+        html += "<input type=\"hidden\" id=\"commentforcelogin\" name=\"commentforcelogin\" value=\"$!commentforcelogin\" />";
+        html += "<input type=\"hidden\" id=\"commenttitle\" name=\"commenttitle\" value=\"$!commenttitle\" />";
+        html += "<input type=\"hidden\" id=\"referrer\" name=\"referrer\" value=\"$commentreferer\" />";
+        html += "<input type=\"hidden\" id=\"contentinode\" name=\"contentinode\" value=\"$!superparentinode\" />";
+        html += "<input type=\"hidden\" id=\"emailtemplate\" name=\"emailtemplate\" value=\"$!emailtemplate\" />";
+        html += "<input type=\"hidden\" id=\"commentsmoderation\" name=\"commentsmoderation\" value=\"$!commentsmoderation\" />";
+        html += "<input type=\"hidden\" id=\"commentuseaudiocaptcha\" name=\"commentuseaudiocaptcha\" value=\"$!commentuseaudiocaptcha\" />";
+
+        #set($name = $commentform.getname())
+        #if(!$utilmethods.isset($name) && $utilmethods.isset($user))
+          #set($name = $user.getfullname())
+        #end
+        html += "<div class=\"form-group name-group\">";
+        html += "<label for=\"name\" class=\"control-label\">name</label>";
+        html += "<div class=\"control-field\">";
+        html += "<input class=\"form-control\" id=\"name\" name=\"name\" type=\"text\" value=\"$!utilmethods.xmlescape($!name)\" tabindex=\"1\" />";
+        html += "</div>";
+        html += "</div>";
+
+        #set($commentemail = $commentform.getemail())
+        #if(!$utilmethods.isset($commentemail) && $utilmethods.isset($user))
+          #set($commentemail = $user.getemailaddress())
+        #end
+        html += "<div class=\"form-group email-group\">";
+        html += "<label for=\"email\" class=\"control-label\">email</label>";
+        html += "<div class=\"control-field\">";
+        html += "<input class=\"form-control\" id=\"email\" name=\"email\" type=\"text\" value=\"$!utilmethods.xmlescape($commentemail)\" tabindex=\"2\" />";
+        html += "</div>";
+        html += "</div>";
+
+        html += "<div class=\"form-group comment-group\">";
+        html += "<label for=\"comment\" class=\"control-label\">comment</label>";
+        html += "<div class=\"control-field\">";
+        html += "<textarea class=\"form-control\" cols=\"30\" rows=\"5\" name=\"comment\" id=\"comment-textarea\" tabindex=\"3\">$!commentform.getcomment()</textarea>";
+        #if($commentstriphtml)
+          html += "<p class=\"help-block\">(html not permitted)</p>";
+        #end
+        html += "</div>";
+        html += "</div>";
+
+        #if($commentusecaptcha)
+        html += "<div class=\"form-group captcha-group\">";
+        html += "<label for=\"comment\" class=\"control-label\">captcha</label>";
+        html += "<div class=\"control-field\">";
+        html += "<input type=\"text\" class=\"form-control\" id=\"captcha-text\" class=\"captcha\" name=\"captcha\" type=\"text\" tabindex=\"4\" />";
+        html += "<p class=\"help-block\">type what you see in the grey box</p>";
+        html += "<div class=\"captcha-content\">";
+        html += "<span id=\"comments-captcha-image\">";
+        html += "<img src=\"/captcha.jpg?r=$math.getrandom()\" width=\"200\" height=\"50\" alt=\"captcha\" title=\"captcha image\" class=\"captcha-image\" />";
+        html += "</span>";
+        html += " <button type=\"button\" class=\"btn btn-default fa fa-refresh\" onclick=\"javascript:resetcaptcha();\"></button> ";
+        html += "<button type=\"button\" class=\"btn btn-default fa fa-bullhorn\" onclick=\"javascript:playaudiocaptcha();\" id=\"comments-captcha-audio-play\"></button>";
+        html += "<div id=\"comments-captcha-audio\"></div>";
+        html += "</div>";
+        html += "</div>";
+        html += "</div>";
+        #end
+
+        #set($checked = '')
+        #if($!commentform.isnotify())
+          #set($checked = 'checked')    
+        #end
+        html += "<div class=\"form-group notify-group\">";
+        html += "<div class=\"control-field\">";
+        html += "<div class=\"checkbox\">";
+        html += "<label>";
+        html += "<input name=\"notify\" value=\"yes\" type=\"checkbox\" $checked tabindex=\"4\" /> please notify me of upcoming comments via email."
+        html += "</label>";
+        html += "</div>";
+        html += "</div>";
+        html += "</div>";
+
+        #set($checked = '')
+        #if($!commentform.isaccept())
+          #set($checked = 'checked')
+        #end
+        html += "<input type=\"hidden\" name=\"accept\" value=\"yes\" />";
+        html += "<input type=\"hidden\" name=\"activediv\" value=\"" + activateddiv + "\"/>";
+
+        html += "<div class=\"form-group button-group\">";
+        html += "<div class=\"control-field\">";
+        html += "<button type=\"submit\" class=\"btn btn-primary btn-comment\" tabindex=\"5\">post comment</button>";
+        html += "</div>";
+        html += "</div>";
+
+        html += "<fieldset>";
+        html += "</form>";
+
+    if(activediv != "" && activediv != activateddiv){
+      document.getelementbyid(activediv).innerhtml = " ";
+    }
+
+    //the inner html of the div is set to the output html
+    document.getelementbyid(activateddiv).innerhtml = html;
+    document.getelementbyid("selecteddiv").value = activateddiv;
+
+    return html;
+  }
+</script>
+#end
+
+<!-- comments start -->
+<a href="javascript:_createpostcommentplace('formbody');_dotreply('formbody')" class="btn btn-default btn-post-comment">
+  #if($relatedmatches.size() != 0)
+    post a comment
+  #else
+    be the first to comment
+  #end
+</a>
+<h3 class="comments-title">
+  <span class="bagde">$relatedmatches.size()</span>
+  #if($commenttitle)
+    $commenttitle
+  #else
+    comments
+  #end
+</h3>
+<input type="hidden" id="selecteddiv" value="$!{commentform.getactivediv()}" >
+#set($actualdepth = 1)
+
+#if($relatedmatches.size() != 0)
+  <ul class="media-list comment-detail-list">
+    #foreach($match in $relatedmatches)
+      <li class="media mt-4">
+          <div class="comment-info mr-2">
+            <img src="/images/icons/profile-image.png" width="65" height="65" alt="$match.author" />
+            <a href="#" class="author">$match.author</a>
+            <time>$dateviewapi.friendly($match.datepublished)</time>
+          </div>
+          <div class="media-body">
+            <div class="comment-body">
+              <p>
+                $xsstool.strip($match.comment)
+              </p>
+    
+              #if($actualdepth < $maxdepth)
+                <a href="javascript:_createpostcommentplace('$match.inode');_dotreply('$match.inode')" class="btn btn-primary btn-xs btn-comment-reply">$glossary.get("reply")</a>
+                <div id="$match.inode"></div>
+              #end
+            </div>
+            <ul class="media-list comment-detail-list">
+              #if($actualdepth < $maxdepth)
+                #showrecursivecomments($match.inode $math.add($actualdepth,1))
+              #end
+            </li>
+          </div>
+      </li>
+    #end
+  </ul>
+#end
+
+#if(!($commentforcelogin == 'true' && !($utilmethods.isset($user))))
+  <div class="generic-form-error">
+    #parse('static/messages.html')
+  </div>
+  <div class="comments-form-body" id="formbody"></div>
+
+#else
+  <div class="alert alert-info">
+    please <a href="/dotcms/login">login</a> to submit a comment
+    $session.setattribute("redirect_after_login","${vtlservlet_uri}?$!{request.getquerystring()}")
+  </div>
+#end
+
+<script>
+  #if($utilmethods.isset($!{commentform.getactivediv()}))
+    var sdiv = document.getelementbyid("selecteddiv").value;
+    if(sdiv != null){
+      document.getelementbyid(sdiv).value = _createpostcommentplace(sdiv);
+    }
+  #end
+
+  _createpostcommentplace('formbody');
+
+  function playaudiocaptcha(){
+    document.getelementbyid('comments-captcha-audio-play').setattribute("class","btn btn-default fa fa-volume-up");
+    var rand=math.floor(math.random()*999999999);
+    document.getelementbyid('comments-captcha-audio').innerhtml = '<embed class="captcha-audio-player" src="/audiocaptcha.wav?r=' + rand +'" id="captcha-sound" controller="false" width="0" height="0" autoplay="true" autostart="true" type="audio/wav" />';
+
+    settimeout(function(){
+      document.getelementbyid('comments-captcha-audio-play').setattribute("class","btn btn-default fa fa-bullhorn");
+    },8000);
+
+  }
+
+  function resetcaptcha(){
+    var rand = math.floor(math.random()*999999999)
+    document.getelementbyid('comments-captcha-image').innerhtml = "<img width='200' height='50' src='/captcha.jpg?r=" + rand + "'>";
+  }
+</script>
+
+<!-- comments ends -->
+.value;
+    if(sdiv != null){
+      document.getelementbyid(sdiv).value = _createpostcommentplace(sdiv);
+    }
+  #end
+
+  _createpostcommentplace('formbody');
+
+  function playaudiocaptcha(){
+    document.getelementbyid('comments-captcha-audio-play').setattribute("class","btn btn-default fa fa-volume-up");
+    var rand=math.floor(math.random()*999999999);
+    document.getelementbyid('comments-captcha-audio').innerhtml = '<embed class="captcha-audio-player" src="/audiocaptcha.wav?r=' + rand +'" id="captcha-sound" controller="false" width="0" height="0" autoplay="true" autostart="true" type="audio/wav" />';
+
+    settimeout(function(){
+      document.getelementbyid('comments-captcha-audio-play').setattribute("class","btn btn-default fa fa-bullhorn");
+    },8000);
+
+  }
+
+  fun

@@ -1,0 +1,115 @@
+<script language="javascript" type="text/javascript" src='/html/js/states_and_countries.js'></script>
+<script>
+  function dosubmit(){
+    document.getelementbyid("myaccountform").submit();
+  }
+  
+  function goback(){
+  	 window.location.href= '/dotcms/myaccount?r=123';
+  	 e.preventdefault();
+  }
+</script>
+
+
+<h1 class="page-title">add or edit address</h1>
+
+<div class="generic-form-error">
+    #parse('static/messages.html')
+</div>
+
+<form class="form-horizontal create-edit-address" action="/dotcms/myaccount" method="post" id="myaccountform" name="myaccountform" autocomplete="off">
+  <input type="hidden" name="dispatch" value="saveuseraddress">
+  <input type="hidden" name="userid" value="${myaccountform.userid}">
+  <input type="hidden" name="addressid" value="${myaccountform.addressid}">
+
+  <div class="form-group description-group">
+    <label for="description" class="control-label">address description:</label>
+    <div class="control-field">
+      <input type="text" tabindex="1" class="form-control" name="description" value="$!myaccountform.description">
+    </div>
+  </div>
+
+  <div class="form-group street1-group">
+    <label for="street1" class="control-label">street 1</label>
+    <div class="control-field">
+      <input type="text" tabindex="2" class="form-control" name="street1" value="$!myaccountform.street1" />
+    </div>
+  </div>
+
+  <div class="form-group street2-group">
+    <label for="street2" class="control-label">street 2</label>
+    <div class="control-field">
+      <input type="text" tabindex="3" class="form-control" name="street2" value="$!myaccountform.street2" />
+    </div>
+  </div>
+
+  <div class="form-group city-group">
+    <label for="city" class="control-label">city</label>
+    <div class="control-field">
+      <input type="text" tabindex="4" class="form-control" name="city" value="$!myaccountform.city" />
+    </div>
+  </div>
+
+  <div class="form-group state-group">
+    <label for="state" class="control-label">state</label>
+    <div class="control-field">
+      <input type="text" tabindex="5" class="form-control" name="state" id="statetext" value="$!myaccountform.state" />
+    </div>
+  </div>
+
+  <div class="form-group country-group">
+    <label for="country" class="control-label">country</label>
+    <div class="control-field">
+      <script language="javascript">
+        writecountriesselect('country','$!myaccountform.country');
+      </script>
+    </div>
+  </div>
+
+  <div class="form-group zip-group">
+    <label for="zip" class="control-label">zip</label>
+    <div class="control-field">
+      <input type="text" tabindex="7" class="form-control" name="zip" value="$!myaccountform.zip" />
+    </div>
+  </div>
+
+  <div class="form-group phone-group">
+    <label for="phone" class="control-label">phone</label>
+    <div class="control-field">
+      <input type="text" tabindex="8" class="form-control" name="phone" value="$!myaccountform.phone" />
+    </div>
+  </div>
+
+  <div class="form-group fax-group">
+    <label for="fax" class="control-label">fax</label>
+    <div class="control-field">
+      <input type="text" tabindex="9" class="form-control" name="fax" value="$!myaccountform.fax" />
+    </div>
+  </div>
+
+  <div class="form-group button-group">
+    <div class="control-field">
+      <button type="button" class="btn btn-danger btn-cancel-address" onclick="goback();">cancel</button>
+      <button type="submit" class="btn btn-primary btn-save-address" onclick="dosubmit();">save</button>
+    </div>
+  </div>
+
+</form>
+
+    <label for="zip" class="control-label">zip</label>
+    <div class="control-field">
+      <input type="text" tabindex="7" class="form-control" name="zip" value="$!myaccountform.zip" />
+    </div>
+  </div>
+
+  <div class="form-group phone-group">
+    <label for="phone" class="control-label">phone</label>
+    <div class="control-field">
+      <input type="text" tabindex="8" class="form-control" name="phone" value="$!myaccountform.phone" />
+    </div>
+  </div>
+
+  <div class="form-group fax-group">
+    <label for="fax" class="control-label">fax</label>
+    <div class="control-field">
+      <input type="text

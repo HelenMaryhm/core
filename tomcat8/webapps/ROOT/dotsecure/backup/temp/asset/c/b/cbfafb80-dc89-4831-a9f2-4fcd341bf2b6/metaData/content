@@ -1,0 +1,97 @@
+//
+// responsive: utility classes
+// --------------------------------------------------
+
+
+// ie10 in windows (phone) 8
+//
+// support for responsive views via media queries is kind of borked in ie10, for
+// surface/desktop in split view and for windows phone 8. this particular fix
+// must be accompanied by a snippet of javascript to sniff the user agent and
+// apply some conditional css to *only* the surface/desktop windows 8. look at
+// our getting started page for more information on this bug.
+//
+// for more information, see the following:
+//
+// issue: https://github.com/twbs/bootstrap/issues/10497
+// docs: http://getbootstrap.com/getting-started/#browsers
+// source: http://timkadlec.com/2012/10/ie10-snap-mode-and-responsive-design/
+
+@-ms-viewport {
+  width: device-width;
+}
+
+
+// visibility utilities
+.visible-xs,
+.visible-sm,
+.visible-md,
+.visible-lg {
+  .responsive-invisibility();
+}
+
+.visible-xs {
+  @media (max-width: @screen-xs-max) {
+    .responsive-visibility();
+  }
+}
+.visible-sm {
+  @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+    .responsive-visibility();
+  }
+}
+.visible-md {
+  @media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+    .responsive-visibility();
+  }
+}
+.visible-lg {
+  @media (min-width: @screen-lg-min) {
+    .responsive-visibility();
+  }
+}
+
+.hidden-xs {
+  @media (max-width: @screen-xs-max) {
+    .responsive-invisibility();
+  }
+}
+.hidden-sm {
+  @media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+    .responsive-invisibility();
+  }
+}
+.hidden-md {
+  @media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+    .responsive-invisibility();
+  }
+}
+.hidden-lg {
+  @media (min-width: @screen-lg-min) {
+    .responsive-invisibility();
+  }
+}
+
+
+// print utilities
+//
+// media queries are placed on the inside to be mixin-friendly.
+
+.visible-print {
+  .responsive-invisibility();
+
+  @media print {
+    .responsive-visibility();
+  }
+}
+
+.hidden-print {
+  @media print {
+    .responsive-invisibility();
+  }
+}
+
+ }
+}
+.visible-sm {
+  @media (min-width: @s

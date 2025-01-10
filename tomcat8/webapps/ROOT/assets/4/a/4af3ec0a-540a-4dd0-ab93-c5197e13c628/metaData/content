@@ -1,0 +1,57 @@
+<script>
+
+dojo.addonload(checkfileextension);
+dojo.connect(dijit.byid("file"), "onchange", null, "checkfileextension");
+
+
+function checkfileextension(){
+
+	if(dojo.byid('mediatype').value == "") {
+		var filename = dojo.query('[name="binary3"]').attr('value')[0];
+		if(filename != undefined && (filename != null || filename != "") && filename.indexof("removed") < 0) {
+			filename = filename.substring(filename.lastindexof(".")+1, filename.length).tolowercase();
+			
+			if(filename == 'ogg' || filename == '3gp' || filename == 'mp4' || filename == 'webm' || filename == 'avi' || filename == 'mov' ||  filename == 'flv' || filename == 'swf') {
+				//video file
+				dojo.byid('mediatype').value = 'video';
+				dojo.byid('mediatype_dropdown').set('value','video');
+				dojo.byid('mediatype_dropdown').set('displayedvalue','video');
+			}
+			else if(filename == 'mp3' || filename == 'wav' || filename == 'wma' || filename == 'ogg' || filename == 'midi') {
+				//audio file
+				dojo.byid('mediatype').value = "audio";
+				dojo.byid('mediatype_dropdown').value="audio";
+			}
+			else if(filename == 'jpg' || filename == 'jpeg' || filename == 'bmp' || filename == 'png' || filename == 'gif' || filename == 'svg') {
+				//image file
+				dojo.byid('mediatype').value = "image";
+				dojo.byid('mediatype_dropdown').value="image";
+			}
+			else {
+				//unsupported media file
+			}
+		}
+
+	}else {
+		
+		var x = dojo.byid('mediatype').value;
+		dojo.attr('mediatype_dropdown', 'value', x);
+		dojo.attr('mediatype_dropdown', 'displayedvalue', x);
+		
+	}
+}
+
+function updatehiddenfields() {
+	dojo.byid('mediatype').value = dijit.byid('mediatype_dropdown').get('value');
+}
+
+</script>
+
+<select id="mediatype_dropdown" name="mediatype_dropdown" dojotype="dijit.form.filteringselect" autocomplete="true" onchange="updatehiddenfields()">
+	<option value="" selected="selected">select a value</option>
+	<option value="audio">audio</option>
+	<option value="image">image</option>
+	<option value="video">video</option>
+</select>
+dojo.byid('mediatype').value = "audio";
+				dojo.byid(

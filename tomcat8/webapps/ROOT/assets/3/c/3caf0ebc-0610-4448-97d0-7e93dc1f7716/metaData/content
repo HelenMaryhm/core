@@ -1,0 +1,104 @@
+.product-listing {
+    tr td {
+      cursor: pointer;
+    }
+  }
+  
+  //
+  // create rating system
+  // --------------------------------------------------
+  .risk-system {
+      display: block;
+      width: 63px;
+      height: 14px;
+      background-image: url('/application/themes/quest/images/layout/risk-sprite.png');
+  }
+  
+  .risk10 {
+      background-position: 0 -640px;
+  }
+  
+  .risk9 {
+      background-position: 0 -576px;
+  }
+  
+  .risk8 {
+      background-position: 0 -512px;
+  }
+  
+  .risk7 {
+      background-position: 0 -448px;
+  }
+  
+  .risk6 {
+      background-position: 0 -384px;
+  }
+  
+  .risk5 {
+      background-position: 0 -320px;
+  }
+  
+  .risk4 {
+      background-position: 0 -256px;
+  }
+  
+  .risk3 {
+      background-position: 0 -192px;
+  }
+  
+  .risk2 {
+      background-position: 0 -128px;
+  }
+  
+  .risk1 {
+      background-position: 0 -64px;
+  }
+  
+  // sorted tables
+  // --------------------------------------------------
+  
+  .sorted-tables {
+      .tablesorter-header-inner {
+          display: inline-block;
+      }
+  
+      thead {
+          th {
+              background-color: $gray-lighter;
+              cursor: pointer;
+  
+              &:after {
+                  @include add-icon(4px);
+                  color: $gray-light;
+                  content: "\f07d";
+                  float: right;
+              }
+  
+              &.tablesorter-headerdesc,
+              &.tablesorter-headerasc {
+                  background-color: $brand-primary;
+                  color: $white;
+  
+                  &:after {
+                      color: $white;
+                      content: "\f0d8";
+                  }
+              }
+  
+              &.tablesorter-headerasc {
+                  &:after {
+                      content: "\f0d7";
+                  }
+              }
+          }
+      }
+      tr {
+          &:nth-child(odd):hover > td,
+          &:hover > td {
+              background-color: lighten($brand-primary, 60%)
+          }
+      }
+  }
+tables {
+      .tablesorter-header-inner {
+          displa

@@ -1,0 +1,41 @@
+.sitemaps {
+    @include list-naked;
+  
+      > li {
+      margin-bottom: $padding-base-vertical / 2;
+  
+      > a {
+        background-color: $gray-lighter;
+        padding: $padding-base-vertical / 2 $padding-base-horizontal;
+        color: $brand-primary;
+        font-size: $font-size-large;
+  
+        @media (min-width: $screen-tablet) {
+          background: none;
+          padding: 0;
+        }
+      }
+    }
+  
+    ul {
+      @include list-naked;
+      margin-left: $padding-base-horizontal;
+  
+      li {
+        margin: $padding-base-vertical 0;
+  
+        @media (min-width: $screen-tablet) {
+          margin: $padding-base-vertical / 2 0;
+        }
+  
+        &:before {
+          @include add-icon(-1px);
+          content: "\f105";
+        }
+  
+        a {
+          color: $gray;
+        }
+      }
+    }
+  }

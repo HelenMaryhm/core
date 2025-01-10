@@ -1,0 +1,129 @@
+/*!
+ * toc - jquery table of contents plugin
+ * v0.3.2
+ * http://projects.jga.me/toc/
+ * copyright greg allen 2014
+ * mit license
+*/
+
+(function($) {
+var verboseidcache = {};
+$.fn.toc = function(options) {
+  var self = this;
+  var opts = $.extend({}, jquery.fn.toc.defaults, options);
+
+  var container = $(opts.container);
+  var headings = $(opts.selectors, container);
+  var headingoffsets = [];
+  var activeclassname = opts.activeclass;
+
+  var scrollto = function(e, callback) {
+    if (opts.smoothscrolling && typeof opts.smoothscrolling === 'function') {
+      e.preventdefault();
+      var elscrollto = $(e.target).attr('href');
+
+      opts.smoothscrolling(elscrollto, opts, callback);
+    }
+    $('li', self).removeclass(activeclassname);
+    $(e.target).parent().addclass(activeclassname);
+    console.log('target', e.target);
+  };
+
+
+  return this.each(function() {
+    //build toc
+    var el = $(this);
+    var ul = $('<ul/>').attr('class','navbar-nav mr-4 ml-4');
+
+    headings.each(function(i, heading) {
+      var $h = $(heading);
+      headingoffsets.push($h.offset().top - opts.highlightoffset);
+
+      var anchorname = opts.anchorname(i, heading, opts.prefix);
+
+      //add anchor
+      if(heading.id !== anchorname) {
+        var anchor = $('<span/>').attr('id', anchorname).insertbefore($h);
+      }
+
+      //build toc item
+      var a = $('<a/>')
+        .text(opts.headertext(i, heading, $h))
+        .attr('class','nav-link js-scroll-trigger')
+        .attr('href', '#' + anchorname)
+        .bind('click', function(e) {
+          el.trigger('selected', $(this).attr('href'));
+        });
+
+      var li = $('<li/>')
+        .attr('class','nav-item')
+        .append(a);
+
+      ul.append(li);
+    });
+    el.html(ul);
+  });
+};
+
+
+jquery.fn.toc.defaults = {
+  container: 'body',
+  listtype: '<ul/>',
+  selectors: 'h2',
+  scrolltooffset: 0,
+  prefix: 'toc',
+  activeclass: 'active',
+  onhighlight: function() {},
+  highlightonscroll: true,
+  highlightoffset: 100,
+  anchorname: function(i, heading, prefix) {
+    if(heading.id.length) {
+      return heading.id;
+    }
+
+    var candidateid = $(heading).text().replace(/[^a-z0-9]/ig, ' ').replace(/\s+/g, '-').tolowercase();
+    if (verboseidcache[candidateid]) {
+      var j = 2;
+      
+      while(verboseidcache[candidateid + j]) {
+        j++;
+      }
+      candidateid = candidateid + '-' + j;
+      
+    }
+    verboseidcache[candidateid] = true;
+
+    return prefix + '-' + candidateid;
+  },
+  headertext: function(i, heading, $heading) {
+    return $heading.text();
+  },
+  itemclass: function(i, heading, $heading, prefix) {
+    return prefix + '-' + $heading[0].tagname.tolowercase();
+  }
+
+};
+
+})(jquery);
+ass','nav-item')
+        .append(a);
+
+      ul.append(li);
+    });
+    el.html(ul);
+  });
+};
+
+
+jquery.fn.toc.defaults = {
+  container: 'body',
+  listtype: '<ul/>',
+  selectors: 'h2',
+  scrolltooffset: 0,
+  prefix: 'toc',
+  activeclass: 'active',
+  onhighlight: function() {},
+  highlightonscroll: true,
+  highlightoffset: 100,
+  anchorname: function(i, heading, prefix) {
+    if(heading.id.length)

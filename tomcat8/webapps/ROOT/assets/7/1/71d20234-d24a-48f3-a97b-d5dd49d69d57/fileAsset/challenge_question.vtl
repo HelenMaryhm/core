@@ -1,0 +1,51 @@
+#set($referrer =  $!{request.getAttribute("referrer")})
+#if(!$UtilMethods.isSet($referrer))
+  #set($referrer =  $!{request.getParameter("referrer")})
+#end
+#set($email = $forgotPasswordForm.email)
+#set($acckey = $forgotPasswordForm.accKey)
+#set ($challenge_question = $cmsuser.getUserChallengeQuestionByEmail($email))
+
+<script>
+  function sendAnswer(){
+    document.getElementById("challenge_question_fm").submit();
+  }
+</script>
+
+#parse('static/messages.html')
+
+<div class="challenge-question">
+  <blockquote class="info-text">To retrieve your account password, please enter the email address you used to register or submit an inquiry and answer the challenge question. If the answer is correct, we will create a new password and email it to your address provided below.</blockquote>
+
+  <form action="/dotCMS/forgotPassword" method="post" id="challenge_question_fm" name="challenge_question_fm" class="form-inline challenge-question-form">
+    <input name="dispatch" type="hidden" value="verifyChallengeQuestion">
+    <input name="accKey" type="hidden" value="$!forgotPasswordForm.accKey">
+    <input name="referrer" type="hidden" value="$!referrer">
+
+    <fieldset>
+      <legend>Challenge Question</legend>
+      <div class="input-group">
+        <input name="email" id="emailAddressText" class="form-control" type="text" value="" placeholder="E-mail Address">
+        <span class="input-group-btn">
+          <button type="sumbit" class="btn btn-primary">Submit</button>
+        </span>
+      </div>
+      #if($webapi.isSet($challenge_question))
+        <div class="input-group">
+          <input name="challengeQuestionAnswer"  id="challengeQuestionAnswerText" type="text" class="form-control" value="" onKeyPress="if (event.keyCode == 13) { sendAnswer(); }" placeholder="Email Address">
+          <span class="input-group-btn">
+            #set ($email = $request.getAttribute("email"))
+            <input name="userName" id="userNameText" type="hidden" value="$email">
+            <button class="btn btn-primary" type="button" onClick"javascript:sendAnswer()">Submit</button>
+          </span>
+        </div>
+      #end
+    </fieldset>
+
+    #if($webapi.isSet($challenge_question))
+      <div class="alert alert-info">Give us an email you want to receive your new password if not will use the email we have in your profile</div>
+    #else
+      <div class="alert alert-warning">We are sorry but you don't have a challenge question associated to your profile, please contact the site administrator to reset your password</div>
+    #end
+  </form>
+</div>

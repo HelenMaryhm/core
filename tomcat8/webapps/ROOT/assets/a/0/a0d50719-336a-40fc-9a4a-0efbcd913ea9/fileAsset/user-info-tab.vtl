@@ -1,0 +1,128 @@
+#set($clickstream  = $session.getAttribute("clickstream"))
+
+#set($geolocationFromSession = $session.getAttribute("geolocation"))
+#if(!$UtilMethods.isSet($geolocationFromSession))
+	#set($locationURL = "http://www.geoplugin.net/json.gp?ip=$request.getRemoteAddr()")
+	#set($geolocation = $json.fetch("$!locationURL"))
+	$session.setAttribute("geolocation", $geolocation)
+#else
+	#set($geolocation = $session.getAttribute("geolocation"))
+#end
+
+#if($visitor.persona)
+	#foreach($con in $dotcontent.pull("+contentType:persona +(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797 conhost:SYSTEM_HOST) +persona.keyTag:*${visitor.persona.keyTag}*",1,"modDate"))
+	<div class="text-center" style="margin: 15px 10px;">
+		#if($UtilMethods.isSet($con.photo.rawUri))
+			<img src="/dA/$!con.inode/photo/150w/$!con.photo.name" class="img-circle">
+		#else
+			<img src="/html/images/persona/default-persona.png"  style="width:150px;" class="img-circle">
+		#end
+		<h2>$con.name</h2>
+	</div>
+		<p style="padding: 0 15px;">$!{con.description}</p>
+	#end
+#else
+	<h2>Default Persona</h2>
+#end
+
+<table>
+	<tr>
+		<td>Accrued Tags</td>
+		<td>
+			#if($visitor.accruedTags)
+				<div class="tagBox">
+					#foreach($tag in $visitor.accruedTags)
+						$!{tag}<br>
+					#end
+				</div>
+			#else
+			 	No Tags
+			#end
+		</td>
+	</tr>
+	
+	<tr>
+		<td>Selected Language</td>
+		<td>$!{visitor.selectedLanguage}</td>
+	</tr>
+	
+	<tr>
+		<td>New Visitor</td>
+		<td>$visitor.newVisitor</td>
+	</tr>
+	
+	<tr>
+		<td>Refer:</td>
+		<td>$!visitor.referrer</td>
+	</tr>
+	
+	<tr>
+		<td>Device:</td>
+		<td>$!visitor.device</td>
+	</tr>
+	
+	<tr>
+		<td>User Agent:</td>
+		<td>$!visitor.userAgent</td>
+	</tr>
+	#if(!$UtilMethods.isSet($geolocation))
+		<tr><td colspan="2">No geolocation data available.</td></tr>
+	#else
+		<tr>
+			<td colspan="2">
+				<img src="http://maps.google.com/maps/api/staticmap?zoom=10&amp;size=285x150&amp;maptype=roadmap&amp;markers=color:blue|label:S|${geolocation.geoplugin_latitude},${geolocation.geoplugin_longitude}&amp;sensor=false" alt="Your Location" />
+			</td>
+		</tr>
+	#end
+</table>
+
+	<div class="text-center"><a class="js-fancybox-inline btn btn-warning" href="#clickTrail">See Click Trails</a></div>
+</div>
+
+
+
+<div style="display:none;">
+	<div id="clickTrail">
+		<div style="height:400px;width:650px;overflow-y:scroll;">
+			
+			#if(!$clickstreamRequests || $clickstreamRequests.size() !=0)
+				<table>
+					<tr>
+						<th style="width:40px;">Click</th>
+						<th>Page</th>
+						<th>&nbsp;</th>
+						<th style="width:100px;text-align:center;">Time</th>
+					</tr>
+					
+					#set($counter = 0)
+					#foreach($click in $clickstreamRequests)
+						#set($counter = $math.add($counter, 1))
+						#set($diff = "")
+						#if($counter < $clickstreamRequests.size())
+							#set($next = $clickstreamRequests.get($counter))
+							#set($diff = $next.timestamp.getTime() - $click.timestamp.getTime() )
+							#set($diff = $math.toInteger($math.div($diff, 1000)))
+							#if($diff >60)
+								#set($diff = "$math.toInteger(${math.div($diff, 60)})m $math.toInteger(${math.mod($diff, 60)})s")
+							#else
+								#set($diff = "$math.toInteger(${math.add($diff, 1)})s")
+							#end
+						#end
+						<tr>
+							<td style="width:20px;text-align:center;">$counter</td>
+							<td><a href="$click.requestURI?$!click.queryString" target="_blank">$click.requestURI</a></td>
+							<td style="width:20px;text-align:center;">
+								#set($language = $languagewebapi.getLanguage("$!click.languageId"))
+								<img src="/html/images/languages/${language.languageCode}_${language.countryCode}.gif" alt="${language.countryCode}" />
+							</td>
+							<td style="width:80px;text-align:center;">$!diff</td>
+						</tr>
+					#end
+	    		</table>
+			#else
+				<table><tr><td colspan="4">No Data</td></tr></table>
+			#end
+	
+		</div>
+	</div>
+</div>

@@ -1,0 +1,13 @@
+#set($newsList = $dotcontent.pull("+structureName:News +(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797 conhost:SYSTEM_HOST)",5,"News.sysPublishDate desc"))
+<h2>$widgetTitle</h2>
+<ul class="list-unstyled news-listing">
+	#foreach($item in $newsList)
+		<li>
+			<a href="/intranet/news/?newsId=$item.identifier">
+				<span class="news-title">$item.title</span>
+				<time class="news-date" datetime="$!{item.sysPublishDate}">$date.format('MMMM d, yyyy', $item.sysPublishDate)</time>
+				<span class="news-lead">$item.lead</span>
+			</a>
+		</li>
+	#end
+</ul>

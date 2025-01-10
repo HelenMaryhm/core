@@ -1,0 +1,10 @@
+{
+    "name": "dotcms-ui",
+    "version": "5.1.6",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/dotCMS/core-web.git"
+    },
+    "private": false
+}

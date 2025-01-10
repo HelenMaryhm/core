@@ -1,0 +1,65 @@
+<header id="header" class="header-wrap">
+    <div class="header-tools  d-none d-lg-flex">
+        <div class="container">
+            <div class="col-md-12">
+                <div class="header-tools-wrapper d-flex flex-row-reverse">
+                    <form id="searchForm" name="searchForm" action="/home/site-search" class="searchForm-header">
+                        <input id="search-input" name="q" type="text" autocomplete="off" placeholder="Site Search" />
+                        <input class="btn btn-small btn-primary" type="submit" alt="Search" value="Search" name="search" />
+                    </form>
+                    <ul class="nav nav-pills d-inline-flex align-items-center nav-pills">
+                        #if(!$user)
+                            <li class="hidden-xs p-2"><a href="/application/login/login.html?referrer=/intranet/&native=true"><i class="fa fa-angle-right"></i> Login</a></li>
+                        #else
+                            <li class="hidden-xs p-2"><a href="/dotCMS/myAccount"><i class="fas fa-angle-right"></i> My Account</a></li>
+                            <li class="hidden-xs p-2"><a href="/dotCMS/logout?referrer=/"><i class="fa fa-angle-right"></i> Logout</a></li>
+                        #end
+                        <li class="hidden-xs p-2"><a href="/about-us/locations/"><i class="fas fa-angle-right"></i> Find A Branch</a></li>
+                        <li class="hidden-xs p-2"><a href="/contact-us/"><i class="fas fa-angle-right"></i> Contact Us</a></li>
+                        <li class="p-2"><a href="tel:13059002001"><i class="fas fa-phone"></i> (305) 900-2001</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="navbar navbar-expand-lg navbar-toggleable-md navbar-light bg-white">
+        <div class="container">
+            <a class="header-logo navbar-brand" href="/">
+                <img src="/dA/82ad305a-621d/200w/quest-logo.png" alt="Quest | dotCMS Starter Site">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMain" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <div class="flex-row-reverse collapse navbar-collapse" id="navbarMain" aria-expanded="false">
+                <ul class="navbar-nav mr-4 ml-4">
+                    
+                    #set($list = $navtool.getNav("/"))
+                    #foreach($n in $list)
+                        #set($children = $n.children)
+                        #if($children && $children.size() > 0)
+                            <li class="nav-item dropdown #if($n.active) active #end">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">${n.title}</a>
+                                <ul class="dropdown-menu">
+                                    #foreach($ch in $children)
+                                        <a class="dropdown-item #if($ch.active) active #end" href='${ch.href}' target='${ch.target}'>${ch.title}</a>
+                                    #end
+                                </ul>
+                            </li>
+                        #else
+                            <li class="nav-item mr-2 #if($n.active) active #end"><a class="nav-link" href='${n.href}' target='${n.target}'>${n.title}</a></li>
+                        #end
+                    #end
+                </ul>
+                
+                ## ADD REORDER MENU BUTTON
+                #if ($EDIT_MODE && $PUBLISH_HTMLPAGE_PERMISSION)
+                    #set($_formId="dot_form_menu_$date.date.time")
+                    #set ($folder = $folderAPI.findCurrentFolder($startFromPath, $host))
+                    #set ($menuId = $folder.inode)       
+                        #orderMenu()
+                #end
+            </div><!-- nav-collapse -->
+        </div><!-- container -->
+    </div><!-- navbar -->
+</header>

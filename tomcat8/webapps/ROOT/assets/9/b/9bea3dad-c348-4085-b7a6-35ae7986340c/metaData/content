@@ -1,0 +1,108 @@
+
+    
+		media
+    	$!{title}
+
+    	
+
+    	$!{description}
+	
+
+
+	
+			    #if ($utilmethods.isset(${filebinaryfileuri}))
+			      #set ($filepath = $!{filebinaryfileuri} + '/' + $!{filebinaryfiletitle})
+			    #else
+			      #set ($filepath = $url)
+			    #end
+			    #if ($utilmethods.getfileextension($filepath) != 'mp3')
+			
+			      #if ($utilmethods.isimage($filepath))
+			        
+			          
+			            #if ($utilmethods.isimage($file))
+			              
+			            #else
+			              
+			            #end
+			          
+			        
+			      #else
+			        #if ($utilmethods.isset(${filebinaryfileuri}))
+			          
+			            
+			              #if ($utilmethods.isset(${thumbnailbinaryfileuri}))
+			                
+			              #else
+			                $!{title}
+			              #end
+			            
+			            
+			              
+			                
+			              
+			            
+
+			          
+			        #else
+			          
+			            
+			              #if ($utilmethods.isset(${thumbnailbinaryfileuri}))
+			                
+			              #else
+			                $!{title}
+			              #end
+			            
+			          
+			        #end
+			      #end
+			
+			    #else
+			      
+			        
+			          #if ($utilmethods.isset(${thumbnailbinaryfileuri}))
+			            
+			          #else
+			            $!{title}
+			          #end
+			        
+			        
+			          
+			            
+			          
+			        
+
+			      
+			    #end
+	
+
+
+
+
+
+       #else
+			              
+			            #end
+			          
+			        
+			      #else
+			        #if ($utilmethods.isset(${filebinaryfileuri}))
+			          
+			            
+			              #if ($utilmethods.isset(${thumbnailbinaryfileuri}))
+			                
+			              #else
+			                $!{title}
+			              #end
+			            
+			            
+			              
+			                
+			              
+			            
+
+			          
+			        #else
+			          
+			            
+			              #if ($utilmethods.isset($

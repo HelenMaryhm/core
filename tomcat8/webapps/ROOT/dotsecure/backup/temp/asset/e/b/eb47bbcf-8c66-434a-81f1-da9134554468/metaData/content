@@ -1,0 +1,612 @@
+//
+// layout
+// --------------------------------------------------
+// basic custom styles
+
+
+body {
+    font-family: $font-family-sans-serif;
+    font-size: 16px;
+}
+
+.content-wrap {
+    background-color: $white;
+    line-height: 1.8;
+    padding-bottom: $padding-base-vertical * 2;
+    margin-top: 145px;
+}
+
+//
+// typography
+// --------------------------------------------------
+// extending classes from /bootstrap/less/type.less
+
+h1,
+h2{
+  font-family: $font-family-serif;
+  font-weight: 500;
+  color: $brand-primary;
+  line-height: 1.5em;
+  font-size: 36px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+h3,
+h4,
+h5 {
+    font-family: $font-family-sans-serif;
+    font-weight: 500;
+    color: $gray;
+    line-height: 1.5em;
+}
+
+h4,
+h5 {
+  font-weight: 300;
+}
+
+p{
+  font-family: $font-family-sans-serif;
+  margin-bottom: 30px;
+}
+
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+    @include link-invert;
+}
+
+// lists
+// --------------------------------------------------
+
+// unordered and ordered lists
+ul,
+ol {
+    margin-bottom: ($line-height-computed / 2);
+}
+
+.tags-cloud {
+    padding-left: 0;
+    li {
+        display: inline-block;
+    	margin: 0 .3em .3em 0;
+    	padding: 0;
+    	
+    	a {
+    	    position: relative;
+    	    display: inline-block;
+        	max-width: 140px;
+        	height: 28px;
+        	padding: 0.5em;
+        	background-color: #fff;
+        	border: 1px solid #aaa;
+        	border-radius: 3px;
+        	white-space: nowrap;
+        	text-overflow: ellipsis;
+        	overflow: hidden;
+        	color: #333;
+        	font-size: 13px;
+        	text-decoration: none;
+        	-webkit-transition: .2s;
+        	transition: .2s;
+        	padding-right: 2rem;
+            padding-bottom: 1.8rem;
+        	
+        	&:hover {
+        	    background-color: #428bca;
+            	border: 1px solid #428bca;
+            	color: #fff;
+            	
+            	span {
+            	    background-color: #fff;
+                	color: #428bca;
+            	}
+        	}
+        	
+        	span {
+        	    position: absolute;
+            	top: 7px;
+            	right: 3px;
+            	z-index: 2;
+            	width: 22px;
+            	height: 22px;
+            	line-height: 22px;
+            	background-color: #3498db;
+            	border-radius: 100%;
+            	color: #fff;
+            	font-size: 12px;
+            	text-align: center;
+            	-webkit-transition: .2s;
+            	transition: .2s;
+        	}
+    	}
+    }
+}
+
+// bootstrap overwrite
+// --------------------------------------------------
+
+.btn-warning {
+  color: $white;
+}
+
+.fa-phone {
+  transform: rotate(90deg);
+}
+
+.img-circle {
+  border-radius: 50%;
+}
+
+.list-group {
+  margin-bottom: 20px;
+}
+
+.pull-right-expecific {
+    float: right;
+}
+
+.events-pagination .page-item .page-link {
+    border-radius: 0.5rem;
+}
+
+.dropdown.product-nav {
+    float: right;
+}
+
+.medium-column .media .pull-left {
+    margin-right: 0.75rem;
+}
+
+.container {
+  @include make-widths-container-width();
+}
+
+// lists
+// --------------------------------------------------
+.list-group-item:hover, .list-group-item:focus {
+    background-color: #f5f5f5;
+}
+
+.list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
+    color: #ffffff;
+    background-color: #428bca;
+    border-color: #428bca;
+}
+
+.card .list-group-item {
+    border-left: none;
+    border-right: none;
+}
+
+.list-group-item:first-child {
+    border-top-left-radius: 0rem;
+    border-top-right-radius: 0rem;
+}
+
+//
+// forms
+// --------------------------------------------------
+.hint {
+    color: $gray-light;
+}
+.submitcontent .formdivider {
+  font-family: 'oxygen', arial, sans-serif;
+  font-weight: 300 !important;
+  color: $brand-primary;
+  font-size: 24px;
+}
+.submitcontent dt.formfieldlabel label {
+  white-space: nowrap;
+}
+
+
+//
+// tables
+// --------------------------------------------------
+
+// baseline styles
+
+table {
+  width: 100%;
+  margin-bottom: $line-height-computed;
+  // cells
+  thead,
+  tbody,
+  tfoot {
+    > tr {
+      > th,
+      > td {
+        padding: $table-cell-padding;
+        line-height: $line-height-base;
+        vertical-align: top;
+        border-top: 1px solid $table-border-color;
+      }
+    }
+  }
+  // bottom align for column headings
+  thead > tr > th {
+    vertical-align: bottom;
+    border-bottom: 2px solid $table-border-color;
+  }
+  // remove top border from thead by default
+  caption + thead,
+  colgroup + thead,
+  thead:first-child {
+    tr:first-child {
+      th, td {
+        border-top: 0;
+      }
+    }
+  }
+  // account for multiple tbody instances
+  tbody + tbody {
+    border-top: 2px solid $table-border-color;
+  }
+}
+
+// backgrounds and gradient
+.blue-gradient {
+  background: $blue;
+  background: -moz-linear-gradient(-45deg, #34abdd 0%, #303790 100%);
+  background: -webkit-gradient(left top, right bottom, color-stop(0%, #34abdd), color-stop(100%, #303790));
+  background: -webkit-linear-gradient(-45deg, #34abdd 0%, #303790 100%);
+  background: -o-linear-gradient(-45deg, #34abdd 0%, #303790 100%);
+  background: -ms-linear-gradient(-45deg, #34abdd 0%, #303790 100%);
+  background: linear-gradient(135deg, #34abdd 0%, #303790 100%);
+  color: $white;
+}
+
+.bg-blue {
+    background: $blue;
+    color: $white;
+}
+
+// add this, used to share content: blogs and news
+.addthis_toolbox {
+    width: 150px;
+
+    .addthis_counter.addthis_bubble_style {
+        width: 36px!important;
+    }
+}
+
+
+// errors messages in required fields in the comments
+.generic-form-error {
+
+    & > div {
+            border-radius: $alert-border-radius;
+            border: 1px solid transparent;
+            margin-bottom: $line-height-computed;
+            padding: $alert-padding;
+            @include alert-variant($alert-danger-bg, $alert-danger-border, $alert-danger-text);
+    }
+
+    ul {
+            margin-bottom: 0;
+            padding-left: $padding-base-horizontal * 2;
+    }
+}
+
+// remove the margin-top of all the page titleil
+.page-title {
+    @media (min-width: $screen-tablet) {
+        margin-top: 0;
+    }
+}
+
+// =======================
+// container column styles 
+// =======================
+
+// large container styles
+
+.media-badge, .date-badge, .icon-badge {
+  background: #fff;
+  box-shadow: 0 0 0 1px $gray-lighter;
+  border: 1px solid $gray-lighter;
+  width: 150px;
+  margin-top: 10px;
+  .date-month {
+    display: block;
+    background: $brand-secondary;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 300;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .date-day {
+    display: block;
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    padding:  20px 10px;
+    color: $gray;
+    text-decoration: none;
+  }
+}
+
+.media-heading {
+  margin: 0;
+  display: block;
+  font-size: $font-size-x-large;
+   
+   a {
+      text-decoration: none;
+      &:hover {
+        text-decoration: none;
+      }
+   }
+}
+.media-subheading {
+  font-size: $font-size-x-small;
+  font-weight: 300;
+  text-transform: uppercase;
+  span, time {
+    display: inline-block;
+  }
+  span {
+    margin-left: 5px;
+    padding-left: 5px;
+    border-left: 1px solid $gray-light;
+  }
+}
+
+
+// medium container styles
+.medium-column {
+  hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  address {
+    margin-bottom: 0;
+    font-size: $font-size-small;
+  }
+
+  .media-heading {
+    font-size: $font-size-base;
+    margin-bottom: 4px;
+  }
+   
+  .media-subheading {
+      font-size: $font-size-small;
+      font-weight: 300;
+      text-transform: none;
+      line-height: $font-size-base;
+  }
+    
+  .thumb {
+      border: 0;
+  }
+  
+  .media-badge {
+      background: #fff;
+      box-shadow: 0 0 0 1px #f5f5f5;
+      border: 1px solid $gray-lighter;
+      width: 120px;
+      margin-top: 2px;
+  }
+    
+  .media-body {
+      font-size: $font-size-small;
+  }
+    
+  .date-badge {
+      width: 60px;
+      margin-top: 2px;
+      .date-month {
+        display: block;
+        background: $brand-primary;
+        color: $white;
+        font-size: 12px;
+        font-weight: 300;
+        text-transform: uppercase;
+        text-align: center;
+      }
+      .date-day {
+        display: block;
+        font-size: 20px;
+        font-weight: 700;
+        text-align: center;
+        padding:  5px 0;
+        color: $gray;
+        text-decoration: none;
+      }
+  }
+  
+  .icon-badge {
+      width: 60px;
+      text-align: center;
+      padding: 8px 0;
+      margin-top: 2px;
+   }
+}
+
+// small container styles
+.small-column {
+
+  hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  address {
+    margin-bottom: 0;
+    font-size: $font-size-small;
+  }
+  .table {
+    margin-bottom: 0;
+    border-top: 0px;
+    td, th {
+      border-top: 0px;
+    }
+  }
+  .media-heading {
+    font-size: $font-size-small;
+    margin-bottom: 0;
+   }
+   .media-subheading {
+    font-size: $font-size-small;
+    margin-bottom: 0;
+    text-transform: none;
+    line-height: $font-size-base;
+   }
+   .media-bage {
+     width: 100%;
+   }
+   .date-badge {
+      width: 40px;
+      margin-top: 2px;
+      .date-month {
+        display: block;
+        background: $brand-primary;
+        color: $white;
+        font-size: ($font-size-small * 0.9);
+        font-weight: 300;
+        text-transform: uppercase;
+        text-align: center;
+      }
+      .date-day {
+        display: block;
+        font-size: ($font-size-small * 1.1);
+        font-weight: 700;
+        text-align: center;
+        padding:  5px 0;
+        color: $gray;
+        text-decoration: none;
+      }
+    }
+    .icon-badge {
+      width: 40px;
+      text-align: center;
+      margin-top: 2px;
+    }
+}
+
+
+// sidebar listing
+.sidebar-listing {
+  margin: 0;
+  padding: 0;
+
+  a {
+    color: $brand-primary;
+    display: block;
+    padding: $padding-base-vertical;
+    text-decoration: none;
+
+    &:hover {
+      background-color: $gray-lighter;
+    }
+
+    h4 {
+      color: $brand-primary;
+    }
+
+    .phone,
+    .fax {
+      color: $gray;
+      display: block;
+      font-size: $font-size-x-small;
+    }
+  }
+
+  address {
+    margin-bottom: 0;
+  }
+
+  li {
+    list-style: none;
+  }
+}
+
+// generic center message
+.center-message-wrap {
+    @include make-row();
+
+    .center-message {
+        @include make-sm-column(6);
+        @include make-sm-column-offset(3);
+    }
+}
+
+//side menu
+.sidebar-menu {
+  a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus {
+    background: $blue-lighter;
+    color: $gray;
+    border-color: $blue-light;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    li {
+      margin: 0;
+      padding: 0;
+      border-left: 1px solid $nav-tabs-justified-link-border-color;
+      border-right: 1px solid $nav-tabs-justified-link-border-color;
+      a {
+        display: block;
+        padding: 6px 10px 6px 20px;
+        border-bottom: 1px solid $nav-tabs-justified-link-border-color;
+        color: $gray;
+        background: $gray-lighter;
+        &:hover {
+          background: $gray-light;
+          text-decoration: none;
+          color: $white;
+        }
+      }
+    }
+  }
+}
+
+// country selectbox: /html/js/states_and_countries.js
+#country {
+  display: block;
+  width: 100%;
+  height: $input-height-base; // make inputs at least the height of their button counterpart (base line-height + padding + border)
+  padding: $padding-base-vertical $padding-base-horizontal;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $input-color;
+  vertical-align: middle;
+  background-color: $input-bg;
+  border: 1px solid $input-border;
+  border-radius: $input-border-radius;
+  @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075));
+  @include transition(#{"border-color ease-in-out .15s, box-shadow ease-in-out .15s"});
+}
+
+.hidden-special {
+  height: 0px;
+  overflow: hidden;
+  width: 0px;
+}
+padding: 6px 10px 6px 20px;
+        border-bottom: 1px solid $nav-tabs-justified-link-border-color;
+        color: $gray;
+        background: $gray-lighter;
+        &:hover {
+          background: $gray-light;
+          text-decoration: none;
+          color: $white;
+        }
+      }
+    }
+  }
+}
+
+// country selectbox: /html/js/states_and_countries.js
+#country {
+  display: block;
+  width: 100%;
+  height: $input-height-base; // make inputs at least the height of their button counterpart (base line-height + padding + border)
+  padding: $padding-base-vertical $paddi

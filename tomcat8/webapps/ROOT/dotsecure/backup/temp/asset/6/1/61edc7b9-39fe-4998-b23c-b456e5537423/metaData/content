@@ -1,0 +1,98 @@
+#if($utilmethods.isset($request.getparameter('date')))
+  #set($datestring = $request.getparameter('date'))
+#else
+  #set($datestring = $date.format('yyyy-mm-dd',$utilmethods.getcurrentdate()))
+#end
+#set($nowlv = $date.todate('yyyy-mm-dd',$datestring))
+#set($now = $date.todate('yyyy-mm-dd',$datestring))
+#set($fromdatelv = $date.todate('yyyy-mm-dd',$datestring))
+#set($todatelv = $date.todate('yyyy-mm-dd',$datestring))
+#set($calendarlv = $date.tocalendar($nowlv))
+#set($dayofweeklv = $math.sub($calendarlv.get(7),1))
+
+#set($temp = $fromdatelv.settime($math.sub($fromdatelv.gettime(), $math.mul(86400000,$dayofweeklv))))
+#set($temp = $todatelv.settime($math.add($todatelv.gettime(),$math.mul(86400000,$math.sub(6,$dayofweeklv)))))
+
+#set($tag = $request.getparameter('tag'))
+#set($keywordbox = $request.getparameter('keywordbox'))
+#set($cat = $request.getparameter('cat'))
+
+  
+#set($events = $calendar.findevents($host.identifier, $fromdatelv, $todatelv, $tag, $keywordbox, $cat, "startdate", 1 , 10))
+
+#if (!$utilmethods.isset($request.getparameter('cat')))
+## <div class="events-nav">
+## 	<ul class="pager">
+## 		<li class="previous"><a href="/news-events/events/?date=$date.format('yyyy-mm-dd',$utilmethods.adddate($now,-7,5))">← older</a></li>
+## 		<li><h3 class="event-period">$date.format('mmmm d',$fromdatelv) - $date.format('mmmm d',$todatelv)</h3></li>
+## 		<li class="next"><a href="/news-events/events/?date=$date.format('yyyy-mm-dd',$utilmethods.adddate($now,7,5))">newer →</a></li>
+## 	</ul>
+## </div>
+<nav aria-label="events pagination">
+    <h3 class="event-period text-center">$date.format('mmmm d',$fromdatelv) - $date.format('mmmm d',$todatelv)</h3>
+	<ul class="pagination events-pagination">
+		<li class="page-item previus"><a class="page-link" href="/news-events/events/?date=$date.format('yyyy-mm-dd',$utilmethods.adddate($now,-7,5))">← older</a></li>
+		<li class="page-item next ml-auto"><a class="page-link" href="/news-events/events/?date=$date.format('yyyy-mm-dd',$utilmethods.adddate($now,7,5))">newer →</a></li>
+	</ul>
+</nav>
+#end
+
+#dotparse('/application/vtl/pages/events/calendar-ongoing.vtl')
+
+#if($events.size() > 0)
+
+	#if ($utilmethods.isset($request.getparameter('cat')))
+		<h1>upcoming <em>$categories.getcategorybyinode($cat).getcategoryname()</em> events</h1>
+	#end
+
+	<ul class="media-list media-list-extend event-listing pl-0">
+		#foreach ($event in $events)
+			<li class="media">
+				#editcontentlet($event.inode)
+				<div class="pull-left media-object">
+					<div class="date-badge">
+						<span class="date-month">$date.format('mmm',$event.startdate)</span>
+						<span class="date-day">$date.format('dd',$event.startdate)</span>
+					</div>
+				</div>
+				<div class="media-body">
+					<div class="media-heading"><a href="#">
+
+							<a href="/news-events/events/$event.urltitle?id=$event.identifier&language_id=$event.languageid">$event.title</a>
+
+					</div>
+					<div class="media-subheading">
+						<time class="date" datetime="$date.format('yyyy-m-dd',$event.startdate)">
+							#if("$date.format('ha',$event.startdate)" != "12am")
+								<strong>$date.format('ha',$event.startdate)</strong> |
+							#end
+							$date.format('eeee, mmmm d, yyyy',$event.startdate)
+						</time>
+					</div>
+				</div>
+			</li>
+		#end
+	</ul>
+
+#else
+	<div class="alert alert-danger">
+		#if ($utilmethods.isset($request.getparameter('cat')))
+			there are no results matching the "$categories.getcategorybyinode($cat).getcategoryname()" event type
+		#else
+			there are no events to show for the selected dates and / or filters.
+		#end
+		<p class="no-results">click <a href="/news-events/events/">here</a> to view this week's upcoming events.</p>
+	</div>
+#end
+</span>
+					</div>
+				</div>
+				<div class="media-body">
+					<div class="media-heading"><a href="#">
+
+							<a href="/news-events/events/$event.urltitle?id=$event.identifier&language_id=$event.languageid">$event.title</a>
+
+					</div>
+					<div class="media-subheading">
+						<time class="date" datetime="$date.format('yyyy-m-dd',$event.startdate)">
+							#if("$date.format('ha',$event.startdate)" != "12a

@@ -1,0 +1,43 @@
+<ul class="multimedia-listing">
+  #foreach($con in $dotcontent.pull("+structureName:Media +(conhost:$host.identifier conhost:SYSTEM_HOST) +Media.mediaType:*video*",10,"Media.$!{sortBy}"))
+    #if ($UtilMethods.isSet($con.file.rawUri))
+      #set ($filePath = $!{con.file.rawUri} + '/' + $!{con.file.name})
+    #else
+      #set ($filePath = $con.url)
+    #end
+    #set($rate = $UtilMethods.random(1,$math.sub(5,1)))
+    <li>
+      #editContentlet($con.inode)
+
+      #if ($UtilMethods.isSet(${con.file.rawUri}))
+        <a href="#$!{con.identifier}" class="js-fancybox-media-file thumb media-thumb" title="$!{con.title}">
+          #if ($UtilMethods.isSet(${con.thumbnail.rawUri}))
+            <img src="/contentAsset/resize-image/${con.identifier}/thumbnail/w/260/h/150" alt="$!{con.title}" />
+          #else
+            $!{con.title}
+          #end
+        </a>
+        <div class="risk-system risk$!{rate}" title="$!{rate}"></div>
+        <h4><a href="${filePath}" title="$!{con.title}" class="js-fancybox-media-file">$con.title</a></h4>
+        <div class="hidden">
+          <video id="$!{con.identifier}" class="video-js vjs-default-skin vjs-big-play-centered"
+            controls preload="auto" width="640" height="480"
+            poster="/contentAsset/resize-image/${con.identifier}/thumbnail/w/640"
+            data-setup='{ "controls": true, "autoplay": false, "preload": "metadata" }'>
+            <source src="$!{filePath}" type='video/$!{UtilMethods.getFileExtension($filePath)}' />
+          </video>
+        </div>
+      #else
+        <a href="$!{filePath}" class="js-fancybox-media-link thumb media-thumb" title="$!{con.title}">
+          #if ($UtilMethods.isSet(${con.thumbnail.rawUri}))
+            <img src="/contentAsset/resize-image/${con.identifier}/thumbnail/w/260/h/150" alt="$!{con.title}" />
+          #else
+            $!{con.title}
+          #end
+        </a>
+        <div class="risk-system risk$!{rate}" title="$!{rate}"></div>
+        <h4><a href="${filePath}" title="$!{con.title}" class="js-fancybox-media-link">$con.title</a></h4>
+      #end
+    </li>
+  #end
+</ul>

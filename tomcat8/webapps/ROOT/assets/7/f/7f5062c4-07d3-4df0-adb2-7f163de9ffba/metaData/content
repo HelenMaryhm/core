@@ -1,0 +1,116 @@
+#if( !$utilmethods.isset($cusfieldvarname) )
+    #set($cusfieldvarname="title")
+#end
+#set($structure = $request.getattribute("structure"))
+#set($content = $dotcontent.find($request.getattribute("com.dotmarketing.contentlet.edit").inode))
+<script>
+
+	function getmatches(string, regex, index) {
+	  index || (index = 1); // default to the first capturing group
+	  var matches = [];
+	  var match;
+	  while (match = regex.exec(string)) {
+		matches.push(match[index]);
+	  }
+	  return matches;
+	}
+
+	function updatedisplayurltitle(){
+		
+		// get the title entered by the user
+		var plaintitle = dojo.byid("$cusfieldvarname");	
+		
+		if(plaintitle == undefined || plaintitle.value.length ==0){
+			dojo.byid("displayurltitle").innerhtml = "";
+			dojo.byid("urltitle").value="";
+			return;
+		}
+		
+		// make a friendly url
+		var urltitle = plaintitle.value.tolowercase();
+		urltitle= urltitle.replace(/^\s+|\s+$/g,"");
+		urltitle = urltitle.replace(/[^a-za-z 0-9]+/g,' ');	
+		urltitle = urltitle.replace(/\s/g, "-");
+		while(urltitle.indexof("--") > -1){
+			urltitle = urltitle.replace("--",'-');	
+		}
+		while(urltitle.lastindexof("-") == urltitle.length -1 ){
+			urltitle=urltitle.substring(0,urltitle.length -1);
+		}
+		// set the values of the display place holder and the custom field
+		// the   is to hold the div open
+		
+		dojo.byid("urltitle").value=urltitle;
+		
+		var urlmap  ="$structure.urlmappattern"; 
+		var myregex = /{([^\}]*)}/g;
+
+		var matches = getmatches(urlmap, myregex, 1);
+
+
+		for(i=0;i<matches.length;i++){
+
+			var val = dojo.byid(matches[0]).value;
+			console.log(matches[0]);
+			console.log(val);
+			urlmap  =urlmap.replace("{"+matches[0]+"}", val);
+
+		}
+
+		#if($content)
+			dojo.byid("displayurltitle").innerhtml = "<a href='/dotadmin/#/c/site-browser?url=" + encodeuricomponent(urlmap) + "' target='_parent'>" + urlmap + "</a>";
+		#else
+			dojo.byid("displayurltitle").innerhtml = urlmap ;
+		#end
+
+
+
+	}
+
+
+	// attach this the text1 field onchange
+	dojo.addonload(function(){
+			dojo.connect(dojo.byid("$cusfieldvarname"), "onchange", null, "updatedisplayurltitle");
+		}
+	);
+	// populate the field on load
+	dojo.addonload(updatedisplayurltitle);
+
+</script>
+<div id="displayurltitle" style="height:20px"> </div>
+-1);
+		}
+		// set the values of the display place holder and the custom field
+		// the   is to hold the div open
+		
+		dojo.byid("urltitle").value=urltitle;
+		
+		var urlmap  ="$structure.urlmappattern"; 
+		var myregex = /{([^\}]*)}/g;
+
+		var matches = getmatches(urlmap, myregex, 1);
+
+
+		for(i=0;i<matches.length;i++){
+
+			var val = dojo.byid(matches[0]).value;
+			console.log(matches[0]);
+			console.log(val);
+			urlmap  =urlmap.replace("{"+matches[0]+"}", val);
+
+		}
+
+		#if($content)
+			dojo.byid("displayurltitle").innerhtml = "<a href='/dotadmin/#/c/site-browser?url=" + encodeuricomponent(urlmap) + "' target='_parent'>" + urlmap + "</a>";
+		#else
+			dojo.byid("displayurltitle").innerhtml = urlmap ;
+		#end
+
+
+
+	}
+
+
+	// attach this the text1 field onchange
+	dojo.addonload(function(){
+			dojo.connect(dojo.byid("$cusfieldvarname"), "onchange", nul

@@ -1,0 +1,22 @@
+## Returns up to 30 locations sorted by country descending
+
+#set($cons = $dotcontent.pull("+structureName:Location +(conhost:$host.identifier conhost:SYSTEM_HOST)",30,"Location.country desc"))
+
+<ul class="sidebar-listing">
+  #foreach($con in $cons)
+    <li>
+      <a href="/locations/${con.urlTitle}">
+        <h4>$!{con.title}</h4>
+        <address>
+          $!{con.city}, 
+          #if($!{con.country.selectValue} == "United States" || $!{con.country.selectValue} == "Canada")
+            $!{con.state.selectValue}
+          #end
+          $!{con.country.selectValue}
+        </address>
+        <span class="phone">$!{con.phone}</span>
+        <span class="fax">$!{con.fax}</span>
+      </a>
+    </li>
+  #end
+</ul>

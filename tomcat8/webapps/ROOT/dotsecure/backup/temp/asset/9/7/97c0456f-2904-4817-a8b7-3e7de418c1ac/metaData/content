@@ -1,0 +1,199 @@
+.events-calendar {
+    background-color: lighten($gray, 55%);
+
+    thead > tr > th,
+    tbody > tr > td {
+        border: none;
+        padding: 5px 3px;
+        text-align: center;
+    }
+
+    tbody > tr > td {
+        padding: 0;
+
+        a {
+            @include transition(background .2s ease-out);
+            background-color: lighten($gray, 65%);
+            display: block;
+            padding: $table-cell-padding;
+            margin: 1px;
+
+            &:hover {
+                background-color: $brand-secondary;
+                color: $white;
+                text-decoration: none;
+            }
+        }
+    }
+
+    .header-days {
+        text-transform: uppercase;
+        font-size: $font-size-small;
+
+        @media (min-width: $screen-tablet) {
+          font-size: $font-size-x-small;
+        }
+
+        @media (min-width: $screen-desktop) {
+          font-size: $font-size-small;
+        }
+    }
+
+    .header-nav {
+        background-color: $brand-primary;
+
+        a {
+            color: $white;
+            text-decoration: none;
+        }
+    }
+
+    .nav-selected-day a {
+        background-color: lighten($brand-primary, 65%)
+    }
+
+}
+
+.event-listing {
+    margin-bottom: $padding-base-vertical * 2;
+
+    @media (min-width: $screen-tablet) {
+        margin-bottom: 0;
+    }
+
+    .event-day {
+        margin-right: $padding-base-horizontal;
+        text-align: center;
+
+        .day {
+            @include border-bottom-radius($border-radius-small);
+            @include box-shadow(#{"0 1px #ccc, 0 2px #ddd, 0 4px #eee"});
+            border: solid 1px $gray-lighter;
+            border-top: none;
+            display: block;
+            font-size: ceil($font-size-base * 2);
+            font-weight: bold;
+            padding: 0 $padding-base-horizontal;
+        }
+        .month {
+            @include border-top-radius($border-radius-small);
+            background-color: $brand-secondary;
+            color: $white;
+            display: block;
+            font-size: $font-size-small;
+        }
+    }
+
+    .media {
+        border: none;
+        padding: 0;
+        margin-top: $padding-base-vertical * 3;
+
+        &:first-child {
+            margin-top: 0;
+        }
+    }
+
+    .post-info {
+        color: $gray-light;
+        font-size: $font-size-small;
+        margin-bottom: $padding-base-vertical / 2;
+
+        span {
+            &:before {
+                content: " | ";
+                color: $gray-lighter;
+                margin: 0 $padding-base-horizontal / 2;
+            }
+        }
+    }
+
+    .summary p {
+        margin: ($line-height-computed / 2) 0 0;
+
+        &:first-child {
+            margin: 0;
+        }
+
+    }
+
+}
+
+.events-nav {
+
+    .event-period {
+        display: inline;
+        line-height: 30px;
+    }
+
+    .pager {
+        margin-top: 0;
+        position: relative;
+
+        @media (min-width: $screen-tablet) {
+            margin-top: $line-height-computed;
+        }
+
+        li {
+            clear: both;
+            display: block;
+        }
+
+        .previous {
+            position: absolute;
+            top: 30px;
+        }
+    }
+
+}
+
+.events-ongoing {
+    border-bottom: dotted 1px $gray-lighter;
+    border-top: dotted 1px $gray-lighter;
+    margin-bottom: $padding-base-vertical * 2;
+    padding: $padding-base-vertical * 2 0;
+
+    @media (min-width: $screen-tablet){
+        padding: $padding-base-vertical * 2;
+    }
+
+    h4 {
+        margin-top: 0;
+    }
+
+    ul {
+        @include list-naked;
+
+        li {
+            border-left: solid 3px $gray-lighter;
+            padding-left: $padding-base-horizontal;
+            margin-top: $padding-base-vertical;
+
+            &:first-child {
+                margin-top: 0;
+            }
+        }
+
+        a {
+            font-weight: bold;
+        }
+    }
+
+    time {
+        font-size: $font-size-small;
+        color: $gray;
+    }
+}
+
+    @media (min-width: $screen-tablet) {
+            margin-top: $line-height-computed;
+        }
+
+        li {
+            clear: both;
+            display: block;
+        }
+
+        .previous {
+            position: absolute;
+            top: 

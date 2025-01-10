@@ -1,0 +1,176 @@
+#if($URLMapContent)
+    #set($content = $URLMapContent)
+#else
+    #set($content = $dotcontent.find($request.getParameter("id")))
+#end
+
+#if($content.identifier)
+    #set($recurrenceStartDate= $request.getParameter('recurrenceStartDate'))
+    #set($recurrenceEndDate= $request.getParameter('recurrenceEndDate'))
+    
+    #if($UtilMethods.isSet($recurrenceStartDate))
+        #set($startDateV= $recurrenceStartDate)
+    #else
+        #if($UtilMethods.isSet($content.startDate))
+            #set($startDateV= $content.startDate)
+        #else
+            #set($eventVar = $calendar.find($eventIdentifier))
+            #set($startDateV= $eventVar.startDate)
+        #end
+    #end
+    
+    #if($UtilMethods.isSet($recurrenceEndDate))
+        #set($endDateV= $recurrenceEndDate)
+    #else
+        #if($UtilMethods.isSet($content.endDate))
+            #set($endDateV= $content.endDate)
+        #else
+            #set($eventVar = $calendar.find($eventIdentifier))
+            #set($endDateV= $eventVar.endDate)
+        #end
+    #end
+        
+    
+    #if($UtilMethods.isSet($content.identifier))
+    
+    
+         #set($vcalendarUrl = "/dotCMS/downloadVCalendar?id=${content.identifier}")
+    
+    
+        <!-- ADD TO CALENDAR -->
+        <a href="$vcalendarUrl" class="btn btn-warning btn-sm pull-right"><i class="fa fa-calendar"></i>   Add to Calendar</a>
+    
+        #editContentlet($content.inode)
+        <h2>$content.title</h2>
+        <dl class="dl-horizontal event-detail-meta">
+    
+            <!-- WHEN -->
+            <div class="item-line">
+                <dt>When:</dt>
+                <dd>
+                    #set($startDate = $date.format('MMMM d, h:mm a', ${startDateV}))
+                    #set($endDate = $date.format('MMMM d, h:mm a', ${endDateV}))
+                    #if($startDate == $endDate)
+                        #set($startDate= $date.format('dd/MM/yyyy HH:mm:ss',${content.startDate}))
+                        <time>$startDate</time>
+                    #else
+                        #if($date.format('EEE, MMMM d yyyy',$startDateV)==$date.format('EEE, MMMM d yyyy',$endDateV))
+                            #if($date.format('h:mm a',$startDateV)=='12:00 AM' && $date.format('h:mm a',$endDateV)=='11:59 PM' )
+                                $date.format('MMMM d', ${endDateV}) <small>(all day event)</small>
+                            #else
+                                $startDate - $date.format('h:mm a',$endDateV)
+                            #end
+                        #else
+                            $startDate - $endDate
+                        #end
+                    #end
+                </dd>
+            </div>
+    
+            <!-- LINK -->
+            #if($UtilMethods.isSet($content.link))
+                <div class="item-line">
+                    <dt>Link:</dt>
+                    <dd>
+                        #if(!$content.get('link').startsWith('/') && !$content.get('link').startsWith('http'))
+                            #set($linkUrl = "http://$content.get('link')")
+                        #else
+                            #set($linkUrl = "$content.get('link')")
+                        #end
+                        <a href="$linkUrl" target="_blank" class="external">$content.get('link')</a>
+                    </dd>
+                </div>
+            #end
+    
+            <!-- TAGS -->
+            #if($UtilMethods.isSet($content.tags))
+                <div class="item-line">
+                    <dt>Tagged:</dt>
+                    <dd>
+                        #foreach($tag in $content.tags) #if($velocityCount > 1),#end
+                            <a href="/news-events/events/?date=${date.format('yyyy-MM-dd',$startDateV)}&tag=$tag">$tag</a>
+                        #end
+                    </dd>
+                </div>
+            #end
+    
+            <!-- FILES -->
+            #if($UtilMethods.isSet($content.file))
+                <div class="item-line">
+                    <dt>Files:</dt>
+                    <dd><a href="$content.fileFileURI">$content.file.fileAsset.name</a></dd>
+                </div>
+            #end
+    
+            <!-- CATEGORIES -->
+            #if($content && $content.categories && $listTool.size($content.categories) > 0)
+                <div class="item-line">
+                    <dt>Filed Under:</dt>
+                    <dd>
+                        #foreach($category in $content.categories)#if($velocityCount > 1),#end
+                        
+                            <a href="/news-events/events?date=${date.format('yyyy-MM-dd',$startDateV)}&cat=$category.inode">$category.categoryName</a>
+                        #end
+                    </dd>
+                </div>
+            #end
+    
+        </dl>
+        <!-- IMAGE -->
+            #if($UtilMethods.isSet($content.image))
+            <img src="/dA/$content.image.identifier/200h/jpeg" alt="$content.title" style="margin-bottom:25px;">
+            #end
+    
+        <!-- DESCRIPTION -->
+            #if($UtilMethods.isSet($content.description))
+            <h2>Overview</h2>
+                $content.description
+            #end
+        #end
+    
+    
+    <!-- Related Events -->
+
+        <p>ID: $content.identifier</p>
+        #set($fromDate = $UtilMethods.addDays($content.startDate, -7))
+        #set($toDate = $UtilMethods.addDays($content.startDate, 7))
+        #set($eventsList = $calendar.findRelatedEvents($content.identifier, $fromDate, $toDate))
+    
+    
+        #set($hasRelated = false)
+        #if($eventsList && $eventsList.size()>0)
+        <div class="events-related" id="related-events">
+            <h3>Related Events</h3>
+            <hr>
+            <ul class="media-list media-list-extend event-listing">
+                #foreach($event in $eventsList)
+                    #if($event.identifier != $eventIdentifier && $velocityCount < 6)
+                        #set($hasRelated = true)
+                        <li class="media">
+                            #editContentlet($event.inode)
+                            <div class="pull-left media-object">
+                                <div class="date-badge">
+                                    <span class="date-month">$date.format('MMM',$event.startDate)</span>
+                                    <span class="date-day">$date.format('dd',$event.startDate)</span>
+                                </div>
+                            </div>
+                            <div class="media-body">
+                                <div class="media-heading">
+    
+                                        <a href="/news-events/events/$event.urlTitle?id=$event.identifier&language_id=$event.languageId">$event.title</a>
+    
+                                </div>
+                                <div class="media-subheading" datetime="$date.format('yyyy-M-dd',$event.startDate)">
+                                    #if("$date.format('ha',$event.startDate)" != "12AM")
+                                        <strong>$date.format('ha',$event.startDate)</strong> |
+                                    #end
+                                    $date.format('EEEE, MMMM d, yyyy',$event.startDate)
+                                </div>
+                            </div>
+                        </li>
+                    #end
+                #end
+            </ul>
+        </div>
+    #end
+#end

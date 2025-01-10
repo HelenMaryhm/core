@@ -1,0 +1,158 @@
+.thumb {
+    @include thumb-frame;
+    position: relative;
+
+    &:hover {
+        img {
+            opacity: .5;
+        }
+    }
+
+    img {
+        @include transition(opacity .15s ease-in);
+        width: 100%;
+    }
+}
+
+.media-thumb {
+    &:hover {
+        &:after {
+            @include over-icon("\f04b");
+        }
+    }
+
+    &.small {
+        &:hover {
+            &:after {
+                @include over-icon-small("\f04b");
+            }
+        }
+    }
+}
+
+.image-thumb {
+    &:hover {
+        &:after {
+            @include over-icon("\f00e");
+        }
+    }
+
+    &.small {
+        &:hover {
+            &:after {
+                @include over-icon-small("\f00e");
+            }
+        }
+    }
+}
+// media objects
+// extending the media objetc so we can reuse in all
+// out listing (news, documents, events, etc...)
+// --------------------------------------------------
+
+.media-list-extend {
+
+    .media {
+        border-bottom: dashed 1px $gray-lighter;
+        padding: $padding-base-vertical * 2 0;
+        margin: 0;
+
+        &:first-child {
+            padding-top: 0;
+        }
+    }
+    .media-object {
+        margin-right: $padding-base-horizontal;
+    }
+
+    .post-info {
+        color: $gray-light;
+        font-size: $font-size-small;
+        margin-bottom: $padding-base-vertical / 2;
+
+        span {
+            &:before {
+                content: " | ";
+                color: $gray-lighter;
+                margin: 0 $padding-base-horizontal / 2;
+            }
+        }
+    }
+
+    .summary {
+        margin-bottom: 0;
+    }
+
+}
+
+.media-list-headlines {
+
+    h4 {
+        font-size: $font-size-base;
+        font-weight: normal;
+    }
+
+    .headlines-info {
+        color: $gray-light;
+        font-size: $font-size-x-small;
+    }
+
+    .media {
+        border-bottom: dashed 1px $gray-lighter;
+        margin: 0;
+        padding: $padding-base-vertical 0;
+
+        &:first-child {
+            padding-top: 0;
+        }
+    }
+
+}
+
+.multimedia-listing {
+    @include make-row();
+    border-top: dashed 1px $gray-lighter;
+    font-size: 0;
+    list-style: none;
+    margin-top: $padding-base-vertical * 2;
+    padding: $padding-base-vertical * 2 0 0;
+
+    li {
+        display: inline-block;
+        font-size: $font-size-base;
+        margin-bottom: $padding-base-vertical * 2;
+        padding: 0 $grid-gutter-width / 2;
+        vertical-align: top;
+        width: 50%; // display 2 items per row on mobile
+
+        @media (min-width: $screen-tablet) {
+            width: percentage(4 / $grid-columns); // display 5 items per row on tablet and desktop
+        }
+
+        @media (min-width: $screen-lg-desktop) {
+            width: percentage(3 / $grid-columns); // display 6 items per row on large desktop
+        }
+
+        h4 {
+          margin-top: ($line-height-computed / 2);
+        }
+    }
+
+    .risk-system {
+        float: right;
+        margin-top: 12px;
+    }
+}
+rtical 0;
+
+        &:first-child {
+            padding-top: 0;
+        }
+    }
+
+}
+
+.multimedia-listing {
+    @include make-row();
+    border-top: dashed 1px $gray-lighter;
+    fo

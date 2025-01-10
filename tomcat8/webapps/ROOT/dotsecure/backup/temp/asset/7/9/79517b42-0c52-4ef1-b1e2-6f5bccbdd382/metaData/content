@@ -1,0 +1,766 @@
+
+paving the cow paths
+html5 the next big old thing in web applications
+
+
+
+a brief history of html
+1991
+
+physicist, sir tim berners-lee proposes and prototypes html
+
+1995
+internet engineering task force (ietf) publishes html 2.0
+1997
+
+w3c publishes html 3.2 
+
+1999
+w3c publishes html 4.01
+2000
+
+w3c publishes xhtml 1
+x = extensible
+
+
+
+cleaning the slate
+xhtml 2 the search for purity of language.
+
+
+
+not backwards compliant
+unburdened by sloppy history
+pure language
+xhtml 2
+
+
+
+let them eat xml
+the w3c revolution
+
+
+
+ian hickson firers the first shot of the revolution
+
+web hypertext application technology working group, or whatwg is formed
+2004
+
+
+
+web forms 2.0 + web apps 1.0 = html5
+
+
+
+sir tim berners-lee writes that the move from html  to xml was not working.
+
+w3c issues new charter for html 5 and uses the work done by whatwg as a basis
+2006
+
+
+
+the fog begins to clear
+2009
+the w3c official stopped working on xhtml 2 and diverts resources to html 5 
+xhtml 2 is dead... html5 is ready for takeoff
+
+
+
+philosophy behind html5
+
+specify current browser behaviors
+
+define error handling
+
+evolve the language for easier creation of web applications
+3
+aims
+
+
+
+specify current browser behaviors
+
+	“pave the cowpaths”
+	don’t break existing web pages
+	if it ain’t broke, don’t fix it!
+
+1
+
+
+
+define error handling
+
+	html5 specification is over 900 pages
+	600 pages for the implementation of browsers
+	<b></i>hello</b></i>
+
+2
+
+
+
+evolve the language for easier creation of web applications
+
+	sever-sent events
+	drag and drop 
+	video, audio and canvas
+	new form tags and input types
+	client side storage
+
+3
+
+
+
+ok, so lets recap . . .
+
+
+
+xhtml 2 is dead
+
+
+
+we now have 2 groups developing html5
+&nbsp;
+
+
+
+html5 is:
+future of the web
+easiest html to get started with
+most powerful html ever
+
+
+
+let’s get our hands dirty
+structure
+text
+forms
+video & audio
+canvas
+drag & drop
+data storage
+html5
+
+
+
+keeping it simple 
+text
+xhtml 1.0
+<!doctype html public “-//w3c//dtd xhtml 1.0 strict //en” ↵
+“http://www.w3.org/tr/xhtml1/dtd/xhtml1-strict.dtd”>
+
+html5
+<!doctype html>
+
+xhtml 1.0
+<metta http-equiv=”content-type” content=”text/html; charset=utf-8”>
+
+html5
+<meta charset=utf-8>
+
+
+
+keeping it simple 
+text
+xhtml 1.0
+<script type=”text/javascript” src=”file.js”></script>
+
+html5
+<script src=”file.js”></script>
+
+xhtml 1.0
+<link rel=”stylesheet” type=”text/css” href=”file.css”>
+
+html5
+<link rel=”stylesheet” href=”file.css”>
+
+
+
+deprecated tags 
+in with the new . . . 
+text
+frames
+<frameset> <frame>
+
+anchors
+<a name=”top”></a>
+<div id=”top”>
+
+others
+<plaintext> <basefont> <big> <font> <tt> <s> <strike> <u> <center>
+
+
+obsolete
+text
+
+
+
+http://dev.w3.org/html5/html4-differences/
+whats changed
+
+
+
+2009 index result for class names of 2,148,723 sites
+2009 index result for id names of 2,148,723 sites
+what is the “real web” made of?
+getting semantical 
+id names
+class names
+
+	popularity	value	frequency
+	1	footer	179,528
+	2	menu	146,673
+	3	style1	138,308
+	4	msonormal	123,374
+	5	text	122,911
+	6	content	113,951
+	7	title	91,957
+	8	style2	89,851
+	9	header	86,979
+	10	copyright	86,979
+	11	button	81,503
+	12	main	69,620
+	13	style3	69,349
+	14	small	68,995
+	15	nav	68,634
+	16	clear	68,571
+	17	search	59,802
+	18	style4	56,032
+	19	logo	48,831
+	20	body	48,052
+
+	popularity	value	frequency
+	1	footer	288,061
+	2	content	228,661
+	3	header	223,726
+	4	logo	121,352
+	5	container	119,877
+	6	main	106,327
+	7	table1	101,677
+	8	menu	96,161
+	9	layer1	93,920
+	10	autonumber1	77,350
+	11	search	74,887
+	12	nav	72,057
+	13	wrapper	66,730
+	14	top	66,615
+	15	table2	57,934
+	16	layer2	56,823
+	17	sidebar	52,416
+	18	image1	48,922
+	19	banner	44,592
+	20	navigation	43,664
+
+
+
+html5 has 28 new elements
+what’s new in markup 
+structural elements
+
+<header>
+<footer>
+<nav>
+<section>
+<article>
+<aside>
+<hgroup>
+inline elements
+
+<command>
+<details>
+<summary>
+<figure>
+<figcaption>
+<mark>
+<meter>
+<progress>
+<ruby>
+<rt>
+<rp>
+<time>
+<wbr>
+
+
+
+yes even in ie
+making it work now 
+styling html5
+
+header, nav, footer, article {display:block;}
+
+making it work in ie
+use javascript to create the elements
+
+<script>
+    document.createelement(‘header’);
+    document.createelement(‘nav’);
+    document.createelement(‘article’);
+    document.createelement(‘footer’);
+</script>
+or
+
+you can use remy’s tiny html5-enabling script
+
+http://remysharp.com/2009/01/07/html5-enabling-script/
+
+
+
+
+
+
+
+
+the structure of a page
+
+<!doctype html>
+<meta charset=utf-8>
+<title>my html5 page</title>
+<body>
+<header> . . . </header>
+<nav> . . . </nav>
+<section>
+<article> . . . </article>
+<article> . . . </article>
+</section>
+<footer> . . . </footer>
+</body>
+</html>
+my company
+	about us
+	services
+	news
+	events
+	locations
+	contact us
+
+text
+lorem ipsum dolor sit amet, consectetur adipiscing elit. vivamus suscipit aliquam eleifend. mauris eu ligula nulla. quisque et ante sem, eget adipiscing nisi. maecenas commodo interdum tellus id molestie. cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. aenean gravida libero tempus lectus hendrerit at dictum ligula semper. mauris accumsan orci id ipsum porta at pretium lectus interdum. curabitur metus urna, egestas ut condimentum laoreet, sagittis vitae dolor. nulla ac nunc nec dolor tempor pretium accumsan nec risus. praesent vitae nisi vel augue fermentum egestas. maecenas metus libero, 
+lorem ipsum dolor sit amet, consectetur adipiscing elit. vivamus suscipit aliquam eleifend. mauris eu ligula nulla. quisque et ante sem, eget adipiscing nisi. maecenas commodo interdum tellus id molestie. cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. aenean gravida libero tempus lectus hendrerit at dictum ligula semper. mauris accumsan orci id ipsum porta at pretium lectus interdum. curabitur metus urna, egestas ut condimentum laoreet, sagittis vitae dolor. nulla ac nunc nec dolor tempor pretium accumsan nec risus. praesent vitae nisi vel augue fermentum egestas. maecenas metus libero, rutrum non ullamcorper ut, congue quis turpis. 
+copy right 2011 all rights reserved 
+
+
+
+structuring content
+text
+
+
+news story one
+lorem ipsum dolor sit amet, consectetur adipiscing elit. vivamus suscipit aliquam eleifend. mauris eu ligula nulla. quisque et ante sem, eget adipiscing nisi. maecenas commodo interdum tellus id molestie. cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. aenean gravida libero tempus lectus hendrerit at dictum ligula semper. mauris accumsan orci id ipsum porta at pretium lectus interdum. curabitur metus urna, egestas ut condimentum laoreet, sagittis vitae dolor. nulla ac nunc nec dolor tempor pretium accumsan nec risus. praesent vitae nisi vel augue fermentum egestas. maecenas metus libero, 
+resent news
+
+news story two
+lorem ipsum dolor sit amet, consectetur adipiscing elit. vivamus suscipit aliquam eleifend. mauris eu ligula nulla. quisque et ante sem, eget adipiscing nisi. maecenas commodo interdum tellus id molestie. cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. aenean gravida libero tempus lectus hendrerit at dictum ligula semper. mauris accumsan orci id ipsum porta at pretium lectus interdum. curabitur metus urna, egestas ut condimentum laoreet, sagittis vitae dolor. nulla ac nunc nec dolor tempor pretium accumsan nec risus. praesent vitae nisi vel augue fermentum egestas. maecenas metus libero, 
+<section>
+<h1>resent news</h1>
+<article>
+<h2>news story one</h2>
+<p>lorem ipsum . . . </p>
+</article>
+<article>
+<h2>news story two</h2>
+<p>lorem ipsum . . . </p>
+</article>
+</section>
+
+
+
+structuring content
+text
+
+
+news story one
+august 10, 2011
+lorem ipsum dolor sit amet, consectetur adipiscing elit. vivamus suscipit aliquam eleifend. mauris eu ligula nulla. quisque et ante sem, eget adipiscing nisi. maecenas commodo interdum tellus id molestie. cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. aenean gravida libero tempus lectus hendrerit at dictum ligula semper. mauris accumsan orci id ipsum porta at pretium lectus interdum. curabitur metus urna, egestas ut condimentum laoreet, sagittis vitae dolor. nulla ac nunc nec dolor tempor pretium accumsan nec risus. praesent vitae nisi vel augue fermentum egestas. maecenas metus libero, 
+
+this article is completely plagiarized from this site www.lipsum.com
+<article>
+<h2>news story one</h2>
+<time datetime=”2011-08-10t08:30:00-05:00” pubdate>august 10, 2011</time>
+<p>lorem ipsum . . . </p>
+<small>this article is . . .</small>
+</article>
+
+
+
+machine-readable dates & times
+text
+
+<time datetime=”2011-08-10t08:30:00-05:00” pubdate>
+august 10, 2011
+</time>
+there can be only one!
+
+
+
+html5 outliner
+http://gsnedders.html5.org/outliner/
+
+
+
+web forms 2.0
+will html finally ❤ us back?
+
+
+
+various types
+
+<input type=”search”>
+<input type=”tel”>
+<input type=”url”>
+<input type=”email”>
+<input type=”number”>
+<input type=”color”>
+<input type=”range”>
+<input type=”text” list=”myid”>
+date & time
+
+<input type=”date”>
+<input type=”month”>
+<input type=”week”>
+<input type=”time”>
+<input type=”datetime-local”>
+new form elements
+others
+
+<meter value=”.75”>
+<progress value=”24” max=”100”>
+
+
+
+new attributes
+
+
+
+current support
+http://wufoo.com/html5/
+
+
+
+mobile examples examples
+tel, url, and email
+
+
+
+examples in opera 11
+dates & times
+text
+
+
+
+<meter> (display)
+
+<meter value=”74” max=”100”> 74% </meter>
+<meter value=”.75”> 3/4 </meter>
+<meter min=”0” max=”250” value=”185”> 74% </meter>
+new input elements
+
+
+
+range (meter input)
+
+<input type=”range” min=”0” max=”250”>
+new input elements
+<progress>
+
+<progress value=”75” max=”100”>75%</progress>
+
+
+
+color <input type=”color”>
+
+<input type=”color”>
+new input elements
+currently only support in opera 11 and use the os’s native color picker  
+
+
+
+using them now!
+http://www.modernizr.com/
+function checkattribute(element, attribute) {
+ var test = document.createelement(element);
+ if (attribute in test) {
+   return true;
+  } else {
+   return false;
+  }
+}
+if (!checkattribute('input', 'placeholder')) {
+// no support for placeholders, so add them with js
+}
+
+
+
+they’re here . . .
+native video & audio
+
+
+
+video & audio
+text
+
+
+
+anatomy of the video element
+
+	attribute	value	description
+	audio	muted	specifies the default state of the the audio. currently, only "muted" is allowed
+	autoplay	autoplay	if present, then the video will start playing as soon as it is ready
+	controls	controls	if present, controls will be displayed, such as a play button
+	height	pixels	sets the height of the video player
+	loop	loop	if present, the video will start over again, every time it is finished
+	poster	url	specifies the url of an image representing the video
+	preload	auto/none/metadata	specifies whether or not the video should be loaded when the page loads
+	src	url	the url of the video to play
+	width	pixels	sets the width of the video player
+
+
+
+audio and fallback
+<audio controls>
+<source src="thats-some-dream.ogg" type="audio/ogg" />	<source src="thats-some-dream.mp3" type="audio/mpeg" />
+<object type="application/x-shockwave-flash" data="...">		<param name="movie" value="..." />	</object> </audio>
+
+
+
+audio and fallback
+<audio id="player2" preload="auto">
+<source src="thats-some-dream.ogg" type="audio/ogg" />	<source src="thats-some-dream.mp3" type="audio/mpeg" />
+<object type="application/x-shockwave-flash" data="...">		<param name="movie" value="..." />	</object> </audio>
+<button onclick="document.getelementbyid('player2').play();">play</button>
+<button onclick="document.getelementbyid('player2').pause();">pause</button>
+<button onclick="document.getelementbyid('player2').volume += 0.1">vol +</button>
+<button onclick="document.getelementbyid('player2').volume -= 0.1">vol -</button>
+
+
+
+http://media.io/
+audio conversion
+
+
+
+audio and fallback
+<video controls width="360" height="240" poster="placeholder.jpg">
+<source src="thats-some-dream.ogv" type="video/ogg" />
+<source src="thats-some-dream.mp4" type="video/mp4" />
+<object type="application/x-shockwave-flash" data="...">
+<param name="movie" value="..." />
+</object> 
+</video>
+
+
+
+
+
+audio and fallback
+
+
+
+looking the same cross browser.
+custom video controls
+
+
+
+custom video controls
+
+
+
+
+
+painting the canvas 
+getting artsy with html5
+
+
+
+
+
+canvas element
+<canvas id=”mycanvas” width=”700” height=”250”>
+</canvas>
+
+
+
+
+
+canvas element
+<canvas id=”mycanvas” width=”700” height=”250”>
+	<p>your browser does not support the canvas element.</p>
+	<img src=”no-support-image.png” alt=”no support” />
+</canvas>
+your browser does not support the canvas element.
+
+
+
+canvas element
+<canvas id=”mycanvas” width=”700” height=”250”>
+	<p>your browser does not support the canvas element.</p>
+	<img src=”no-support-image.png” alt=”no support” />
+</canvas>
+
+<script>
+	var ctx1 = document.queryselector('canvas').getcontext('2d');
+	ctx1.fillstyle = 'rgb(0, 255, 0)';
+	ctx1.fillrect(80, 60, 150, 150);
+</script>
+
+
+
+canvas element
+<canvas id=”mycanvas” width=”700” height=”250”>
+	<p>your browser does not support the canvas element.</p>
+	<img src=”no-support-image.png” alt=”no support” />
+</canvas>
+
+<script>
+	var ctx1 = document.queryselector('canvas').getcontext('2d');
+	ctx.beginpath();
+	ctx.arc(175,75,50,0,math.pi*2,true); // outer circle
+	ctx.moveto(210,75);
+	ctx.arc(175,75,35,0,math.pi,false);   // mouth
+	ctx.moveto(165,65);
+	ctx.arc(160,65,5,0,math.pi*2,true);  // left eye
+	ctx.moveto(195,65);
+	ctx.arc(190,65,5,0,math.pi*2,true);  // right eye
+	ctx.stroke();
+</script>
+
+
+
+put your backs into it!
+dragging & dropping
+
+
+
+	the black sheep of the apis
+	why is it even in the html5 spec
+	needs tweaks for each browser
+
+drag and drop
+
+
+
+d&d example
+<img src="files/cooper.png" alt="cooper" />
+<img src="files/brady.png" alt="brady" />
+
+<div id="drop"></div>
+
+<script>
+	var drop = document.getelementbyid('drop');
+	drop.ondrop = function (event) {
+	  this.innerhtml += '<p>' + event.datatransfer.getdata('text') + '</p>';
+	  return false;
+	};
+	drop.ondragover = function (){return false;};
+</script>
+
+
+
+local storage & stuff
+web storage & web sql db
+
+
+
+	cookies on steroids
+	storage options
+	web storage
+	web sql databases
+
+web storage api
+
+
+
+web storage api
+<script>
+	sessionstorage.setitem('twitter', '@fishsmith');
+	
+	function showname() {
+		alert(sessionstorage.getitem('twitter'));
+	}
+</script>
+
+<input type="button" onclick="showname();" value="show jason's twiiter name">
+
+
+
+	web sql
+	offline
+	messages
+	workers
+	sockets
+
+other html5 apis
+
+
+
+getting started today
+html5 strategy
+
+
+
+	start with the basics
+	feature detection
+	stick with your strategy 
+
+getting started today
+
+
+
+html5 & dotcms
+what doe this mean for dotcms?
+
+
+
+	form builder to html5
+	local storage for click trails
+	threading javascript
+
+html5 & dotcms
+
+
+
+
+les/brady.png" alt="brady" />
+
+<div id="drop"></div>
+
+<script>
+	var drop = document.getelementbyid('drop');
+	drop.ondrop = function (event) {
+	  this.innerhtml += '<p>' + event.datatransfer.getdata('text') + '</p>';
+	  return false;
+	};
+	drop.ondragover = function (){return false;};
+</script>
+
+
+
+local storage & stuff
+web storage & web sql db
+
+
+
+	cookies on steroids
+	storage options
+	web storage
+	web sql databases
+
+web storage api
+
+
+
+web storage api
+<script>
+	sessionstorage.setitem('twitter', '@fishsmith');
+	
+	function showname() {
+		alert(sessionstorage.getitem('twitter'));
+	}
+</script>
+
+<input type="button" onclick="showname();" value="show jason's twiiter name">
+
+
+
+	web sql
+	offline
+	messages
+	w

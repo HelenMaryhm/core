@@ -1,0 +1,131 @@
+####Creates the Horizontal Menu based on the path
+
+#macro(fixBreaks $stringToFix)
+	${UtilMethods.fixBreaks($stringToFix)}
+#end
+
+
+
+#macro(editContentlet $CONTENT_INODE)
+    ## No container inode is passed because a contentlet is edited no added to the container
+    #set($_containerInode = "")
+    #if($EDIT_MODE)
+        #set($_hasPermission = $contents.doesUserHasPermission($CONTENT_INODE, 2, $EDIT_MODE))
+    <div data-dot-object='edit-content' data-dot-inode='$CONTENT_INODE'  data-dot-can-edit='$_hasPermission'></div>
+    #end
+#end
+
+#macro(addContentlet $STRUCTURE_INODE $CONTENT_NAME)
+	#if($EDIT_MODE)
+	    <a href="javascript:window.top.document.getElementById('detailFrame').contentWindow.addContentletChapter('$STRUCTURE_INODE'); "><img src="/html/images/icons/page.png" alt="" width="15" height="15" border="0">$!{CONTENT_NAME}</a>
+	#end
+#end
+
+#macro(editEvent $EVENT_INODE)
+	#if($EDIT_MODE)
+		<a href="javascript:window.top.document.getElementById('detailFrame').contentWindow.editEvent('$EVENT_INODE'); "><img src="/html/images/preview/btn_edit_active.gif" alt="" width="15" height="15" border="0"></a>
+	#end
+#end
+
+##dotInclude
+#macro(dotInclude $_dotParsePath)
+  #if ($UtilMethods.isSet($list))
+    #if (!$UtilMethods.isSet($_dotParseListHeap))
+      #set ($_dotParseListHeap = $contents.getEmptyList())
+    #end
+    
+    #set ($_dotParseDummyVariable = $_dotParseListHeap.add($list))
+  #end
+
+  #if ($UtilMethods.isSet($content))
+    #if (!$UtilMethods.isSet($_dotParseContentHeap))
+      #set ($_dotParseContentHeap = $contents.getEmptyList())
+    #end
+    
+    #set ($_dotParseDummyVariable = $_dotParseContentHeap.add($content))
+  #end
+
+
+    #if ($_dotParsePath.length() > 3 && $_dotParsePath.startsWith("//"))
+      ##finds first / after //
+  	  #set($_dotParseIndex1 = $_dotParsePath.indexOf("/",2))
+  	  ##if index1 exists
+  	  #if ($_dotParseIndex1 > -1)
+  		##get the host from the path
+  		#set($_dotParsePathHost = $_dotParsePath.substring(2,$_dotParseIndex1))
+  		##get the file path from the path
+  		#set($_dotParsePath = $_dotParsePath.substring($_dotParseIndex1,$_dotParsePath.length()))
+  	  #end
+	  #if ($UtilMethods.isSet($_dotParsePathHost))
+		  ##we found a host, we search the host by hostname
+		  #set ($_dotParseHost = $webapi.resolveHostName($_dotParsePathHost))
+		  #if ($_dotParseHost && $UtilMethods.isSet($_dotParseHost.identifier))
+			#set($_dotParseHostId = $_dotParseHost.identifier)
+		  #end
+	  #end
+    #end
+
+    #if (!$UtilMethods.isSet($dontShowIcon) || !$dontShowIcon)
+      #if($EDIT_MODE)
+	      #if(!$_dotParseHostId)
+	      	#set($_dotParseHostId = '')
+	      #end
+        #set($_dotParseInode = ${webapi.getAssetInode($_dotParsePath, $_dotParseHostId)})
+        #if($InodeUtils.isSet($_dotParseInode)&& ${webapi.doesUserHasPermissionOverFile($_dotParseInode, 2)})
+          <div  class="dot_parseIcon"> <a href="javascript:window.top.document.getElementById('detailFrame').contentWindow.editFile('${_dotParseInode}'); " title="$_dotParsePath"><span class="editIcon"></span></a></div>
+          #set ($_dotParseInode = '')
+        #end
+      #end
+    #end
+
+    #if($UtilMethods.isSet($_dotParseHostId))
+  	  #set($_dotParseRealPath = $webapi.getAssetPath($_dotParsePath, $_dotParseHostId))
+  	  #set ($_dotParseHostId = '')
+    #else
+  	  #set($_dotParseRealPath = $webapi.getAssetPath($_dotParsePath))
+    #end
+
+    #if($UtilMethods.isSet($_dotParseRealPath))
+      #include($_dotParseRealPath)
+    #else
+      #if($EDIT_MODE)
+        <p><b>The file you want to  ${esc.h}include ($_dotParsePath) doesn't exist, please change the path and try again.</b></p>
+      #end
+    #end
+  
+    #set ($_dotParsePath = '')
+    #set ($_dotParseRealPath = '')
+
+
+  #if ($UtilMethods.isSet($_dotParseListHeap) && (0 < $_dotParseListHeap.size()))
+    #set ($list = $_dotParseListHeap.remove($math.sub($_dotParseListHeap.size(), 1)))
+  #end
+
+  #if ($UtilMethods.isSet($_dotParseContentHeap) && (0 < $_dotParseContentHeap.size()))
+    #set ($content = $_dotParseContentHeap.remove($math.sub($_dotParseContentHeap.size(), 1)))
+  #end
+#end
+
+#macro(orderMenu)
+    #if ($EDIT_MODE && $PUBLISH_HTMLPAGE_PERMISSION)
+        #set($_formId="dot_form_menu_$date.date.time")
+        #set ($folder = $folderAPI.findCurrentFolder($startFromPath, $host))
+        #set ($menuId = $folder.inode)
+
+        <a href="#" onclick="openReorderDialog()" class="btn btn-primary btn-xs normaltip" data-original-title="Reorder Menu">
+            <i class="fa fa-arrow-up"></i>
+            <i class="fa fa-arrow-down"></i>
+        </a>
+        <script>
+            function openReorderDialog() {
+                var reorderUrl = "${directorURL}&startLevel=1&depth=2&pagePath=${VTLSERVLET_URI}&hostId=${host.identifier}";
+                var customEvent = window.top.document.createEvent("CustomEvent");
+                customEvent.initCustomEvent("ng-event", false, false,  {
+                    name: "reorder-menu",
+                    data: reorderUrl
+                });
+                window.top.document.dispatchEvent(customEvent);
+            }
+        </script>
+    #end
+#end

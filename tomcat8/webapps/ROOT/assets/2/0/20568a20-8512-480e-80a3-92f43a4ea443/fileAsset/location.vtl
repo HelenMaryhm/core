@@ -1,0 +1,36 @@
+<div class="media">
+    <a class="pull-left" href="/locations/$urlTitle">
+    	<div class="media-badge">
+			#if ($UtilMethods.isSet(${imageBinaryFileURI})) 
+	   			<img src="/contentAsset/image/${ContentIdentifier}/image/filter/Resize/resize_w/150" />
+	      	#else
+	      		<div class="thumb" style="width: 150px;height:120px;">
+		      		No Pic
+				</div>
+	      	#end
+		</div>
+	</a>
+	<div class="media-body">
+        <span class="label label-default pull-right">Location</span>
+    	<div class="media-heading"><a href="/locations/$urlTitle">$title</a></div>
+    	<address>
+			$address1<br/>
+			#if ($UtilMethods.isSet($address2))
+				$address2<br/>
+			#end
+			$city, 
+			$state $zip
+			#if($country != "United States" && $country != "Canada")
+				$country
+			#end
+		</address>
+	</div>
+</div>
+<div class="location-description">
+	## This trims the HTML and shorts the description field 200 character
+	#set($y = $description.replaceAll("<[^>]*>", ""))
+	#set($y = $UtilMethods.prettyShortenString("$y", 200))
+	<p>$y</p>
+</div>
+
+<hr>

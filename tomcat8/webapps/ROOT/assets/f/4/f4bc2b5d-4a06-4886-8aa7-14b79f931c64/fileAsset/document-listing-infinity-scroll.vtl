@@ -1,0 +1,39 @@
+<script src="${dotTheme.path}js/resources.js"></script>
+
+<script type="text/template" id="media-item-template">
+  <% _.each(data, function(doc) { %>
+    <li class="media">
+      <article>
+        <div class="media-body">
+          <a href="/resources/document-detail?id=<%= doc.identifier %>" class="pull-left media-object">
+            <%= checkFileType(doc.metaData.contentType, doc.inode) %>
+          </a>
+          <h4 class="media-heading doc-title">
+            <a href="/resources/document-detail?id=<%= doc.identifier %>"><%= doc.title %></a>
+          </h4>
+          <div class="post-info">
+            <% if (doc.sysPublishDate) { %>
+              <time class="date" datetime="<%= setDate(doc.sysPublishDate, true) %>">
+                <%= setDate(doc.sysPublishDate) %>
+              </time>
+            <% } %>
+            <% if (doc.metaData.author) { %>
+              <span class="author"><%= doc.metaData.author %></span>
+            <% } %>
+          </div>
+          <p class="summary">
+            <% if (doc.description1) { %>
+              <%= doc.description1 %>
+            <% } else { %>
+              <%= doc.description %>
+            <% } %>
+          </p>
+        </div>
+      </article>
+    </li>
+  <% }); %>
+</script>
+<h1 id="document-listing">Document Search</h1>
+<p class="document-search-string js-search-string"></p>
+<ul class="media-list media-list-extend document-listing js-document-list"></ul>
+<a data-page="1" id="next" class="btn btn-default btn-block js-show-more">Show More Results</a>

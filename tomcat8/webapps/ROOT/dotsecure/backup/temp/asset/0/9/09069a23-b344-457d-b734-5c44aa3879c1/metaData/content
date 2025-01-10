@@ -1,0 +1,46 @@
+##this macro is only used inside the comments macro to display the comments threading
+#macro(showrecursivecomments $tempcommentcontentinode $currentdepth)
+  #set ($temprelatedmatches = $commentsapi.getcomments($tempcommentcontentinode))
+  #foreach($match in $temprelatedmatches)
+    ##set($marginleft= $math.mul($currentdepth,20))
+    #getcontentdetail("$match.inode")
+    <li class="media">
+      <article>
+        <div class="pull-left comment-info">
+          <img src="/images/icons/profile-image.png" width="65" height="65" alt="$author" />
+          <a href="#" class="author">$author</a>
+          <time>$dateviewapi.friendly($match.datepublished)</time>
+        </div>
+        <div class="media-body">
+          <div class="comment-body">
+            <p>$xsstool.strip($comment)</p>
+            #if($currentdepth < $maxdepth)
+              <a class="btn btn-primary btn-xs btn-comment-reply" href="javascript:_createpostcommentplace('$match.inode');_dotreply('$match.inode');">reply</a>
+              <div id="$match.inode"></div>
+            #end
+          </div>
+        </div>
+      </article>
+    </li>
+    #if($currentdepth < $maxdepth)
+      #showrecursivecomments($match.inode, $math.add($currentdepth,1))
+    #end
+  #end
+#end
+mentcontentinode))
+  #foreach($match in $temprelatedmatches)
+    ##set($marginleft= $math.mul($currentdepth,20))
+    #getcontentdetail("$match.inode")
+    <li class="media">
+      <article>
+        <div class="pull-left comment-info">
+          <img src="/images/icons/profile-image.png" width="65" height="65" alt="$author" />
+          <a href="#" class="author">$author</a>
+          <time>$dateviewapi.friendly($match.datepublished)</time>
+        </div>
+        <div class="media-body">
+          <div class="comment-body">
+            <p>$xsstool.strip($comment)</p>
+            #if($currentdepth < $maxdepth)
+              <a class="btn btn-primary btn-xs btn-comment-reply" href="javascript:_createpostcommentplace('$match.inode');_dotreply('$match.inode');">reply</a>
+              <div id="$match

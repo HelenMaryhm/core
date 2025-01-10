@@ -1,0 +1,15 @@
+.resend-activation-email-wrap {
+
+    .resend-activation-email {
+        @include media-breakpoint-up(xs) {
+            @include make-col(12);
+        }
+        @include media-breakpoint-up(sm) {
+            @include make-col(6);
+        }
+        @include media-breakpoint-up(sm) {
+            @include make-col-offset(3);
+        }
+    }
+
+}

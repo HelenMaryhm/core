@@ -1,0 +1,58 @@
+#set($blogsearch = $request.getparameter('blogsearch'))
+<div class="blog-menu">
+  <form method="get">
+    <div class="input-group search-field">
+      <input type="text" name="blogsearch" id="searchbox" class="form-control py-2" placeholder="search" #if($blogsearch != '') value="$!{blogsearch}"#end />
+      <span class="input-group-append">
+        ## <button class="btn btn-primary btn-document-search" type="submit"></button>
+        <button class="btn btn-primary" type="button">
+            <i class="fa fa-search"></i>
+        </button>
+      </span>
+    </div><!-- /search-field -->
+    <input type="hidden" name="search" value="true" />
+  </form>
+
+  <div class="card search-filter topics mb-4">
+    <!-- default panel contents -->
+    <div class="card-header"><h4 class="card-title mb-0">topics</h4></div>
+    <div class="list-group mb-0">
+      <a href="/blogs/" class="list-group-item#if(!$request.getparameter('cat')) active#end">most recent</a>
+      #foreach($con in $categories.getchildrencategoriesbykey("topic"))
+        <a href="/blogs/?cat=$con.categoryvelocityvarname" class="list-group-item#if($request.getparameter('cat') == $con.categoryvelocityvarname) active#end">$con.categoryname</a>
+      #end
+    </div>
+  </div>
+
+  <div class="card search-filter tags">
+    <!-- default panel contents -->
+    <div class="card-header"><h4 class="card-title mb-0">tags</h4></div>
+    <div class="card-body">
+        <ul class="tags-cloud">
+        
+        #set($blogtags = $estool.search('{
+            "query" : {
+				"match_all" : {}
+			},
+			"aggs" : {
+				"tags" : { 
+				    "terms" : {
+				        "field" : "blog.tags"
+				    } 
+				}
+			}
+		}'))
+		
+		#foreach($f in $blogtags.aggregations)
+			#foreach($term in $f.buckets)
+          		<li><a href="/blogs/?tag=$term.key" id="$term.key" data-tag="$term.key">$term.key <span>$term.doccount</span></a></li>
+			#end
+		#end
+        </ul>
+      
+    </div>
+  </div>
+
+</div>
+meter('cat')) active#end">most recent</a>
+      #foreach($con in $categories.getchildrencategoriesbykey("top

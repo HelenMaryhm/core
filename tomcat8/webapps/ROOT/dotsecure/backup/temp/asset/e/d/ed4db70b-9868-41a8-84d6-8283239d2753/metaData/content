@@ -1,0 +1,86 @@
+.news-comments {
+    border-top: dashed 1px $gray-lighter;
+    margin-top: $padding-base-vertical * 4;
+    padding-top: $padding-base-vertical * 2;
+}
+
+.news-detail {
+    .news-detail-title {
+      font-size: $font-size-x-large;
+    }
+    .post-info {
+        border-bottom: dashed 1px $gray-lighter;
+        color: $gray;
+        font-size: $font-size-small;
+        margin-bottom: $padding-base-vertical * 2;
+        padding-bottom: $padding-base-vertical;
+
+        .author,
+        .comments {
+            &:before {
+                content: " | ";
+                color: $gray;
+                margin: 0 $padding-base-horizontal / 2;
+            }
+        }
+    }
+    .post-info-footer {
+        @include clearfix;
+        margin-top: $padding-base-vertical * 3;
+    }
+}
+
+.news-detail-image {
+    border: solid 6px $white;
+    box-shadow: 0 0 0 1px $gray-lighter;
+    margin: $padding-base-vertical * 2 auto;
+    position: relative;
+    max-height: 300px;
+    overflow: hidden;
+    img {
+       width: 100%;
+      display: block;
+    }
+
+    .news-detail-caption {
+        color: $white;
+        display: block;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        font-size: $font-size-small;
+        padding: 2px 10px;
+        background: rgba(0,0,0,0.6);
+    }
+}
+ottom: dashed 1px $gray-lighter;
+        color: $gray;
+        font-size: $font-size-small;
+        margin-bottom: $padding-base-vertical * 2;
+        padding-bottom: $padding-base-vertical;
+
+        .author,
+        .comments {
+            &:before {
+                content: " | ";
+                color: $gray;
+                margin: 0 $padding-base-horizontal / 2;
+            }
+        }
+    }
+    .post-info-footer {
+        @include clearfix;
+        margin-top: $padding-base-vertical * 3;
+    }
+}
+
+.news-detail-image {
+    border: solid 6px $white;
+    box-shadow: 0 0 0 1px $gray-lighter;
+    margin: $padding-base-vertical * 2 auto;
+    position: relative;
+    max-height: 300px;
+    overflow: hidden;
+    img {
+       width: 100%;
+      display

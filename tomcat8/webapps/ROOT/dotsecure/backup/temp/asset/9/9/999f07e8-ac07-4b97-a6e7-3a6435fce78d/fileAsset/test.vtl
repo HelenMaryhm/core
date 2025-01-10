@@ -1,0 +1,18 @@
+<div dojoAttachPoint="fileBrowser" jsId="fileSelector" onFileSelected="addItem" mimeTypes="application/dotpage" dojoType="dotcms.dijit.FileBrowserDialog"></div>
+
+<script>
+	dojo.require('dotcms.dijit.FileBrowserDialog');
+	jQuery.noConflict();
+	
+	function addItem(item) {
+		alert(item.identifier); // this alerts 3b6bebd0-145f-48a9-8736-ae5d657f3550
+	}
+</script>
+
+## the following write out nothing because it cant fins the item
+#set($thiscontent = $dotcontent.find('3b6bebd0-145f-48a9-8736-ae5d657f3550'))
+$thiscontent.title
+
+## this write out the correct title, but only by using the ID shown in dotCMS rather than teh one the File Browser returns
+#set($thiscontent = $dotcontent.find('ff94209a-7b31-4cfe-87a8-42c1c286299e'))
+$thiscontent.title

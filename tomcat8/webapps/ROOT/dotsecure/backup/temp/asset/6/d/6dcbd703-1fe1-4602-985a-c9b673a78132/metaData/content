@@ -1,0 +1,163 @@
+// user info flyoutv
+var userinfodataloaded = false;
+
+/* resize menu */
+$(function () { 
+    var scroll_timer;
+    var smallnav = false;
+    var $window = $(window);
+
+    $window.scroll(function () {
+        window.cleartimeout(scroll_timer);
+        scroll_timer = window.settimeout(function () { // use a timer for performance
+            if($window.scrolltop() <= 50) // make large top of the page
+                {
+                    smallnav = false;
+                    $("#header").removeclass("header-wrap-small");
+                }
+            else if(smallnav == false) // show if scrolling down
+                {
+                    smallnav = true;
+                    $("#header").addclass("header-wrap-small");
+                }
+        }, 10);
+    });
+});
+
+
+// user info flyout
+$(function () {
+	var x = localstorage.getitem('tabstate');
+	if(x == "open"){
+		$("#userinfo").css("right", "-10px");
+		$('#userinfodata').load('/application/ajax/location-clickstream.html');
+	}else{
+		$("#userinfo").css("right", "-335px");
+	};
+	
+    $("#userinfo .controle .trigger").click(function () {
+        if($("#userinfo").css("right") == "-335px"){
+            if(!userinfodataloaded){
+                $('#userinfodata').load('/application/ajax/location-clickstream.html');
+                userinfodataloaded=true;
+            };
+            $("#userinfo").animate({right:'-10px'}, {queue: false, duration: 500});
+            localstorage.setitem('tabstate','open');
+        }else{
+            $("#userinfo").animate({right:'-335px'}, {queue: false, duration: 500});
+            localstorage.setitem('tabstate','closed');
+        }
+    })
+});
+
+function activeaddress(text) {
+    $('#address-title span').fadeout('fast', function() {
+        $(this).text(text + 'address');
+        $(this).fadein();
+    });
+}
+
+$(document).on('ready', function() {
+
+    var x;
+    x = $(window).height() - $(".header-wrap").height() - $(".footer-wrapper").height() - 89;
+    $(".content-wrap").css("min-height", x);
+    
+    // calling sticky sidebar
+    $('.sidebar').hcsticky();
+
+    // calling the fancybox
+    $('.js-fancybox-img').fancybox({
+        type: 'image'
+    });
+
+    $('.fancybox-swf').fancybox({
+        type: 'swf'
+    });
+    
+    $('.js-fancybox-inline').fancybox();
+
+    $('.js-fancybox-media-link').fancybox({
+        openeffect  : 'none',
+        closeeffect : 'none',
+        helpers : {
+            media : {}
+        }
+    });
+
+    $('.js-fancybox-media-file').fancybox();
+
+    // create account page
+    // to change the heading text in the address section
+    $('.js-address-type .btn').on('click', function() {
+        text = $(this).text();
+        activeaddress(text);
+    });
+
+    // home carousel
+    $('#carousel-home').carousel({
+        'pause': 'hover'
+    });
+
+    // table sorter
+    $('.sorted-tables').tablesorter({
+        sortlist: [[0,0]]
+    });
+    
+    // bootstrap tool tip
+    $('.normaltip').tooltip({
+    	'placement': 'bottom'
+    });
+    $('.risk-system').tooltip({
+    	'placement': 'right'
+    });
+    $('.normaltip-left').tooltip({
+    	'placement': 'left'
+    });
+});
+
+// video.js
+videojs.options.flash.swf = '/_bower_components/video.js/video-js.swf';
+
+fancybox-swf').fancybox({
+        type: 'swf'
+    });
+    
+    $('.js-fancybox-inline').fancybox();
+
+    $('.js-fancybox-media-link').fancybox({
+        openeffect  : 'none',
+        closeeffect : 'none',
+        helpers : {
+            media : {}
+        }
+    });
+
+    $('.js-fancybox-media-file').fancybox();
+
+    // create account page
+    // to change the heading text in the address section
+    $('.js-address-type .btn').on('click', function() {
+        text = $(this).text();
+        activeaddress(text);
+    });
+
+    // home carousel
+    $('#carousel-home').carousel({
+        'pause': 'hover'
+    });
+
+    // table sorter
+    $('.sorted-tables').tablesorter({
+        sortlist: [[0,0]]
+    });
+    
+    // bootstrap tool tip
+    $('.normaltip').tooltip({
+    	'placement': 'bottom'
+    });
+    $('.risk-system').tooltip({
+    	'placement': 'right'
+    });
+    $('.normaltip-left').tooltip({
+ 

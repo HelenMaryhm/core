@@ -1,0 +1,92 @@
+
+        
+            
+                
+                    
+                        
+                        
+                    
+
+                    
+
+                        #if(!$user)
+                            	 login
+
+
+                        #else
+                            	 my account
+	 logout
+
+
+                        #end
+                        	 find a branch
+	 contact us
+	 (305) 900-2001
+
+
+                
+
+            
+
+        
+
+    
+
+    
+        
+            
+                
+            
+            
+                
+            
+            
+            
+                
+
+                    
+                    #set($list = $navtool.getnav("/"))
+                    #foreach($n in $list)
+                        #set($children = $n.children)
+                        #if($children && $children.size() > 0)
+                            	
+                                ${n.title}
+                                
+
+                                    #foreach($ch in $children)
+                                        ${ch.title}
+                                    #end
+                                
+
+
+                            
+                        #else
+                            	${n.title}
+
+
+                        #end
+                    #end
+                
+                
+                ## add reorder menu button
+                #if ($edit_mode && $publish_htmlpage_permission)
+                    #set($_formid="dot_form_menu_$date.date.time")
+                    #set ($folder = $folderapi.findcurrentfolder($startfrompath, $host))
+                    #set ($menuid = $folder.inode)       
+                        #ordermenu()
+                #end
+            
+
+        
+
+    
+
+in $list)
+                        #set($children = $n.children)
+                        #if($children && $children.size() > 0)
+                            	
+                                ${n.title}
+                                
+
+                                    #foreach($ch in $children)
+               

@@ -1,0 +1,76 @@
+// responsive images (ensure images don't scale beyond their parents)
+//
+// this is purposefully opt-in via an explicit class rather than being the default for all `<img>`s.
+// we previously tried the "images are responsive by default" approach in bootstrap v2,
+// and abandoned it in bootstrap v3 because it breaks lots of third-party widgets (including google maps)
+// which weren't expecting the images within themselves to be involuntarily resized.
+// see also https://github.com/twbs/bootstrap/issues/18178
+.img-fluid {
+  @include img-fluid;
+}
+
+
+// image thumbnails
+.img-thumbnail {
+  padding: $thumbnail-padding;
+  background-color: $thumbnail-bg;
+  border: $thumbnail-border-width solid $thumbnail-border-color;
+  @include border-radius($thumbnail-border-radius);
+  @include box-shadow($thumbnail-box-shadow);
+
+  // keep them at most 100% wide
+  @include img-fluid;
+}
+
+//
+// figures
+//
+
+.figure {
+  // ensures the caption's text aligns with the image.
+  display: inline-block;
+}
+
+.figure-img {
+  margin-bottom: ($spacer / 2);
+  line-height: 1;
+}
+
+.figure-caption {
+  font-size: $figure-caption-font-size;
+  color: $figure-caption-color;
+}
+
+ss rather than being the default for all `<img>`s.
+// we previously tried the "images are responsive by default" approach in bootstrap v2,
+// and abandoned it in bootstrap v3 because it breaks lots of third-party widgets (including google maps)
+// which weren't expecting the images within themselves to be involuntarily resized.
+// see also https://github.com/twbs/bootstrap/issues/18178
+.img-fluid {
+  @include img-fluid;
+}
+
+
+// image thumbnails
+.img-thumbnail {
+  padding: $thumbnail-padding;
+  background-color: $thumbnail-bg;
+  border: $thumbnail-border-width solid $thumbnail-border-color;
+  @include border-radius($thumbnail-border-radius);
+  @include box-shadow($thumbnail-box-shadow);
+
+  // keep them at most 100% wide
+  @include img-fluid;
+}
+
+//
+// figures
+//
+
+.figure {
+  // ensures the caption's text aligns with the image.
+  display: inline-block;
+}
+
+.figure-img {
+  margin-bottom: ($spac

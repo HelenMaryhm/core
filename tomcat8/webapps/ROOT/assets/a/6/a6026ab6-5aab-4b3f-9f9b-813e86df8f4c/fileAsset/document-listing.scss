@@ -1,0 +1,93 @@
+.alert-default {
+    @include alert-variant($white, $gray-lighter, $gray-dark);
+  }
+  
+  .document-listing {
+  
+      .doc-thumbnail {
+          background-image: url('/application/themes/quest/images/layout/doc-icons-sprites.gif');
+          height: 70px;
+          width: 100px;
+          border-radius: 5px;
+  
+          &.excel {
+              background-position: -10px 0;
+          }
+  
+          &.pdf {
+              background-position: -10px -280px;
+          }
+  
+          &.powerpoint {
+              background-position: -10px -70px;
+          }
+  
+          &.unknow {
+              background-position: -10px -35px;
+          }
+  
+          &.video {
+              background-position: -10px -210px;
+          }
+  
+          &.word {
+              background-position: -10px -140px;
+          }
+      }
+  
+      .media {
+          @media (min-width: $screen-tablet) {
+              @include transition(background-color .1s ease-in);
+              padding: $padding-base-vertical $padding-base-horizontal * 2;
+  
+              &:first-child {
+                  padding-top: $padding-base-vertical;
+              }
+  
+              &:hover {
+                  background-color: lighten($gray, 60%)
+              }
+          }
+      }
+  
+      .media-object {
+          border: solid 3px $white;
+      }
+  
+  }
+  
+  .document-search-string {
+      border-bottom: dashed 1px $gray-lighter;
+      font-size: ceil($font-size-base * 0.8);
+      padding-bottom: $padding-base-vertical;
+      text-transform: uppercase;
+  
+      .search-label {
+          &:first-child:before {
+              content: "";
+              margin-left: 0;
+          }
+          &:before {
+              content: "|";
+              left: -6px;
+              margin-left: 10px;
+              position: relative;
+          }
+      }
+  
+      .search-term {
+          color: $brand-secondary;
+          font-weight: bold;
+      }
+  }
+  
+  .loading-info {
+    h4 {
+      margin: 0;
+      text-align: center;
+    }
+  
+    img {
+      margin-right: $padding-base-vertical / 2;
+    }
+  }

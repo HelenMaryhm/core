@@ -1,0 +1,228 @@
+.down, .up {
+    &:before {
+        @include add-icon(0);
+    }
+}
+
+.down {
+    color: $brand-danger;
+
+    &:before {
+        content: "\f175";
+    }
+}
+
+.up {
+    color: $brand-success;
+
+    &:before {
+        content: "\f176";
+    }
+}
+
+.product-title {
+  font-size: $font-size-x-large;
+}
+.product-detail {
+    @include make-row();
+
+    .product-detail-chart {
+        text-align: center;
+
+        img {
+            display: inline;
+            padding: $padding-base-vertical * 2;
+            max-width: 100%;
+            @media (max-width: $screen-desktop) {
+                padding: 0;
+            }
+        }
+    }
+
+    .product-detail-main {
+        @include make-sm-column(8);
+    }
+
+    .product-detail-sidebar {
+        @include make-sm-column(4);
+        margin-top: $padding-base-vertical * 4;
+
+        @media (min-width: $screen-tablet) {
+            margin-top: 0;
+        }
+    }
+
+    .product-info,
+    .performance-risk {
+        margin-bottom: $padding-base-vertical * 4;
+    }
+
+     .product-nav {
+         padding: 0 10px;
+     }
+
+
+    .table-side-heading {
+        td {
+            font-weight: bold;
+        }
+        th {
+            font-weight: normal;
+        }
+    }
+
+    .top-heading {
+        th {
+            border-top: none;
+            color: $gray-light;
+            font-size: $font-size-x-small;
+        }
+    }
+
+    .investment-inter-term,
+    .large-cap-value,
+    .small-cap-value,
+    .treasury-long-term,
+    .mid-cap-value,
+    .small-cap-growth,
+    .large-cap-growth,
+    .large-cap-blend,
+    .treasury-inter-term,
+    .treasury-short-term,
+    .mid-cap-blend,
+    .small-cap-blend,
+    .investment-short-term,
+    .investment-long-term,
+    .low-quality-inter-term,
+    .low-quality-short-term,
+    .low-quality-long-term,
+    .mid-cap-growth {
+        width:170px;
+        height:130px;
+        background:url('/application/themes/quest/images/layout/box-sprite.png') no-repeat;
+    }
+
+    .investment-inter-term {
+        background-position: -175px -560px;
+    }
+
+    .large-cap-value {
+        background-position: 0 0;
+    }
+
+    .small-cap-value {
+        background-position: 0 -280px;
+    }
+
+    .treasury-long-term {
+        background-position: -350px -420px;
+    }
+
+    .mid-cap-value {
+        background-position: 0 -140px;
+    }
+
+    .small-cap-growth {
+        background-position: -350px -280px;
+    }
+
+    .large-cap-growth {
+        background-position: -350px 0;
+    }
+
+    .large-cap-blend {
+        background-position: -175px 0;
+    }
+
+    .treasury-inter-term {
+        background-position: -175px -420px;
+    }
+
+    .treasury-short-term {
+        background-position: 0 -420px;
+    }
+
+    .mid-cap-blend {
+        background-position: -175px -140px;
+    }
+
+    .small-cap-blend {
+        background-position: -175px -280px;
+    }
+
+    .investment-short-term {
+        background-position: 0 -560px;
+    }
+
+    .investment-long-term {
+        background-position: -350px -560px;
+    }
+
+    .low-quality-inter-term {
+        background-position: -175px -700px;
+    }
+
+    .low-quality-short-term {
+        background-position: 0 -700px;
+    }
+
+    .low-quality-long-term {
+        background-position: -350px -700px;
+    }
+
+    .mid-cap-growth {
+        background-position: -350px -140px;
+    }
+}
+
+.chart-nav {
+  border-bottom: 1px dashed $gray;
+  padding: 5px;
+  li {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  li.active {
+      font-weight: 700;
+      a {
+        color: $brand-secondary;
+      }
+  }
+}
+
+.risk-lg-system {
+    display: block;
+    width: 150px;
+    height: 35px;
+    background-image: url('/application/themes/quest/images/layout/risk-lg-sprite.png');
+}
+
+.risk5-lg {
+    background-position: 0 -300px;
+}
+
+.risk4-lg {
+    background-position: 0 -240px;
+}
+
+.risk3-lg {
+    background-position: 0 -180px;
+}
+
+.risk2-lg {
+    background-position: 0 -120px;
+}
+
+.risk1-lg {
+    background-position: 0 -60px;
+}
+   .investment-long-term {
+        background-position: -350px -560px;
+    }
+
+    .low-quality-inter-term {
+        background-position: -175px -700px;
+    }
+
+    .low-quality-short-term {
+        b

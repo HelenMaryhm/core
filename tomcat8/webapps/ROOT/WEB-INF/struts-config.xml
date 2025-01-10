@@ -1,0 +1,459 @@
+<?xml version="1.0"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+
+<!-- Custom Request Processor -->
+	<!-- Forms Beans -->
+
+	<form-beans>
+
+		<!-- Forms DOTMARKETING -->
+      <form-bean name="Inode" type="com.dotmarketing.portlets.inodes.model.Inode"></form-bean>
+      <form-bean name="FileForm" type="com.dotmarketing.portlets.files.struts.FileForm"></form-bean>
+
+      <form-bean name="ContentletForm" type="com.dotmarketing.portlets.contentlet.struts.EventAwareContentletForm"></form-bean>
+      <form-bean name="ImportContentletsForm" type="com.dotmarketing.portlets.contentlet.struts.ImportContentletsForm"></form-bean>
+      <form-bean name="LinkForm" type="com.dotmarketing.portlets.links.struts.LinkForm"></form-bean>
+
+      <form-bean name="HostForm" type="com.dotmarketing.portlets.folders.struts.HostForm"></form-bean>
+      <form-bean name="FolderForm" type="com.dotmarketing.portlets.folders.struts.FolderForm"></form-bean>
+      <form-bean name="FileUploadForm" type="com.dotmarketing.portlets.fileupload.struts.FileForm"></form-bean>
+      <form-bean name="ContainerForm" type="com.dotmarketing.portlets.containers.struts.ContainerForm"></form-bean>
+      <form-bean name="TemplateForm" type="com.dotmarketing.portlets.templates.struts.TemplateForm"></form-bean>
+      <form-bean name="WorkflowTaskForm" type="com.dotmarketing.portlets.workflows.struts.WorkflowTaskForm"></form-bean>
+	    <form-bean name="VirtualLinkForm" type="com.dotmarketing.portlets.virtuallinks.struts.VirtualLinkForm"></form-bean>
+      <form-bean name="LanguageForm" type="com.dotmarketing.portlets.languagesmanager.struts.LanguageForm"></form-bean>
+      <form-bean name="EventForm" type="com.dotmarketing.portlets.events.struts.EventForm"></form-bean>
+      <form-bean name="RecuranceForm" type="com.dotmarketing.portlets.events.struts.RecuranceForm"></form-bean>
+      <form-bean name="CmsMaintenanceForm" type="com.dotmarketing.portlets.cmsmaintenance.struts.CmsMaintenanceForm"></form-bean>
+      <form-bean name="StructureForm" type="com.dotmarketing.portlets.structure.struts.StructureForm"></form-bean>
+      <form-bean name="RelationshipForm" type="com.dotmarketing.portlets.structure.struts.RelationshipForm"></form-bean>
+      <form-bean name="DotFieldForm" type="com.dotmarketing.portlets.structure.struts.FieldForm"></form-bean>
+      <form-bean name="OrganizationForm" type="com.dotmarketing.portlets.organization.struts.OrganizationForm"></form-bean>
+      <!-- User Manager -->
+      <form-bean name="UserManagerListSearchForm" type="com.dotmarketing.portlets.usermanager.struts.UserManagerListSearchForm"></form-bean>
+      <form-bean name="UserManagerForm" type="com.dotmarketing.portlets.usermanager.struts.UserManagerForm"></form-bean>
+      <form-bean name="UserProxyForm" type="com.dotmarketing.portlets.usermanager.struts.UserManagerForm"></form-bean>
+
+
+		 <form-bean name="SchedulerForm" type="com.dotmarketing.portlets.scheduler.struts.SchedulerForm"></form-bean>
+      <form-bean name="ReportForm" type="com.dotmarketing.portlets.report.struts.ReportForm"></form-bean>
+
+      <!-- Events Calendar
+      <form-bean name="CalendarEventForm" type="com.dotmarketing.portlets.contentlet.struts.EventForm"></form-bean>
+      -->
+
+      <!-- Product -->
+      <form-bean name="ProductForm" type="com.dotmarketing.portlets.merchant.product.struts.ProductForm"></form-bean>
+
+      <!-- Escalation -->
+      <form-bean name="EscalationForm" type="com.dotcms.escalation.form.EscalationForm"></form-bean>
+
+      <!-- Console Log4J -->
+	  <form-bean name="logConsoleForm" type="com.dotmarketing.logConsole.form.ConsoleLogForm" ></form-bean>
+
+   <!-- Forms DOTMARKETING -->
+	</form-beans>
+
+	<!-- Global Forwards -->
+
+	<global-forwards>
+		<forward name="/common/error.jsp" path="/common/error.jsp" />
+		<forward name="/portal/error" path="portal.error" />
+	</global-forwards>
+
+	<!-- Action Mappings -->
+
+	<action-mappings>
+
+		<!-- Common -->
+
+		<action path="/common/close" forward="/common/close.html" />
+
+		<action path="/common/error" forward="/common/error.jsp" />
+
+		<!-- Public Portal -->
+		<action path="/portal_public/layout" type="com.liferay.portal.action.LayoutAction">
+			<forward name="portal.layout" path="portal.layout" />
+		</action>
+
+
+
+
+		<action path="/portal/layout" type="com.liferay.portal.action.LayoutAction">
+			<forward name="portal.layout" path="portal.layout" />
+		</action>
+
+		<action path="/portal/logout" type="com.liferay.portal.action.LogoutAction">
+			<forward name="/destroy.jsp" path="/destroy.jsp" redirect="true"/>
+		</action>
+
+
+
+      <!-- Category Admin -->
+      <action path="/ext/categories/view_categories" type="com.dotmarketing.portlets.categories.action.ViewCategoriesAction">
+         <forward name="portlet.ext.categories.view" path="portlet.ext.categories.view" />
+         <forward name="portlet.ext.categories.view_categories" path="portlet.ext.categories.view_categories" />
+      </action>
+
+      <action path="/ext/categories/view_category" type="com.dotmarketing.portlets.categories.action.ViewCategoryAction" name="CategoryForm" input="portlet.ext.categories.view_category" scope="request" validate="false">
+         <forward name="portlet.ext.categories.view_category" path="portlet.ext.categories.view_category" />
+         <forward name="portlet.ext.categories.view_categories" path="portlet.ext.categories.view_categories" />
+      </action>
+
+      <action path="/ext/categories/edit_category" type="com.dotmarketing.portlets.categories.action.EditCategoryAction" name="CategoryForm" validate="false" input="portlet.ext.categories.edit_category" scope="request">
+         <forward name="portlet.ext.categories.edit_category" path="portlet.ext.categories.edit_category" />
+      </action>
+      <action path="/ext/categories/edit_category_page" type="com.dotmarketing.portlets.categories.action.EditCategoryPageAction" />
+      <!-- Category Admin -->
+
+      <!-- Contentlet Management -->
+       <action path="/ext/contentlet/view_contentlets" type="com.dotmarketing.portlets.contentlet.action.ViewContentletAction">
+         <forward name="portlet.ext.contentlet.view_contentlets" path="portlet.ext.contentlet.view_contentlets" />
+         <forward name="portlet.ext.contentlet.view" path="portlet.ext.contentlet.view" />
+         <forward name="portlet.ext.contentlet.error" path="portlet.ext.contentlet.error" />
+      </action>
+      <action path="/ext/contentlet/edit_contentlet" type="com.dotmarketing.portlets.contentlet.action.EditContentletAction" name="ContentletForm"  input="portlet.ext.contentlet.edit_contentlet" scope="request" validate="false">
+         <forward name="portlet.ext.contentlet.edit_contentlet" path="portlet.ext.contentlet.edit_contentlet"></forward>
+      </action>
+
+      <action path="/ext/contentlet/import_contentlets" type="com.dotmarketing.portlets.contentlet.action.ImportContentletsAction" name="ImportContentletsForm" scope="request" validate="false">
+         <forward name="portlet.ext.contentlet.import_contentlets" path="portlet.ext.contentlet.import_contentlets" />
+         <forward name="portlet.ext.contentlet.import_contentlets_preview" path="portlet.ext.contentlet.import_contentlets_preview" />
+         <forward name="portlet.ext.contentlet.import_contentlets_results" path="portlet.ext.contentlet.import_contentlets_results" />
+      </action>
+
+      <!-- Contentlet  Management -->
+
+
+      <!-- Link Manager -->
+      <action path="/ext/links/view_links" type="com.dotmarketing.portlets.links.action.ViewLinksAction">
+         <forward name="portlet.ext.links.view_links" path="portlet.ext.links.view_links" />
+         <forward name="portlet.ext.links.view" path="portlet.ext.links.view" />
+      </action>
+      <action path="/ext/links/edit_link" type="com.dotmarketing.portlets.links.action.EditLinkAction" name="LinkForm" scope="request" input="portlet.ext.links.edit_link" validate="false">
+         <forward name="portlet.ext.links.edit_link" path="portlet.ext.links.edit_link"></forward>
+      </action>
+      <action path="/ext/links/publish_links" type="com.dotmarketing.portlets.links.action.PublishLinksAction">
+         <forward name="portlet.ext.links.publish_links" path="portlet.ext.links.publish_links" />
+      </action>
+      <!-- Link Manager -->
+
+      <!-- Workflows Manager -->
+      <action path="/ext/workflows/view_workflow_tasks" type="com.dotmarketing.portlets.workflows.action.ViewWorkflowTasksAction">
+         <forward name="portlet.ext.workflows.view_workflow_tasks" path="portlet.ext.workflows.view_workflow_tasks" />
+         <forward name="portlet.ext.workflows.view" path="portlet.ext.workflows.view" />
+      </action>
+      <action path="/ext/workflows/edit_workflow_task" type="com.dotmarketing.portlets.workflows.action.EditWorkflowTaskAction" name="WorkflowTaskForm" scope="request" input="portlet.ext.workflows.edit_workflow_task" validate="false">
+         <forward name="portlet.ext.workflows.view_workflow_task" path="portlet.ext.workflows.view_workflow_task"></forward>
+         <forward name="portlet.ext.workflows.edit_workflow_task" path="portlet.ext.workflows.edit_workflow_task"></forward>
+      </action>
+      <!-- Workflows Manager -->
+
+
+
+      <!-- CMS Browser -->
+      <action path="/ext/browser/view_browser" type="com.dotmarketing.portlets.browser.action.ViewBrowserAction">
+         <forward name="portlet.ext.browser.view_browser" path="portlet.ext.browser.view_browser" />
+      </action>
+      <!-- CMS Browser -->
+
+      <!-- Folder Management -->
+      <action path="/ext/folders/edit_folder" type="com.dotmarketing.portlets.folders.action.EditFolderAction" name="FolderForm" input="portlet.ext.folders.edit_folder" scope="request" validate="false">
+         <forward name="portlet.ext.folders.edit_folder" path="portlet.ext.folders.edit_folder" />
+         <forward name="portlet.ext.folders.view_folders" path="/c/ext/folders/view_folders" redirect="true" />
+      </action>
+
+      <action path="/ext/folders/publish_folder" type="com.dotmarketing.portlets.folders.action.PublishFolderAction">
+         <forward name="portlet.ext.folders.publish_folder" path="portlet.ext.folders.publish_folder" />
+      </action>
+      <action path="/ext/folders/order_menu" type="com.dotmarketing.portlets.folders.action.OrderMenuAction">
+         <forward name="portlet.ext.folders.order_menu" path="portlet.ext.folders.order_menu" />
+      </action>
+      <action path="/ext/folders/edit_host" type="com.dotmarketing.portlets.folders.action.EditHostAction" name="HostForm" input="portlet.ext.folders.edit_host" scope="request" validate="false">
+         <forward name="portlet.ext.folders.edit_host" path="portlet.ext.folders.edit_host" />
+         <forward name="portlet.ext.folders.view_folders" path="/c/ext/folders/view_folders" redirect="true" />
+      </action>
+      <!-- Folder Management -->
+
+      <!-- File Management -->
+      <action path="/ext/files/upload_multiple" type="com.dotmarketing.portlets.files.action.UploadMultipleFilesAction" name="FileForm" scope="request" input="portlet.ext.files.upload_multiple" validate="false">
+         <forward name="portlet.ext.files.upload_multiple" path="portlet.ext.files.upload_multiple"></forward>
+      </action>
+
+      <!-- File Management -->
+
+      <!-- File Upload Management -->
+      <action path="/ext/fileupload/upload_file" type="com.dotmarketing.portlets.fileupload.c.h.UploadFileHandler" name="FileUploadForm" scope="request" input="portlet.ext.fileupload.upload_file" validate="false">
+         <forward name="1" path="portlet.ext.fileupload.upload_file"></forward>
+      </action>
+      <!-- File Upload Management -->
+
+      <!-- Container Management -->
+      <action path="/ext/containers/view_containers" type="com.dotmarketing.portlets.containers.action.ViewContainersAction">
+         <forward name="portlet.ext.containers.view_containers" path="portlet.ext.containers.view_containers" />
+         <forward name="portlet.ext.containers.view" path="portlet.ext.containers.view" />
+      </action>
+      <action path="/ext/containers/edit_container" type="com.dotmarketing.portlets.containers.action.EditContainerAction" name="ContainerForm" scope="request" input="portlet.ext.containers.edit_container" validate="false">
+         <forward name="portlet.ext.containers.edit_container" path="portlet.ext.containers.edit_container"></forward>
+         <forward name="portlet.ext.containers.add_variables" path="portlet.ext.containers.add_variables"></forward>
+      </action>
+      <action path="/ext/containers/publish_containers" type="com.dotmarketing.portlets.containers.action.PublishContainersAction">
+         <forward name="portlet.ext.containers.publish_containers" path="portlet.ext.containers.publish_containers" />
+      </action>
+      <action path="/ext/containers/view_containers_popup" type="com.dotmarketing.portlets.containers.action.ViewContainersAction">
+         <forward name="portlet.ext.containers.view_containers" path="portlet.ext.containers.view_containers_popup" />
+         <forward name="portlet.ext.containers.view" path="portlet.ext.containers.view_containers_popup" />
+      </action>
+
+      <!-- Container  Management -->
+
+      <!-- Template Management -->
+      <action path="/ext/templates/view_templates" type="com.dotmarketing.portlets.templates.action.ViewTemplatesAction">
+         <forward name="portlet.ext.templates.view_templates" path="portlet.ext.templates.view_templates" />
+         <forward name="portlet.ext.templates.view" path="portlet.ext.templates.view" />
+      </action>
+      <action path="/ext/templates/edit_template" type="com.dotmarketing.portlets.templates.action.EditTemplateAction" name="TemplateForm" scope="request" input="portlet.ext.templates.edit_template" validate="false">
+         <forward name="portlet.ext.templates.edit_template" path="portlet.ext.templates.edit_template"></forward>
+         <!-- BEGIN GRAZIANO issue-12-dnd-template -->
+         <forward name="portlet.ext.templates.design_template" path="portlet.ext.templates.design_template"></forward>
+         <!-- END GRAZIANO issue-12-dnd-template -->
+         <forward name="portlet.ext.templates.container_selector" path="portlet.ext.templates.container_selector"></forward>
+      </action>
+      <action path="/ext/templates/publish_templates" type="com.dotmarketing.portlets.templates.action.PublishTemplatesAction">
+         <forward name="portlet.ext.templates.publish_templates" path="portlet.ext.templates.publish_templates" />
+      </action>
+      <!-- Template  Management -->
+
+
+
+
+      <!-- Language Manager -->
+      <action path="/ext/languages_manager/view_languages_manager" type="com.dotmarketing.portlets.languagesmanager.action.ViewLanguageAction">
+         <forward name="portlet.ext.languagesmanager.view" path="portlet.ext.languages_manager.view" />
+         <forward name="portlet.ext.languagesmanager.view_languages" path="portlet.ext.languages_manager.view_languages" />
+      </action>
+      <action path="/ext/languages_manager/edit_language_keys" type="com.dotmarketing.portlets.languagesmanager.action.EditLanguageKeysAction" name="LanguageForm">
+         <forward name="portlet.ext.languagesmanager.edit_language_keys" path="portlet.ext.languages_manager.edit_language_keys"></forward>
+      </action>
+      <action path="/ext/languages_manager/edit_language" type="com.dotmarketing.portlets.languagesmanager.action.EditLanguageAction" name="LanguageForm" scope="request" input="portlet.ext.languagemanager.edit_language" validate="false">
+         <forward name="portlet.ext.languagesmanager.edit_language" path="portlet.ext.languages_manager.edit_language"></forward>
+      </action>
+
+      <!-- Language Manager -->
+
+
+
+
+
+
+      <!-- HMTLPage View Reporting -->
+      <action path="/ext/htmlpageviews/view_htmlpage_views" type="com.dotmarketing.portlets.htmlpageviews.action.ViewHTMLPageViewsAction">
+         <forward name="portlet.ext.htmlpageviews.view_htmlpage_views" path="portlet.ext.htmlpageviews.view_htmlpage_views" />
+         <forward name="portlet.ext.htmlpageviews.view" path="portlet.ext.htmlpageviews.view" />
+         <forward name="portlet.ext.htmlpageviews.html_page_report" path="portlet.ext.htmlpageviews.html_page_report" />
+      </action>
+
+      <action path="/ext/htmlpageviews/html_page_report" type="com.dotmarketing.portlets.htmlpageviews.action.HTMLPageReportAction">
+         <forward name="portlet.ext.htmlpageviews.html_page_report" path="portlet.ext.htmlpageviews.html_page_report" />
+      </action>
+      <!-- HMTLPage View Reporting -->
+
+      <!-- User Click Reporting -->
+      <action path="/ext/userclicks/view_user_clicks" type="com.dotmarketing.portlets.userclicks.action.ViewUserClicksAction">
+         <forward name="portlet.ext.userclicks.view_user_clicks" path="portlet.ext.userclicks.view_user_clicks" />
+         <forward name="portlet.ext.userclicks.view" path="portlet.ext.userclicks.view" />
+         <forward name="portlet.ext.userclicks.detail_user_clicks" path="portlet.ext.userclicks.detail_user_clicks" />
+      </action>
+      <!-- User Click Reporting -->
+
+
+
+
+      <!-- Director -->
+      <action path="/ext/director/direct" type="com.dotmarketing.portlets.director.action.DirectorAction" >
+         <forward name="portlet.ext.director.unlock_contentlet" path="portlet.ext.director.unlock_contentlet"></forward>
+         <forward name="portlet.ext.director.unlock_htmlpage" path="portlet.ext.director.unlock_htmlpage"></forward>
+         <forward name="portlet.ext.director.unlock_container" path="portlet.ext.director.unlock_container"></forward>
+         <forward name="portlet.ext.director.unlock_template" path="portlet.ext.director.unlock_template"></forward>
+         <forward name="portlet.ext.director.unlock_link" path="portlet.ext.director.unlock_link"></forward>
+         <forward name="portlet.ext.director.unlock_popup_link" path="portlet.ext.director.unlock_popup_link"></forward>
+         <forward name="portlet.ext.director.unlock_file" path="portlet.ext.director.unlock_file"></forward>
+      </action>
+      <!-- /Director -->
+
+
+
+
+      <!-- Events Admin -->
+      <action path="/ext/events/view_events" type="com.dotmarketing.portlets.events.action.ViewEventsAction">
+         <forward name="portlet.ext.events.view" path="portlet.ext.events.view" />
+         <forward name="portlet.ext.events.view_events" path="portlet.ext.events.view_events" />
+      </action>
+
+      <action path="/ext/events/edit_event" type="com.dotmarketing.portlets.events.action.EditEventAction" name="EventForm" validate="false" input="portlet.ext.events.edit_event" scope="request">
+         <forward name="portlet.ext.events.edit_event" path="portlet.ext.events.edit_event" />
+         <forward name="portlet.ext.events.view_event_registrations" path="portlet.ext.events.view_event_registrations" />
+      </action>
+
+      <action path="/ext/events/edit_recurance" type="com.dotmarketing.portlets.events.action.EditRecuranceAction" name="RecuranceForm" validate="false" input="portlet.ext.events.edit_recurance" scope="request">
+         <forward name="portlet.ext.events.edit_recurance" path="portlet.ext.events.edit_recurance" />
+      </action>
+      <!-- Events Admin -->
+
+      <!-- Events Approval -->
+      <action path="/ext/eventsapproval/view_events" type="com.dotmarketing.portlets.eventsapproval.action.ViewEventsAction">
+         <forward name="portlet.ext.eventsapproval.view" path="portlet.ext.eventsapproval.view" />
+         <forward name="portlet.ext.eventsapproval.view_events" path="portlet.ext.eventsapproval.view_events" />
+      </action>
+
+      <action path="/ext/eventsapproval/edit_event" type="com.dotmarketing.portlets.eventsapproval.action.EditEventAction">
+         <forward name="portlet.ext.eventsapproval.view_events" path="portlet.ext.eventsapproval.view_events" />
+      </action>
+      <!-- Events Approval -->
+
+      <!-- CMS Maintenance -->
+      <action path="/ext/cmsmaintenance/view_cms_maintenance" type="com.dotmarketing.portlets.cmsmaintenance.action.ViewCMSMaintenanceAction" name="CmsMaintenanceForm" input="portlet.ext.cmsmaintenance.view_cms_maintenance" validate="false" scope="request">
+         <forward name="portlet.ext.cmsmaintenance.view_cms_maintenance" path="portlet.ext.cmsmaintenance.view_cms_maintenance" />
+         <forward name="portlet.ext.cmsmaintenance.view" path="portlet.ext.cmsmaintenance.view" />
+      </action>
+
+      <!-- CMS Maintenance -->
+
+
+      <!-- STRUCTURE & FIELD-->
+      <action path="/ext/structure/view_structure" type="com.dotmarketing.portlets.structure.action.ViewStructureAction" name="StructureForm" input="portlet.ext.structure.view" validate="false" scope="request">
+         <forward name="portlet.ext.structure.view" path="portlet.ext.structure.view" />
+         <forward name="portlet.ext.structure.view_structure" path="portlet.ext.structure.view_structure" />
+      </action>
+
+      <action path="/ext/structure/edit_structure" type="com.dotmarketing.portlets.structure.action.EditStructureAction" name="StructureForm" input="portlet.ext.structure.edit_structure" validate="false" scope="request">
+         <forward name="portlet.ext.structure.edit_structure" path="portlet.ext.structure.edit_structure" />
+      </action>
+
+      <action path="/ext/structure/deleteStructure" type="com.dotmarketing.portlets.structure.action.EditStructureAction" name="" input="portlet.ext.answerquestion.view_answer_question" validate="false" scope="request">
+         <forward name="portlet.ext.structure.view_structure" path="portlet.ext.structure.view_structure" />
+      </action>
+
+      <action path="/ext/structure/edit_field" type="com.dotmarketing.portlets.structure.action.EditFieldAction" name="DotFieldForm" input="portlet.ext.structure.edit_field" validate="false" scope="request">
+         <forward name="portlet.ext.structure.edit_field" path="portlet.ext.structure.edit_field" />
+      </action>
+
+      <action path="/ext/structure/deleteField" type="com.dotmarketing.portlets.structure.action.EditFieldAction" name="DotFieldForm" input="" validate="false" scope="request">
+         <forward name="portlet.ext.structure.view_structure" path="portlet.ext.structure.view_structure" />
+      </action>
+
+      <action path="/ext/structure/view_relationships" type="com.dotmarketing.portlets.structure.action.ViewRelationshipsAction">
+         <forward name="portlet.ext.structure.view_relationships" path="portlet.ext.structure.view_relationships" />
+      </action>
+
+      <action path="/ext/structure/edit_relationship" type="com.dotmarketing.portlets.structure.action.EditRelationshipAction" name="RelationshipForm" input="portlet.ext.structure.edit_relationship" validate="false" scope="request">
+         <forward name="portlet.ext.structure.edit_relationship" path="portlet.ext.structure.edit_relationship" />
+      </action>
+
+
+      <!-- END STRUCTURE & FIELD-->
+      
+      
+    <!-- FORM HANDLER -->
+      <action path="/ext/formhandler/view_form" type="com.dotmarketing.portlets.form.action.ViewFormHandlerAction" name="" input="portlet.ext.formhandler.view" validate="false" scope="request">
+         <forward name="portlet.ext.formhandler.view" path="portlet.ext.formhandler.view" />
+         <forward name="portlet.ext.formhandler.view_form" path="portlet.ext.formhandler.view_form" />
+      </action>
+    <!-- END FORM HANDLER -->
+
+      <!-- User Admin -->
+      <action path="/ext/useradmin/view_users" type="com.dotmarketing.portlets.useradmin.action.ViewUsersAction" name="" validate="false" scope="request">
+         <forward name="portlet.ext.useradmin.view_users" path="portlet.ext.useradmin.view_users" />
+      </action>
+
+      <!-- Role Admin -->
+      <action path="/ext/roleadmin/view_roles" type="com.dotmarketing.portlets.roleadmin.action.ViewRolesAction" name="" validate="false" scope="request">
+         <forward name="portlet.ext.roleadmin.view_roles" path="portlet.ext.roleadmin.view_roles" />
+      </action>
+
+      <!-- User Filter -->
+      <action path="/ext/userfilter/edit_userfilter" type="com.dotmarketing.portlets.userfilter.action.EditUserFilterAction" name="UserManagerListSearchForm" input="portlet.ext.userfilter.edit_userfilter" validate="false" scope="request">
+         <forward name="portlet.ext.userfilter.edit_userfilter" path="portlet.ext.userfilter.edit_userfilter"></forward>
+      </action>
+
+      <!-- Schedulers Management -->
+      <action path="/ext/scheduler/view_schedulers" type="com.dotmarketing.portlets.scheduler.action.ViewSchedulersAction">
+         <forward name="portlet.ext.scheduler.view_schedulers" path="portlet.ext.scheduler.view_schedulers" />
+         <forward name="portlet.ext.scheduler.view" path="portlet.ext.scheduler.view" />
+      </action>
+      <action path="/ext/scheduler/edit_scheduler" type="com.dotmarketing.portlets.scheduler.action.EditSchedulerAction" name="SchedulerForm" scope="request" input="portlet.ext.scheduler.edit_scheduler" validate="false">
+         <forward name="portlet.ext.scheduler.edit_scheduler" path="portlet.ext.scheduler.edit_scheduler"></forward>
+      </action>
+      <!-- Schedulers Management -->
+      
+      <!-- Events Calendar Manager -->
+      <action path="/ext/calendar/view_calendar" type="com.dotmarketing.portlets.calendar.action.ViewCalendarAction">
+         <forward name="portlet.ext.calendar.view" path="portlet.ext.calendar.view" />
+         <forward name="portlet.ext.calendar.view_calendar" path="portlet.ext.calendar.view_calendar" />
+      </action>
+
+      <action path="/ext/calendar/edit_event" type="com.dotmarketing.portlets.contentlet.action.EditContentletAction" name="ContentletForm" input="portlet.ext.contentlet.edit_contentlet" validate="false" scope="request">
+         <forward name="portlet.ext.contentlet.edit_contentlet" path="portlet.ext.contentlet.edit_contentlet"></forward>
+      </action>
+
+      <!-- Events Calendar Manager   -->
+
+      <!-- Host Admin -->
+      <action path="/ext/hostadmin/view_hosts" type="com.dotmarketing.portlets.hostadmin.action.ViewHostsAction" name="" validate="false" scope="request">
+         <forward name="portlet.ext.hostadmin.view_hosts" path="portlet.ext.hostadmin.view_hosts" />
+      </action>
+
+      <!-- Dashboard -->
+      <action path="/ext/dashboard/view_dashboard" type="com.dotmarketing.portlets.dashboard.action.ViewDashboardAction" name="" validate="false" scope="request">
+         <forward name="portlet.ext.dashboard.view_dashboard" path="portlet.ext.dashboard.view_dashboard" />
+         <forward name="portlet.ext.dashboard.view_host_report" path="portlet.ext.dashboard.view_host_report" />
+         <forward name="portlet.ext.dashboard.view_workstream" path="portlet.ext.dashboard.view_workstream" />
+         <forward name="portlet.ext.browser.view_browser" path="portlet.ext.browser.view_browser" />
+         <forward name="portlet.ext.htmlpages.view_htmlpages" path="portlet.ext.htmlpages.view_htmlpages" />
+         <forward name="portlet.ext.files.view_files" path="portlet.ext.files.view_files" />
+      </action>
+
+	<!-- Escalation -->
+	<action path="/ext/escalation/viewJobEsc" type="com.dotcms.escalation.business.ManualExpiryJobLaunchAction">
+		<forward name="portlet.ext.plugins.expCont.struts" path="portlet.ext.plugins.expCont.struts" />
+	</action>
+	<action path="/ext/escalation/RunJobEsc" type="com.dotcms.escalation.business.ManualExpiryJobLaunchAction" name="EscalationForm">
+		<forward name="portlet.ext.plugins.expCont.struts" path="portlet.ext.plugins.expCont.struts" />
+	</action>
+
+	<action path="/ext/brokenlinks/view_broken_links" type="com.dotmarketing.portlets.checkurl.util.DispatcherService">
+		<forward name="portlet.ext.plugins.it.eng.dotcms.checkURL.struts" path="portlet.ext.checkURL.struts" />
+	</action>
+
+	</action-mappings>
+
+	<!--  DOTMARKETING -->
+		<controller processorClass="com.dotmarketing.struts.PortalRequestProcessor" contentType="text/html; charset=UTF-8"/>
+	<!--  DOTMARKETING -->
+
+	<!-- Message Resources -->
+	<!--  DOTMARKETING add content.cms_language -->
+	<message-resources parameter="messages.Language,messages.Language-ext,messages.cms_language" factory="com.liferay.portal.struts.MultiMessageResourcesFactory" />
+	<!--  DOTMARKETING add content.cms_language -->
+	<!-- Stxx Plugin -->
+
+	<plug-in className="com.liferay.portal.struts.StxxPlugin">
+		<set-property property="pipeline-config" value="/WEB-INF/stxx-pipelines.xml" />
+	</plug-in>
+
+	<!-- Tiles Plugin -->
+
+	<plug-in className="org.apache.struts.tiles.TilesPlugin" >
+		<set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml,/WEB-INF/tiles-defs-ext.xml" />
+		<set-property property="moduleAware" value="true" />
+		<set-property property="definitions-parser-validate" value="true" />
+	</plug-in>
+
+	<!-- Validation Plug-In DOTMARKETING -->
+   <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+      <set-property property="pathnames" value="/WEB-INF/validator-rules.xml, /WEB-INF/validation.xml" />
+   </plug-in>
+   <!-- Validation Plug-In DOTMARKETING -->
+</struts-config>

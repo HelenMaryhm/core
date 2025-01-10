@@ -1,0 +1,47 @@
+#if($utilmethods.isset($urlmapcontent.title))
+    #set($pagetitle = $urlmapcontent.title)
+    #set($crumbtitle = $urlmapcontent.title)
+#else
+    #set($pagetitle = $dotpagecontent.title)
+#end
+#set($dotrelativethemepath=$dottheme.path)
+#if($dotrelativethemepath.startswith("//"))
+	#set($dotrelativethemepath=$dotrelativethemepath.substring(2))
+	#set($dotrelativethemepath=$dotrelativethemepath.substring($dotrelativethemepath.indexof("/")))
+#end
+#if("0" == $request.getparameter("com.dotmarketing.persona.id"))
+	${visitor.cleartags()}
+#end
+
+<title>$pagetitle</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta charset="utf-8">
+<meta name="application-name" content="dotcms dotcms.com">
+<meta name="description" content="$!dotpagecontent.seodescription">
+<meta name="keywords" content="$!dotpagecontent.seokeywords">
+<meta name="author" content="$!dotpagecontent.pagemetadata">
+<meta name="lastmodifieddate" content="$!dotpagecontent.moddate">
+<meta name="application-name" content="dotcms.com" />
+<meta name="generator" content="dotcms" />
+#if($utilmethods.isset($dotpagecontent.canonicalurl))
+<link rel="canonical" href="//demo.dotcms.com$!{dotpagecontent.canonicalurl}" />
+#else
+<link rel="canonical" href="//demo.dotcms.com$!{request.getattribute("javax.servlet.forward.request_uri")}" />
+#end
+
+<!-- touch icons -->
+<link rel="shortcut icon" href="//dotcms.com/favicon.ico" type="image/x-icon">
+
+<!-- css styles -->
+
+<link rel="stylesheet" href="${dottheme.path}sass/main.dotsass">
+<link rel="stylesheet" href="${dottheme.path}css/animate.css">
+
+<!-- web fonts -->
+<link href='//fonts.googleapis.com/css?family=merriweather:400,300' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=open+sans:400,300' rel='stylesheet' type='text/css'>
+iption">
+<meta name="keywords" content="$!dotpagecontent.seokeywords">
+<meta name="author" content="$!dotpagecontent.pagemetadata">
+<meta name="lastmodifieddate" content="$!dotpagecontent.moddate">
+<meta name="application-name" con

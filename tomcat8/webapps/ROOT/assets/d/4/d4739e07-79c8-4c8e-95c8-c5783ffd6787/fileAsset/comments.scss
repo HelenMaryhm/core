@@ -1,0 +1,152 @@
+.dotcms-comments {
+    border-top: dashed 1px $gray-lighter;
+    margin-top: $padding-base-vertical * 4;
+    padding-top: $padding-base-vertical * 2;
+}
+.comment-detail-list {
+
+    .preview {
+        opacity: 0.5
+    }
+
+    .comment-body {
+        @include clearfix();
+        border: solid 1px $gray-lighter;
+        border-radius: $border-radius-large;
+        margin-bottom: $padding-base-vertical;
+        padding: $padding-base-horizontal;
+
+        @media (min-width: $screen-tablet) {
+            padding: $padding-base-horizontal * 2;
+        }
+
+        p {
+            margin: ($line-height-computed / 2) 0 0;
+
+            &:first-child {
+                margin: 0;
+            }
+
+        }
+    }
+    .comment-info {
+        margin-right: $padding-base-horizontal;
+        position: relative;
+        text-align: center;
+        width: 74px;
+
+        &:before {
+            @include rotate(-45deg);
+            background-color: $white;
+            content: "";
+            display: block;
+            width: 10px;
+            height: 10px;
+            position: absolute;
+            right: -15px;
+            top: 34px;
+            border: solid 1px $gray-lighter;
+            border-bottom: none;
+            border-right: none;
+
+        }
+
+        img {
+            border: solid 1px $gray-lighter;
+            border-radius: 37px;
+            margin-bottom: $padding-base-vertical / 2;
+            padding: 5px;
+        }
+
+        time {
+            font-size: $font-size-x-small;
+            display: block;
+        }
+
+        .author {
+          color: $brand-secondary;
+          font-size: 12px;
+          display: block;
+        }
+
+    }
+}
+
+.comments-title {
+    display: inline-block;
+    margin-bottom: $padding-base-vertical * 3;
+    padding-left: 50px;
+    position: relative;
+
+    span {
+        background-color: $brand-secondary;
+        border-radius: 20px;
+        color: $white;
+        display: block;
+        font-size: $font-size-large;
+        font-weight: normal;
+        height: 40px;
+        line-height: 40px;
+        position: absolute;
+        left: 0;
+        text-align: center;
+        top: -7px;
+        width: 40px;
+    }
+}
+
+.comments-form {
+    margin: $padding-base-vertical * 3 auto 0;
+
+    .button-group {
+        .control-field {
+            @include media-breakpoint-up(md) {
+                @include make-col-offset(2);
+            }
+        }
+    }
+
+    .captcha-audio-player {
+        position: absolute;
+        visibility: hidden;
+    }
+
+    .captcha-content {
+        border: solid 1px $gray-lighter;
+        display: inline-block;
+        padding: 5px;
+    }
+
+    .control-field {
+        @include media-breakpoint-up(md) {
+            @include make-col(10);
+        }
+    }
+
+    .control-label {
+        @include media-breakpoint-up(md) {
+            @include make-col(2);
+        }
+    }
+
+    .notify-group {
+        .checkbox {
+            padding-top: 0;
+        }
+
+        .control-field {
+            @include media-breakpoint-up(md) {
+                @include make-col-offset(2);
+            }
+        }
+    }
+}
+
+.btn-comment-reply,
+.btn-post-comment {
+    float: right;
+}
+
+.btn-post-comment {
+    margin-top: 10px;
+}

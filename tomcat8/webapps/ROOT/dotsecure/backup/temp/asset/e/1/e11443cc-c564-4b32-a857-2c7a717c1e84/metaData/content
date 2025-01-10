@@ -1,0 +1,218 @@
+body {
+	width:100% !important; 
+	-webkit-text-size-adjust:100%; 
+	-ms-text-size-adjust:100%; 
+	text-align: left;margin:0; 
+	padding:0; 
+	font-size:14px; 
+	color: #45535b; 
+	font-family: 'open sans', 'arial', 'helvetica', sans-serif;
+	font-weight: 300;
+	line-height: 1.8;
+	background-color: #ffffff;
+	background-image: url('/application/themes/ski-resort/img/background-body.jpg');
+	background-attachment: fixed;
+	background-position: 50% -20px;
+	background-repeat: no-repeat;
+	background-size: 100% auto;
+}
+
+footer{
+	color: #ffffff;
+	padding: 30px;
+	background: $blue-light;
+	line-height: 16px;
+	font-size: 12px;
+}
+
+h1, h2, h3 {
+	font-family: 'merriweather', serif;
+	font-weight: 300;
+}
+
+hr {
+    border-top: 1px solid $gray-light;
+}
+
+.row { width: 100% !important; }
+
+.powered-by{height: 1px; width: 1px; position: absolute; left: -9999px; overflow: hidden;}
+
+.hr-lg {
+    display: block;
+    padding-top: 18px;
+    padding-bottom: 18px;
+    margin-top: 0;
+    margin-bottom: 0;
+    background: #ffffff url('/application/themes/ski-resort/img/hr-snowflake.png') center center no-repeat;
+    border: 0;
+    border-top: 0;
+}
+.navbar-brand {
+    padding: 5px 0 5px 0;
+}
+
+.logo-wrapper {
+	margin-top: 85px;
+	min-height: 350px;
+}
+
+h1.logo {
+	display:block;
+	height: 319px;
+	width: 256px;
+	background-image: url('/application/themes/ski-resort/img/bm-logo.png');
+	background-position: 50% 0;
+	background-repeat: no-repeat;
+	text-indent: -9999px;
+	margin: 0 auto 20px auto;
+}
+
+
+/* background images */
+.image-wrapper {
+	background-attachment: fixed;
+	background-position: 50% 0;
+	background-repeat: no-repeat;
+
+	position: relative;
+}
+
+.content-wrapper {
+	background: #ffffff;
+	padding: 40px 0;
+	margin-top: 40px;
+}
+
+.content-spacer {
+	height: 150px;
+}
+
+.bg-image-1 {
+	background-image: url('/application/themes/ski-resort/img/chair-lift.jpg');
+	background-size: 100% auto;
+	height: 500px;
+}
+
+.bg-image-2 {
+	background-image: url('/application/themes/ski-resort/img/background-family.jpg');
+	background-size: 100% auto;
+	height: 500px;
+}
+
+
+/* promo menu */
+.promo{
+    	background: rgba(255,255,255,0.6);
+    	border-radius: 5px;
+    	height: 150px;
+    	border: 1px solid $white;
+    	padding: 18px;
+    	display: block;
+    	line-height: 16px;
+    	text-align: center;
+    	text-decoration: none;
+    	font-weight: 700;
+    	margin-bottom: 10px;
+    	-webkit-transition: background 150ms ease-in 300ms; /* property duration timing-function delay */
+	    -moz-transition: background 150ms ease-in 300ms;
+	    -o-transition: background 150ms ease-in 300ms;
+	    transition: background 150ms ease-in 300ms;
+        span{
+	        display: block;
+	        margin-top: 8px;
+	        color: $blue;
+	   }
+    }
+.promo:hover{
+    background: rgba(255,255,255,0.9);
+    text-decoration: none;
+}
+
+/* carousel */
+.carousel {
+	overflow: hidden;
+}
+.li-pic li{
+	width: 75px;
+	height: 50px;
+	margin: 5px;
+	border: 1px solid #1e0604;
+	padding: 0;
+	text-indent: 0;
+	overflow: hidden;
+	display: inline-block;
+}
+.carousel-indicators {
+	position: static;
+	display: block;
+	margin-right: 0;
+	.active {
+		border: 1px solid #7b695d;
+	}
+}
+
+/* nav */
+.nav-primary > ul > li.active > a {
+	color: #7b695d !important;
+}
+
+@include media-breakpoint-down(md) { 
+	body{
+		background-size: 992px auto;
+	}
+	.logo-wrapper {
+		padding: 0 0 80px 0;
+	    height: auto;
+	}
+	h1.logo {
+		display: none;
+	}
+	h2.footer-logo {
+		height: 132px;
+		width: 266px;
+		background-size: 295px auto;
+		background-size: 90%;
+	}
+	.image-wrapper {
+		height: 200px;
+	}
+	.bg-image-1, .bg-image-2{
+		background-size: 1000px auto;
+	}
+	.content-spacer {
+		height:0px;
+	}
+	.pull-right {
+		float: none !important;
+	}
+	.promo{
+    	height: 50px;
+    	padding: 8px;
+    	text-align: left;
+    	img{
+    	    height: 32px;
+    	}
+        span{
+	        display: inline;
+	        margin-top: 0px;
+	   }
+    }
+}
+low: hidden;
+}
+.li-pic li{
+	width: 75px;
+	height: 50px;
+	margin: 5px;
+	border: 1px solid #1e0604;
+	padding: 0;
+	text-indent: 0;
+	overflow: hidden;
+	display: inline-block;
+}
+.carousel-indicators {
+	position: static;
+	display: block;
+	margin-right: 0;
+	.activ

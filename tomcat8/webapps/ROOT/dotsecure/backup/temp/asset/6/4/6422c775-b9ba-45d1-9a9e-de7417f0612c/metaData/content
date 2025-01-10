@@ -1,0 +1,193 @@
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+<script type="text/javascript" >
+  $(document).ready(function() {
+    $("#newpost").submit(function(e) {
+
+      e.preventdefault();
+
+        var dataobj={        
+          'ipaddress': "$request.getremoteaddr()",
+          'stname':'requestprospectus'
+        };
+        if($('#firstname').val() != undefined && $('#firstname').val().length > 0){
+          dataobj.firstname = $('#firstname').val();
+        }
+        if($('#lastname').val() != undefined && $('#lastname').val().length > 0){
+          dataobj.lastname = $('#lastname').val();
+        }
+        if($('#email').val() != undefined && $('#email').val().length > 0){
+          dataobj.email = $('#email').val();
+        }
+        if($('#address1').val() != undefined && $('#address1').val().length > 0){
+            dataobj.address1 = $('#address1').val();
+        }
+        if($('#address2').val() != undefined && $('#address2').val().length > 0){
+            dataobj.address2 = $('#address2').val();
+        }
+        if($('#city').val() != undefined && $('#city').val().length > 0){
+            dataobj.city = $('#city').val();
+        }
+        if($('#state').val() != undefined && $('#state').val().length > 0){
+            dataobj.state = $('#state').val();
+        }
+        if($('#zipcode').val() != undefined && $('#zipcode').val().length > 0){
+            dataobj.zipcode = $('#zipcode').val();
+        }
+        if($('#fund').val() != undefined && $('#fund').val().length > 0){
+            dataobj.fund = $('#fund').val();
+        }
+
+        dataobj.contactme =$('#contactmeyes').is(':checked') ;
+        if($('#fund').val()=="select a fund"){
+            alert("select a fund");
+            return;
+        };
+
+        $('requestbtn').attr('disabled', true);
+        $('requestbtn').prop('disabled', true);
+        $( "button" ).removeclass( "btn-primary" ).addclass( "disabled" );
+        $.ajax({
+          url: '/api/content/save/1',
+          type: 'post',
+          cache:false,
+          data: dataobj,         
+
+          success: function(data, status, xhr) {
+            console.log("works!");
+            //window.location="/demos/form-success";
+            var a = xhr.getallresponseheaders();
+console.log(a.substring(a.indexof('identifier: ') + 'identifier: '.length , a.indexof('\n', a.indexof('identifier: ') + 'identifier: '.length)));
+
+          },
+          error: function(data,status,xhr) {
+            $('requestbtn').attr('disabled', false);
+            $('requestbtn').prop('disabled', false);
+            $( "button" ).removeclass( "disabled" ).addclass( "btn-primary" );
+            console.log(data);
+            alert("uh oh, your request failed. please check your entries and try again");
+          },
+      });
+    });
+  });
+ 
+</script>
+
+
+<!-- form name -->
+<h2>
+    request a prospectus for any quest financial fund<br>
+    <small>no commitment, no obligation just the lowest fees in the industry.</small>
+</h2>
+<p>this is an example of using dotcms's restful api to submit user content from a form and store it in the dotcms database. complete the form below and then login to the authoring/admin side of dotcms to find your content stored there. as you can imagine, you can initiate actions and workflows along the way to process your user generated content and create dynamic user experiences. (you can find the content you submitted under the content tab. search on prospectus request as the content type) </p>
+
+<hr>
+
+<form class="form-horizontal"  role="form"  id="newpost">
+  <input type="hidden" name="stname" value="requestprospectus">
+  <input type="hidden" name="languageid" value="1">
+  <input type="hidden" name="contenthost" value="demo.dotcms.com">
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="firstname">first name: <span class="required">*</span></label>
+        <div class="col-sm-8">
+            <input id="firstname" class="col-sm-12" name="firstname" type="text" placeholder="first name" value="" required>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="lastname">last name: <span class="required">*</span></label>
+        <div class="col-sm-8">
+            <input id="lastname" class="col-sm-12" name="lastname" type="text" placeholder="last name"  value="" minlength="2" required>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="email">email: <span class="required">*</span></label>
+        <div class="col-sm-8">
+            <input id="email" class="col-sm-12" name="email" type="email" value="" placeholder="email" required>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="address1">address 1: </label>
+        <div class="col-sm-8">
+            <input id="address1" class="col-sm-12" name="address1" value="" type="text" placeholder="address 1">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="address2">address 2: </label>
+        <div class="col-sm-8">
+            <input id="address2" class="col-sm-12" name="address2" value="" type="text" placeholder="address 2">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="city">city: </label>
+        <div class="col-sm-8">
+            <input id="city" class="col-sm-12" name="city" value="" type="text" placeholder="city">
+        </div>
+    </div>
+
+    
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="state">state: </label>
+        <div class="col-sm-8">
+            <input id="state" class="col-sm-12" name="state" value="" type="text" placeholder="state">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="zipcode">postal code: </label>
+        <div class="col-sm-8">
+            <input id="zipcode" class="col-sm-12" name="zipcode"  value="" type="text" placeholder="postal code">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="state">contact me: </label>
+        <div class="col-sm-8">
+            <input type=radio id="contactmeyes"  name="contactme" value="yes"> <label for="contactmeyes">yes</label> &nbsp;&nbsp;
+            <input type=radio id="contactmeno"  name="contactme" value="no" checked="true"> <label for="contactmeno">no</label> &nbsp;&nbsp;
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="fund">fund: </label>
+        <div class="col-sm-8">
+            <select class="form-control col-sm-12" id="fund" name="fund" required>
+                <option>select a fund</option>
+                #foreach($fund in $dotcontent.pull("+structurename:products +(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797 conhost:system_host)",0,"products.title"))
+                    <option value="$fund.title">$fund.title</option>
+                #end
+            </select>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- button -->
+    <div class="text-center">
+        <button id="requestbtn" name="singlebutton" class="btn btn-primary btn-large">send me a prospectus</button>
+    </div>
+
+</form>
+ntactmeyes"  name="contactme" value="yes"> <label for="contactmeyes">yes</label> &nbsp;&nbsp;
+            <input type=radio id="contactmeno"  name="contactme" value="no" checked="true"> <label for="contactmeno">no</label> &nbsp;&nbsp;
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="fund">fund: </label>
+        <div class="col-sm-8">
+            <select class="form-control col-sm-12" id="fund" name="fund" required>
+                <option>select a fund</option>
+                #foreach($fund in $dotcontent.pull("+structurename:products +(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797 conhost:system_host)",0,"products.title"))
+                    <option value="$fund.title">$fund.title</option>
+                #end
+            </select>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- button -->
+    <

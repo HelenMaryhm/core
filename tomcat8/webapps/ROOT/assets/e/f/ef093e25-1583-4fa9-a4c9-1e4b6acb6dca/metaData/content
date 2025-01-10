@@ -1,0 +1,128 @@
+
+		
+			
+				
+					#if(!$user)
+						login
+					#else
+						logout
+					#end
+					find a branch
+					contact us
+				
+
+			
+
+		
+
+	
+
+	
+	    
+    	    
+    			
+                      
+                
+
+                				
+    				
+    					
+    					
+    				
+
+                
+
+            
+
+    	
+
+    
+
+    
+        
+            
+    			 
+    		
+            
+            
+            
+                
+
+                    #set($list = $navtool.getnav("/intranet"))
+                    #foreach($n in $list)
+                        #set($children = $n.children)
+                        #if($children && $children.size() > 0)
+                            	
+                                ${n.title} 
+                                
+
+                                    #foreach($ch in $children)
+                                        
+	${ch.title}
+
+
+                                    #end
+                                
+                            
+                        #else
+                            	${n.title}
+
+
+                        #end
+                    #end
+                
+                	
+                        #if(!$user)
+		            			login
+
+
+		            	#else
+		            			logout
+
+
+		            	#end
+                    
+
+
+            
+
+        
+
+    
+  
+
+            
+
+    	
+
+    
+
+    
+        
+            
+    			 
+    		
+            
+            
+            
+                
+
+                    #set($list = $navtool.getnav("/intranet"))
+                    #foreach($n in $list)
+                        #set($children = $n.children)
+                        #if($children && $children.size() > 0)
+                            	
+                                ${n.title} 
+                                
+
+                                    #foreach($ch in $children)
+                                        
+	${ch.title}
+
+
+                                    #end
+                                
+                            
+                        #else
+                            	${n.title}
+

@@ -1,0 +1,42 @@
+<div class="card">
+	<div class="card-header">
+    <h3 class="card-title">My Account</h3>
+	</div>
+	<div class="card-body">
+
+		<!-- ACCOUNT DETAILS -->
+		<p>
+			$!{user.prefix} $!{user.firstName} $!{user.lastName} $!{user.suffix}<br>
+			#if($UtilMethods.isSet($user.title))
+				$!{user.title}<br>
+			#end
+			$!{user.emailAddress}
+		</p>
+	
+	
+	
+		<!-- MAILING ADDRESSES -->
+		#set($addresses = $cmsuser.getAddresesByUser($user))
+		#foreach($addr in $addresses )
+			
+			<h4>$addr.description</h4>
+			<address>
+				#if($UtilMethods.isSet($addr.street1))
+					$addr.street1<br>
+				#end
+				#if($UtilMethods.isSet($addr.street2))
+					$addr.street2<br>
+				#end
+				$addr.city, $addr.state $addr.zip
+			</address>
+			<p>
+				#if($UtilMethods.isSet($addr.phone))
+					<b>Phone:</b> <a href="tel:$addr.phone">$addr.phone</a><br>
+				#end
+				#if($UtilMethods.isSet($addr.fax))
+					<b>Fax:</b> <a href="tel:$addr.fax">$addr.fax</a>
+				#end
+			</p>
+		#end
+	</div>
+</div>

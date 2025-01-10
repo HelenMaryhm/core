@@ -1,0 +1,162 @@
+#if($URLMapContent.inode)
+
+  <script>
+    $(document).ready(function() {
+
+      jQuery.getJSON("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22$!{URLMapContent.tickerSymbol}%22)&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=?",
+      function(data) {
+        var q = (data.query.results.quote.PreviousClose);
+        var x = (data.query.results.quote.Change);
+        var y = (data.query.results.quote.PercentChange);
+
+        jQuery("#price").append(q);
+
+        if (x.indexOf("-") != -1) {
+          var x = "<span class=\"down\"> " + x + " (" + y + ")</span>";
+        } else if (x.indexOf("+") != -1) {
+          var x = "<span class=\"up\"> " + x + " (" + y + ")</span>";
+        } else {
+          var x = "<span> " + x + " (" + y + ")</span>";
+        }
+        jQuery("#change").append(x);
+      });
+
+    });
+  </script>
+
+<div class="product-detail">
+	
+	
+	
+	<div class="product-detail-main">
+		<div class="product-detail-title">
+			#editContentlet($URLMapContent.inode)
+			#if(!$EDIT_MODE)
+				<div class="dropdown product-nav navbar-right">
+				   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    #foreach($con in $dotcontent.pull("+structureName:Products +(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797 conhost:SYSTEM_HOST)",0,"Products.title"))
+						#if($URLMapContent.urlTitle == $con.urlTitle)
+							<a class="dropdown-item active" href="/products/$con.urlTitle">$con.title $!{con.type1.selectValue}</a>
+						#else
+							<a class="dropdown-item" href="/products/$con.urlTitle">$con.title $!{con.type1.selectValue}</a>
+						#end
+					#end
+                   </div>
+				</div>
+			#end
+			<h1 class="product-title">
+				#dotedit($!URLMapContent.inode,$!URLMapContent.title) $!{URLMapContent.type1.selectValue} ($!{URLMapContent.tickerSymbol})
+			</h1>
+
+		</div>
+		<!-- TradingView Widget BEGIN -->
+		<div id="tv-medium-widget-4347e" style="padding:0px;margin: 0 0 20px 0;"></div>
+		<script type="text/javascript" src="//d33t3vvu2t2yu5.cloudfront.net/tv.js"></script>
+		<script type="text/javascript">
+			new TradingView.MediumWidget({
+			  "container_id": "tv-medium-widget-4347e",
+			  "symbols": [
+			    [
+			      "$!{URLMapContent.title}",
+			      "$!{URLMapContent.tickerSymbol}"
+			    ]
+			  ],
+			  "gridLineColor": "#E9E9EA",
+			  "fontColor": "#83888D",
+			  "underLineColor": "#dbeffb",
+			  "trendLineColor": "#4bafe9",
+			  "width": "100%",
+			  "height": "450px",
+			  "locale": "en"
+			});
+		</script>
+		<div>
+			#dotedit($!URLMapContent.inode,$URLMapContent.summary)
+		</div>
+
+		
+		<!-- TradingView Widget END -->
+
+
+		<h2>Related News</h2>
+		#set($myTag = "")
+		#foreach($tag in $URLMapContent.tags)
+			#set($myTag = $myTag + '{ "term": { "news.tags": "' + $tag + '"}},' + ' ')
+	    #end
+
+	    #set($mySearch = '{"query": {"bool": {"should": [' + $myTag + '],"minimum_should_match": 1}}}')
+
+		#set($results = $estool.search($mySearch))
+		#foreach($newsItem in $results)
+			<div class="media">
+				<h4><a href="/news/$!{newsItem.urlTitle}">$!{newsItem.title}</a></h4>
+				<p>$!{newsItem.lead}</p>
+			</div>
+		#end
+	</div>
+	
+
+	<aside class="product-detail-sidebar">
+		<h3 class="products-headlines-title">Performance & Price</h3>
+		<table class="table product-info">
+			<tr>
+				<td>Price:</td>
+				<td class="price" id="price"></td>
+			</tr>
+			<tr>
+				<td>Change:</td>
+				<td><span id="change"></span></td>
+			</tr>
+			<tr>
+				<td>Asset Class:</td>
+				<td>$!{URLMapContent.assetClass}</td>
+			</tr>
+			
+			#if($URLMapContent.assetClass == "Stock" || $URLMapContent.assetClass == "Bond")
+				<tr>
+					<td>Category:</td>
+					<td>
+						#set($category = "$!{URLMapContent.marketCap.selectValue}$!{URLMapContent.quality.selectValue}-$!{URLMapContent.style.selectValue}$!{URLMapContent.maturity.selectValue}")
+						<div title="$category" class="normaltip  $category"></div>
+					</td>
+				</tr>
+			#end
+			<tr>
+				<td>Expense Ratio:</td>
+				<td>$!{URLMapContent.expenseRatio}%</td>
+			</tr>
+			<tr>
+				<td>Inception:</td>
+				<td>$date.format('MM/dd/yyyy',$URLMapContent.inception)</td>
+			</tr>
+			<tr>
+				<td style="vertical-align:middle;">Risk Potential</td>
+				<td><div class="risk-lg-system risk${URLMapContent.risk.selectValue}-lg normaltip" title="${URLMapContent.risk.selectValue}" style="margin:0;"><!-- ${URLMapContent.risk.selectValue} --></div></td>
+			</tr>
+		</table>
+		
+		<!-- RELATED YouTube --> 
+	    #set($youtube  = $dotcontent.pullRelated("Products-Youtube","$URLMapContent.identifier",false,5))
+	    #if($youtube.size() > 0)
+	        <h3 style="margin-top: 50px;display:block;">Related Media</h3>
+	    #end
+
+	    <ul class="list-unstyled">
+	    #foreach($con in $youtube)
+	        <li>
+                <a href="$con.url" class="js-fancybox-media-link thumb media-thumb" title="$!{con.widgetTitle}">
+                    <img src="$!{con.thumbnail2}" alt="$!{con.widgetTitle}" class="img-responsive">
+                </a>
+				<div><a href='$con.url' class='js-fancybox-media-link'>$con.widgetTitle</a></div>
+	        </li>
+	    #end
+	</ul>
+    </aside>
+</div>
+
+#else
+	<div class="alert alert-info">
+		<h3>We are sorry, but the product you are looking for is no longer available. <a href="/products/">Click here to see all our products</a>.</h3>
+	</div>
+#end

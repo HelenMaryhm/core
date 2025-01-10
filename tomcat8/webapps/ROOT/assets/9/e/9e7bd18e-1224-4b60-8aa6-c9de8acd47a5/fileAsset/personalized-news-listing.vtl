@@ -1,0 +1,148 @@
+## --------------------------------------------------
+## SETTING THE DEFAULT NUMBER OF RESULTS ------------
+## --------------------------------------------------
+#if (!$UtilMethods.isSet($numberOfResults))
+  #set($numberOfResults = 5)
+#end
+
+
+## --------------------------------------------------
+## SETTING THE SORT ORDER ---------------------------
+## --------------------------------------------------
+#set ($sortBy = "News.sysPublishDate")
+#if ($sortResultsBy == "title")
+  #set ($sortBy = "News.title")
+#elseif ($sortResultsBy == "comments")
+  #set ($sortBy = "News.commentscount")
+#end
+#set ($sortBy = "News.sysPublishDate $sortOrder1")
+
+
+## --------------------------------------------------
+## FILTER BY CATEGORIES -----------------------------
+## --------------------------------------------------
+#set($catsQuery = "")
+#foreach ($catInode in $topic)
+  #if ($velocityCount == 1)
+    #set($catsQuery = "categories:$categories.getCategoryByInode($catInode).categoryVelocityVarName")
+  #else
+    #set($catsQuery = "$catsQuery categories:$categories.getCategoryByInode($catInode).categoryVelocityVarName")
+  #end
+#end
+#if ($UtilMethods.isSet($catsQuery))
+  #set($catsQuery = "+($catsQuery)")
+#end
+
+
+#set($ignoreQuery="")
+#if($UtilMethods.isSet($URLMapContent.inode))
+
+	#set($ignoreQuery="-inode:$URLMapContent.inode")
+#end
+
+
+## --------------------------------------------------
+## FILTERS BY TAGS ----------------------------------
+## --------------------------------------------------
+
+#set($tagsQuery = "")
+#if ($UtilMethods.isSet($tagsFilter))
+  #foreach ($tag in $tagsFilter.split(','))
+    #if ($velocityCount == 1)
+      #set($tagsQuery = "News.tags:$tag")
+    #else
+      #set($tagsQuery = "$tag News.tags:$tag")
+    #end
+  #end
+#end
+
+
+## --------------------------------------------------
+## SETTING PAGINATED RESULTS ------------------------
+## --------------------------------------------------
+
+#if($pagination.contains('true'))
+  ## SETTING ITEMS PER PAGE
+  #if ($UtilMethods.isSet($itemsPerPage))
+    #set($itemsPerPage = $webapi.parseInt($itemsPerPage))
+  #else
+    #set($itemsPerPage = 5)
+  #end
+
+  ## GETTING PAGE NUMBER
+  #if($UtilMethods.isSet($request.getParameter('page')))
+    #set($page = $webapi.parseInt($request.getParameter('page')))
+  #else
+    #set($page = 1)
+  #end
+#end
+#set($myHost = $webapi.resolveHostName($request.serverName))
+
+#if($pagination.contains('true'))
+  #set($newsListing = $dotcontent.pullPersonalized("+structureName:News +(conhost:$!{myHost.identifier} conhost:SYSTEM_HOST) $!{catsQuery} $!{tagsQuery} ${ignoreQuery}",$itemsPerPage,$page,"$!{sortBy}"))
+#else
+  #set($newsListing = $dotcontent.pullPersonalized("+structureName:News +(conhost:$!{myHost.identifier} conhost:SYSTEM_HOST) $!{catsQuery} $!{tagsQuery} ${ignoreQuery}",$!{numberOfResults},"$!{sortBy}"))
+#end
+
+<!--
+$newsListing.query
+-->
+#if($newsListing.size() > 0)
+  #if ($UtilMethods.isSet($headline))
+    #if (!$UtilMethods.isSet($headlineFontSize))
+      #set ($headlineFontSize = '1')
+    #end
+    <h$!{headlineFontSize} class="news-listing-headline"> $!{headline}</h$!{headlineFontSize}>
+  #end
+  <ul class="media-list media-list-extend news-listing pl-0">
+  #foreach ($newsItem in $newsListing)
+    <li class="media">
+        #editContentlet($newsItem.inode)
+        #if ($fieldsToDisplay.contains('image') && $UtilMethods.isSet($newsItem.image.rawUri))
+          <a href="/news/$!{newsItem.urlTitle}" class="pull-left media-object">
+            <img src="/contentAsset/image/$!{newsItem.identifier}/image/filter/Resize/resize_w/100" alt="$!{newsItem.title}" />
+          </a>
+        #end
+        <div class="media-body">
+          #if($fieldsToDisplay.contains('title') && $UtilMethods.isSet($newsItem.urlTitle))
+            <h4 class="media-heading news-title"><a href="/news/$!{newsItem.urlTitle}">$!{newsItem.title}</a></h4>
+          #end
+          #if($fieldsToDisplay.contains('publishDate') && $UtilMethods.isSet($newsItem.sysPublishDate) || $fieldsToDisplay.contains('commentsCount') &&  $UtilMethods.isSet($newsItem.commentscount))
+            <div class="post-info">
+              #if($fieldsToDisplay.contains('publishDate') && $UtilMethods.isSet($newsItem.sysPublishDate))
+                <time class="date" datetime="$!{newsItem.sysPublishDate}">$date.format('MMMM d, yyyy', $newsItem.sysPublishDate)</time>
+              #end
+              #if($fieldsToDisplay.contains('commentsCount') && $UtilMethods.isSet($newsItem.commentscount))
+                #set ($comments = "Comment")
+                #if ($newsItem.commentscount > 1)
+                  #set ($comments = "Comments")
+                #end
+                <span class="comments"><a href="/news/$!{newsItem.urlTitle}#comments">$!{newsItem.commentscount} $!{comments}</a></span>
+              #end
+            </div>
+          #end
+          #if ($fieldsToDisplay.contains('summary') && $UtilMethods.isSet($newsItem.lead))
+            <p class="summary">$!{newsItem.lead}</p>
+          #end
+        </div>
+    </li>
+  #end
+  </ul>
+  #if($pagination.contains('true'))
+      <ul class="pagination justify-content-center">
+        #if($newsListing.previousPage)
+          <li class="page-item"><a class="page-link" href="/news-events/news/?page=$!{math.sub($page, 1)}">«</a></li>
+        #end
+        #foreach($i in [1..$newsListing.totalPages])
+          <li #if($page == $velocityCount)class="page-item active"#end><a class="page-link" href="/news-events/news/?page=${velocityCount}">$velocityCount</a></li>
+        #end
+        #if($newsListing.nextPage)
+          <li class="page-item"><a class="page-link" href="/news-events/news/?page=$!{math.add($page, 1)}">»</a></li>
+        #end
+      </ul>
+  #end
+#else
+  <div class="alert alert-info">
+    No results for this query, try with another categories or tags.
+  </div>
+#end

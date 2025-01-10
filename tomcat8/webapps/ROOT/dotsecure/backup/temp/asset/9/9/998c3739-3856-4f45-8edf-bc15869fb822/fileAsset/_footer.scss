@@ -1,0 +1,133 @@
+.call-to-action {
+    background: $blue;
+    background-size: cover;
+    background-position: center center;
+    padding: 140px 0;
+    h2 {
+      color: $white;
+      font-size: ($font-size-large * 2.25);
+      margin: 0;
+    }
+    p {
+      color: $white;
+      font-size: ($font-size-base * 1.8);
+    }
+  }
+  
+  .footer-social {
+      border-bottom: 1px solid #2f323a;
+      padding: $padding-base-horizontal 0;
+      text-align: center;
+      background-color: $gray-dark;
+      padding: 20px;
+  
+      .social-icon  {
+          color: #52606b;
+          font-size: 30px;
+          margin: 0 $padding-base-horizontal / 2;
+          display: inline-block;
+          width: 32px;
+  
+          &:before {
+              background-color: $gray;
+              border-radius: $border-radius-small;
+              display: block;
+              font-size: $font-size-x-large;
+              height: 32px;
+              line-height: 32px;
+              text-align: center;
+              width: 32px;
+          }
+  
+          &:hover {
+              text-decoration: none;
+  
+              
+              color: $gray-light;
+          }
+      }
+  }
+  
+  .copyright {
+    font-size: $font-size-x-small;
+    margin: 20px;
+    text-align: left;
+  }
+  
+  .footer-nav {
+      div {
+          margin: $padding-base-horizontal * 2 0;
+  
+          @media (min-width: $screen-tablet) {
+              margin: 0;
+          }
+      }
+  }
+  
+  .footer-newsletter-form {
+      position: relative;
+  
+      .footer-newsletter-btn,
+      input[type="text"] {
+          background: none;
+          border: solid 1px $gray-light;
+          padding: 4px;
+      }
+  
+      input[type="text"] {
+          color: $gray-light;
+          padding-right: 100px;
+          width: 100%;
+      }
+  
+      .footer-newsletter-btn {
+          background-color: $gray-dark;
+          color: $white;
+          cursor: pointer;
+          margin-left: -5px;
+          padding: 4px $padding-base-horizontal;
+          position: absolute;
+          right: 0;
+          top: 0;
+  
+          &:hover {
+              background-color: $brand-secondary;
+              text-decoration: none;
+          }
+      }
+  
+      .footer-newsletter-unsubscribe {
+          font-size: $font-size-small;
+      }
+  }
+  
+  .footer-wrapper {
+      color: $gray-light;
+      background: $gray-darker;
+      line-height: 1.9;
+  
+      @media (min-width: $screen-tablet) {
+          padding: $padding-base-horizontal * 3 0;
+      }
+  
+      a {
+          color: $brand-primary;
+      }
+  
+      h4 {
+          color: $gray-lighter;
+          font-weight: normal;
+      }
+  
+      ul {
+          @include list-naked;
+      }
+  }
+  .powered-by {
+    display: block;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    left: -9999;
+  }

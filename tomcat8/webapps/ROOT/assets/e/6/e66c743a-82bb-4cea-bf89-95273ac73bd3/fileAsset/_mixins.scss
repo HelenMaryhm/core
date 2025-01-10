@@ -1,0 +1,182 @@
+//
+// Mixins
+// --------------------------------------------------
+// Custom mixins created by dotCMS.
+
+
+// Add glyphicons icon to any selector
+// Remember to pass the content: "[ICON-NUMBER]"
+// that you can find in the glyphicons.less
+// or the bootstrap docs
+@mixin add-icon($top: 1px, $line-height: 1){
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    position: relative;
+    top: $top;
+}
+
+
+// Invert the behaviour of the default link
+// Change the color and the underline
+@mixin link-invert() {
+    color: $brand-secondary;
+    text-decoration: underline;
+
+    &:hover {
+        color: $brand-primary;
+        text-decoration: none;
+    }
+}
+
+
+// Remove the main styles form a default list
+// Remove margins, padding and bullets
+@mixin list-naked() {
+    margin: 0;
+    padding: 0;
+
+    > li {
+        list-style: none;
+    }
+}
+
+
+// Make a list display horizontally
+@mixin list-horizontal() {
+    @include list-naked;
+    > li {
+        display: inline-block;
+    }
+}
+
+
+// To add a icon to the hover state of a link
+// use the glyphicons to work
+// needs to be added in a :after or :before pseudo selector
+@mixin over-icon-base(){
+    -webkit-font-smoothing: antialiased;
+    background-color: rgba(255, 255, 255, .15);
+    display: inline-block;
+    font-family: FontAwesome;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+}
+
+// 64x64
+@mixin over-icon($content){
+    @include over-icon-base;
+    border-radius: 32px;
+    border: solid 2px $white;
+    color: $white;
+    content: ""$content"";
+    font-size: 32px;
+    height: 62px;
+    line-height: 32px;
+    margin: -32px 0 0 -32px;
+    padding: 12px 0 14px;
+    text-align: center;
+    width: 62px;
+}
+
+// 32x32
+@mixin over-icon-small($content){
+    @include over-icon-base;
+    border-radius: 16px;
+    border: solid 1px $white;
+    color: $white;
+    content: ""$content"";
+    font-size: 16px;
+    height: 32px;
+    line-height: 16px;
+    margin: -16px 0 0 -16px;
+    padding: 6px 7px 8px;
+    text-align: center;
+    width: 32px;
+}
+
+
+// Add color to the placeholder in any input field
+@mixin placeholder($color){
+    :-moz-placeholder {
+        color: $color;
+    }
+    ::-webkit-input-placeholder {
+        color: $color;
+    }
+}
+
+// Add the default border to all the thumbnails in the site
+@mixin thumb-frame() {
+    border: solid 6px $white;
+    box-shadow: 0 0 0 1px $gray-lighter;
+    background-color: $gray-dark; display: block;
+}
+
+// Generate the small columns
+@mixin make-sm-column($columns, $gutter: $grid-gutter-width){
+    position: relative;
+    min-height: 1px;
+    padding-left:  ($gutter / 2);
+    padding-right: ($gutter / 2);
+
+    @media (min-width: $screen-sm-min) {
+        float: left;
+        width: percentage(($columns / $grid-columns));
+    }
+}
+
+@mixin make-sm-column-offset($columns){
+    @media (min-width: $screen-sm-min) {
+        margin-left: percentage(($columns / $grid-columns));
+    }
+}
+
+// Transformations
+@mixin rotate($degrees){
+    -webkit-transform: rotate($degrees);
+        -ms-transform: rotate($degrees); // IE9 only
+            transform: rotate($degrees);
+  }
+  @mixin scale($ratio, $ratio-y...){
+    -webkit-transform: scale($ratio, $ratio-y);
+        -ms-transform: scale($ratio, $ratio-y); // IE9 only
+            transform: scale($ratio, $ratio-y);
+  }
+  @mixin translate($x, $y){
+    -webkit-transform: translate($x, $y);
+        -ms-transform: translate($x, $y); // IE9 only
+            transform: translate($x, $y);
+  }
+  @mixin skew($x, $y){
+    -webkit-transform: skew($x, $y);
+        -ms-transform: skewX($x) skewY($y); // See https://github.com/twbs/bootstrap/issues/4885; IE9+
+            transform: skew($x, $y);
+  }
+  @mixin translate3d($x, $y, $z){
+    -webkit-transform: translate3d($x, $y, $z);
+            transform: translate3d($x, $y, $z);
+  }
+
+// Text overflow
+// Requires inline-block or block for proper styling
+@mixin text-overflow(){
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  
+ // Boostrap container overwrite 
+@mixin make-widths-container-width($max-widths: $container-max-widths, $breakpoints: $grid-breakpoints) {
+    @each $breakpoint, $container-max-width in $max-widths {
+        @include media-breakpoint-up($breakpoint, $breakpoints) {
+            width: $container-max-width;
+        }
+    }
+}

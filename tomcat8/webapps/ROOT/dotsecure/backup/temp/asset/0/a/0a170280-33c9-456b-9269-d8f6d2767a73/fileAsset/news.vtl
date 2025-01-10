@@ -1,0 +1,36 @@
+<div class="media">
+    #if ($UtilMethods.isSet(${imageBinaryFileURI})) 
+        <a class="pull-left" href="/news/$urlTitle">
+    		<div class="media-badge">
+				<img src='/contentAsset/image/${ContentInode}/image/byInode/1/filter/Resize/resize_w/150' alt="$!{con.title}" />
+				#if($UtilMethods.isSet(${caption}))
+					<span class="news-detail-caption">$!{caption}</span>
+				#end
+			</div>
+		</a>
+	#end
+	<div class="media-body">
+        <span class="label label-default pull-right">News</span>
+    	<div class="media-heading"><a href="/news/$urlTitle">$title</a></div>
+    	<div class="media-subheading">
+            <time datetime="$date.format('yyyy-MM-dd',$!{sysPublishDate})" class="date">$date.format('MMM dd yyyy', ${sysPublishDate}) at $date.format('HH:mm z', $!{sysPublishDate})</time>
+    		<span class="comments">
+    			#if($math.toInteger(${commentscount}) > 0)
+    				${commentscount} Comments
+    			#else
+    				No Comments
+    			#end
+    		</span>
+        </div>
+		<div class="news-descriotion">
+			## This trims the HTML and shorts the description field 200 character
+			#set($y = $story.replaceAll("<[^>]*>", ""))
+			#set($y = $UtilMethods.prettyShortenString("$y", 200))
+			<p>
+				$y <a href="/news/$urlTitle">READ MORE</a>
+			</p>
+		</div>
+	</div>
+</div>
+
+<hr>

@@ -1,0 +1,29 @@
+##This macro is only used inside the Comments macro to display the comments threading
+#macro(showRecursiveComments $tempCommentContentInode $currentDepth)
+  #set ($tempRelatedMatches = $commentsapi.getComments($tempCommentContentInode))
+  #foreach($match in $tempRelatedMatches)
+    ##set($marginLeft= $math.mul($currentDepth,20))
+    #getContentDetail("$match.inode")
+    <li class="media">
+      <article>
+        <div class="pull-left comment-info">
+          <img src="/images/icons/profile-image.png" width="65" height="65" alt="$author" />
+          <a href="#" class="author">$author</a>
+          <time>$dateviewapi.friendly($match.datePublished)</time>
+        </div>
+        <div class="media-body">
+          <div class="comment-body">
+            <p>$xsstool.strip($comment)</p>
+            #if($currentDepth < $maxDepth)
+              <a class="btn btn-primary btn-xs btn-comment-reply" href="javascript:_createPostCommentPlace('$match.inode');_dotReply('$match.inode');">Reply</a>
+              <div id="$match.inode"></div>
+            #end
+          </div>
+        </div>
+      </article>
+    </li>
+    #if($currentDepth < $maxDepth)
+      #showRecursiveComments($match.inode, $math.add($currentDepth,1))
+    #end
+  #end
+#end

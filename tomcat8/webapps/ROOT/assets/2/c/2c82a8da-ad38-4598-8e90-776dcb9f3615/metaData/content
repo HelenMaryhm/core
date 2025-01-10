@@ -1,0 +1,111 @@
+//
+// header
+// --------------------------------------------------
+// all the styles for the header of the theme
+// include navigation and search
+
+.header-logo {
+  img {
+      margin-top: 10px;
+      @include media-breakpoint-up(lg) {
+          padding-left: 20px;
+          margin-top: 10px;
+      }
+  }
+}
+
+.navbar-brand {
+height: auto;
+padding: 0 0;
+}
+
+
+.header-tools {
+ background-color: $brand-primary;
+ 
+ .header-tools-wrapper {
+   font-size: $font-size-small;
+   text-align: right;
+   padding: 0;
+   a {
+     color: lighten($brand-primary, 55%);
+     text-decoration: none;
+     display: inline-block;
+     padding: 3px 15px;
+   }
+ }
+}
+
+.searchform-header {
+
+display: inline-block;
+margin: 20px 0px 3px 0px;
+vertical-align: middle;
+width: 200px;
+
+.btn {
+  padding: 2px 7px;
+  background-color: lighten($brand-primary, 15%);
+  color: lighten($brand-primary, 50%);
+}
+
+input[type="text"],
+input[type="submit"] {
+    font-size: $font-size-small;
+}
+input[type="text"] {
+  background: $white;
+  border: 1px solid $gray-dark;
+  color: $gray;
+  padding: 2px 5px;
+  border-radius: $border-radius-base;
+}
+}
+
+//
+// navs
+// --------------------------------------------------
+// extending classes from /bootstrap/less/navs.scss
+
+
+
+
+//
+// navbars
+// --------------------------------------------------
+// extending classes from /bootstrap/less/navbar.scss
+
+.navbar {
+    margin-bottom: 0;
+    margin-top: 10px;
+    border-radius: 0px;
+    border: 0px;
+    min-height: 5px;
+    background-color: $gray-light !important;
+}
+.navbar-nav > li > a {
+    padding-top:  4px;
+    padding-bottom: 5px;
+    color: $black !important;
+    
+    &:hover {
+        background-color: #eeeeee;
+    }
+}
+.navbar-nav > li.active > a {
+    background: $white;
+    color: $brand-primary !important;
+}
+
+
+//
+// navbars collapse
+// --------------------------------------------------
+// extending classes from /bootstrap/less/navbar.less
+type="text"],
+input[type="submit"] {
+    font-size: $font-size-small;
+}
+input[type="text"] {
+  background: $white;
+  border: 1px solid $gray-dark;

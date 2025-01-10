@@ -1,0 +1,305 @@
+
+common macros
+#comment(“$inode”)
+
+#crumbtrail()
+
+#decrypt($encryptedstr)  → $decryptedstr
+
+#dotparse(“$path”)
+
+#editcontentlet(“$inode”)
+
+#encrypt(“$string”)  → $encryptedstr
+
+#filerepository(“$path”)
+
+#getcontent(“$id”)                        → $content
+
+#mp3player(“$songorxmlurl”)
+
+#navigation($startlevel $levelstoshow)
+
+#pagecontent(“$query” “$sortby” 
+“$numperpage” “numcurrentpage”)  → $list
+
+#permalink(“$id”)
+
+#photogallery(“$path”)
+
+#pullrssfeed(“$path”)  → $list
+
+#pullcontent(“$query” “$limit” “$sortby”) → $list
+
+#pullrelatedcontent(“$relationshipname” 
+“$inode” “$limit” “$sortby”)   → $list
+
+#submitcontent(“$structurename”)
+
+#tagcloud(“$structure” “$url” “$maxnum”)
+
+#titleimage(“$string”)
+
+#videoplayer(“$url”)
+
+servlets
+/resize_image?[path or id]&amp;[[h &/or w] or 
+[maxh and maxw]]
+
+/thumbnail?[path or id]&amp;[h &/or w]&amp;[r 
+& g & b]
+
+/dotcms/downloadvcalendar?id=[id]
+
+useful viewtool methods
+$categories.getcategorybyinode(“$inode”)
+
+$date.format(“$date”, “$pattern”)
+
+$dateviewapi.friendly(“$date”)
+
+$list.size()
+
+$request.getheader('httpheaderparameter')
+
+$request.getparameter('uriparameter')
+
+$response.sendredirect(“$urlstring”)
+
+$session.getattribute('key')
+
+$session.setattribute('key', 'value')
+
+$utilmethods.encodeurl(“$urlstring”)
+
+$utilmethods.isset($var)
+
+$utilmethods.prettyshortenstring(“$string”, len)
+
+$utilmethods.random(minval, maxval)
+
+template
+#parsecontainer( inode )
+
+velocity
+## single line comment
+
+#* multi line comment *#
+
+\# escaped hash
+
+#set($var = value)
+
+#foreach($item in $list)… #end
+
+#foreach($value in [0..5])… #end
+
+#if($condition)... #elseif($condition2)... #end
+
+#macro(name $var1 $var2 $varn)... #end
+
+#parse(“$serverfilepath”)
+
+$velocitycount        → foreach loop counter
+
+extra file/image field values
+fileextension imageextension
+
+filefriendlyname imagefriendlyname
+
+fileidentifier imageidentifier
+
+fileinode imageinode
+
+filename imagename
+
+filepath imagepath
+
+filetitle imagetitle
+
+fileuri imageuri
+
+imageheight
+
+imagewidth
+
+global page variables
+$edit_mode
+
+$friendlyname
+
+$htmlpage_friendly_name
+
+$htmlpage_inode
+
+$htmlpage_meta
+
+$htmlpage_redirect
+
+$htmlpage_secure
+
+$htmlpage_title
+
+$html_page_last_mod_date
+
+$pagechannel
+
+$pagetitle
+
+$template_inode
+
+$vtlservlet_uri
+
+common velocity tools
+datetool - $date
+
+escapetool - $esc
+
+listtool - $list
+
+mathtool - $math
+
+rendertool - $render
+
+sorttool - $sort
+
+container variables
+$add_content_permission
+
+$containerinode
+
+$container_identifier_inode
+
+$container_inode
+
+$container_max_contentlets
+
+$container_name
+
+$container_notes
+
+$container_num_contentlets
+
+$container_structure_name
+
+$contentlets
+
+$contents_per_page
+
+$current_page
+
+$edit_content_permission
+
+$lucene_query
+
+$server_name
+
+$sort_page
+
+$static_container
+
+lucene syntax
++ - required
+
+- - exclude
+
+? - wildcard (single character)
+
+* - wildcard (1 or more)
+
+(note: wildcards can't be the first character)
+
++(col1:x col2:y col3:z) - 1 or more required
+
+queryterm~ - fuzzy search
+
+queryterm~0.8 - fuzzy search w/ similarity
+
+“term1 term2”~10 - proximity search
+
+field:[val1 to val2] - range search
+
+category object field values
+.categoryname
+
+.getkey()
+
+other content map fields
+.contentletcategories
+
+.contentletcategorieskeys
+
+.contentletcategoriesnames
+
+.contentlastmoddate
+
+.contentlastmoduserid
+
+.detailpageuri
+
+.identifier
+
+.inode
+
+.structureinode
+
+©2009 michael fienen 
+michael@doradusweb.com
+sheet v1.0 ~ dotcms v1.7a
+
+
+ner variables
+$add_content_permission
+
+$containerinode
+
+$container_identifier_inode
+
+$container_inode
+
+$container_max_contentlets
+
+$container_name
+
+$container_notes
+
+$container_num_contentlets
+
+$container_structure_name
+
+$contentlets
+
+$contents_per_page
+
+$current_page
+
+$edit_content_permission
+
+$lucene_query
+
+$server_name
+
+$sort_page
+
+$static_container
+
+lucene syntax
++ - required
+
+- - exclude
+
+? - wildcard (single character)
+
+* - wildcard (1 or more)
+
+(note: wildcards can't be the first character)
+
++(col1:x col2:y col3:z) - 1 or more required
+
+queryterm~ - fuzzy search
+
+queryterm~0.8 - fuzzy search w/ similarity
+
+“term1 term2”~10 - proximity search
+
+field:[val1 to val2] - range

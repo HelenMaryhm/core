@@ -1,0 +1,69 @@
+#set($nowsers= $date.format('yyyyMMddHHmmss', $date.getDate()))
+#set($_qk = "+structureName:Document 
+	+(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797 conhost:SYSTEM_HOST)
+	+Document.sysPublishDate:[19001010101000 TO $nowsers]
+	")
+
+#set($results = $dotcontent.pull(${_qk},$results,"Document.sysPublishDate desc"))
+
+<h3>$widgetTitle</h3>
+<div class="document-listing">
+	#foreach($con in $results)
+		<div class="media">		
+			#if($fieldsToDisplay.contains('thumbnail'))
+	
+					#set($fileType = $UtilMethods.getFileExtension($con.fileAsset.uri))
+					
+					#if($fileType == "xlsx" || $fileType == "xls" || $fileType == "csv")
+						#set($fileIcon = "excel")
+					#elseif($fileType == "pptx" || $fileType == "ppt")
+						#set($fileIcon = "powerpoint")
+					#elseif($fileType == "docx" || $fileType == "doc")
+						#set($fileIcon = "word")
+					#elseif($fileType == "mp4" || $fileType == "ogv" || $fileType == "mov" || $fileType == "flv")
+						#set($fileIcon = "video")
+					#elseif($fileType == "pdf")
+						#set($fileIcon = "pdf")
+					#else
+						#set($fileIcon = "unknown")
+					#end
+	
+					#if ($UtilMethods.isImage($con.fileAsset.uri))
+						<a href="${con.fileAsset.uri}?force_download=true" class="js-fancybox-img pull-left media-object normaltip" data-original-title="Preview">
+							<img src="/contentAsset/image/$!{con.identifier}/fileAsset/filter/Resize/resize_w/100" alt="$!{con.title}" />
+						</a>
+					#else
+						<a href="${con.fileAsset.uri}?force_download=true" class="pull-left media-object normaltip" data-original-title="Download">
+							<div class="doc-thumbnail $fileIcon"></div>
+						</a>
+					#end
+	
+			#end
+		
+			<div class="media-body">
+			
+				#if($fieldsToDisplay.contains('title') && $UtilMethods.isSet($con.title))
+					<a href="${con.fileAsset.uri}?force_download=true"><div class="media-heading normaltip-left" data-original-title="Download">$!{con.title}</div></a>
+				#end
+				
+				#if($fieldsToDisplay.contains('author') && $UtilMethods.isSet($con.metaData.Author))
+					<span class="byLine">$!{con.metaData.Author}</span>
+				#end
+				
+				#if($fieldsToDisplay.contains('publishDate') && $UtilMethods.isSet($con.sysPublishDate))
+					<time datetime="$date.format('yyyy-MM-dd',$!con.sysPublishDate)T$date.format('hh:mm:ss',$!con.sysPublishDate)">
+						Publish Date: $date.format('MMMM dd, yyyy',$con.sysPublishDate),
+					</time>
+				#end
+				
+				#if($fieldsToDisplay.contains('description'))
+					#if($UtilMethods.isSet($con.description1))
+						<p>$UtilMethods.prettyShortenString("$con.description1", 200)</p>
+					#elseif($UtilMethods.isSet($con.description))
+						<p>$UtilMethods.prettyShortenString("$con.description", 200)</p>
+					#end
+				#end
+			</div>
+		</div>
+	#end
+</div>

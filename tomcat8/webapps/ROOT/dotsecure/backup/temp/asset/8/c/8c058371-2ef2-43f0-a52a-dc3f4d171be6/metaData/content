@@ -1,0 +1,78 @@
+// colors
+// -------------------------
+
+$gray-darker:               #13191f;
+$gray-dark:                 #26333f;
+$gray:                      #52606b;
+$gray-light:                #a8abb0;
+$gray-lighter:              #f5f5f5;
+
+$white:                     white;
+$blue:                      #00303e;
+$blue-light:                #6c9db8;
+$blue-lighter:              #bedeef;
+
+// brand colors
+// -------------------------
+
+$brand-primary:             $blue;
+$brand-secondary:           #c5283c;
+$brand-success:             #5cb85c;
+$brand-warning:             #df5c36;
+$brand-danger:              #c5283c;
+$brand-info:                #26333f;
+
+
+// links
+// -------------------------
+
+$link-hover-color:      $brand-secondary;
+
+
+// typography
+// -------------------------
+$font-size-base:            13px;
+$font-size-small:           11px;
+$font-size-x-small:         ceil($font-size-base * 0.7); // ~10px
+$font-size-x-large:         ceil($font-size-base * 1.7); // ~24px
+
+// iconography
+// -------------------------
+
+// todo: replace this with absolute path on theme
+$icon-font-path:          "/application/themes/quest/_bower_components/bootstrap/fonts/";
+$icon-font-path-custom:   "/application/themes/quest/fonts/";
+
+
+
+// navbar
+$navbar-inverse-bg:             $brand-primary;
+$navbar-inverse-border:          $brand-primary;
+$navbar-height:                    48px;
+$navbar-padding-vertical:          15px;
+
+// inverted navbar toggle
+$navbar-inverse-toggle-hover-bg:            $brand-primary;
+$navbar-inverse-toggle-border-color:        none;
+
+// font awesome
+// -------------------------
+$fa-font-path:        "/application/themes/quest/_bower_components/font-awesome/fonts";
+
+
+$screen-tablet: 768px;
+$screen-desktop: 992px;
+ $brand-secondary;
+
+
+// typography
+// -------------------------
+$font-size-base:            13px;
+$font-size-small:           11px;
+$font-size-x-small:         ceil($font-size-base * 0.7); // ~10px
+$font-size-x-large:         ceil($font-size-base * 1.7); // ~24px
+
+// iconography
+// -------------------------
+
+// todo: re

@@ -1,0 +1,75 @@
+#set($nowsers= $date.format('yyyymmddhhmmss', $date.getdate()))
+#set($_qk = "+structurename:document 
+	+(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797 conhost:system_host)
+	+document.syspublishdate:[19001010101000 to $nowsers]
+	")
+
+#set($results = $dotcontent.pull(${_qk},$results,"document.syspublishdate desc"))
+
+<h3>$widgettitle</h3>
+<div class="document-listing">
+	#foreach($con in $results)
+		<div class="media">		
+			#if($fieldstodisplay.contains('thumbnail'))
+	
+					#set($filetype = $utilmethods.getfileextension($con.fileasset.uri))
+					
+					#if($filetype == "xlsx" || $filetype == "xls" || $filetype == "csv")
+						#set($fileicon = "excel")
+					#elseif($filetype == "pptx" || $filetype == "ppt")
+						#set($fileicon = "powerpoint")
+					#elseif($filetype == "docx" || $filetype == "doc")
+						#set($fileicon = "word")
+					#elseif($filetype == "mp4" || $filetype == "ogv" || $filetype == "mov" || $filetype == "flv")
+						#set($fileicon = "video")
+					#elseif($filetype == "pdf")
+						#set($fileicon = "pdf")
+					#else
+						#set($fileicon = "unknown")
+					#end
+	
+					#if ($utilmethods.isimage($con.fileasset.uri))
+						<a href="${con.fileasset.uri}?force_download=true" class="js-fancybox-img pull-left media-object normaltip" data-original-title="preview">
+							<img src="/contentasset/image/$!{con.identifier}/fileasset/filter/resize/resize_w/100" alt="$!{con.title}" />
+						</a>
+					#else
+						<a href="${con.fileasset.uri}?force_download=true" class="pull-left media-object normaltip" data-original-title="download">
+							<div class="doc-thumbnail $fileicon"></div>
+						</a>
+					#end
+	
+			#end
+		
+			<div class="media-body">
+			
+				#if($fieldstodisplay.contains('title') && $utilmethods.isset($con.title))
+					<a href="${con.fileasset.uri}?force_download=true"><div class="media-heading normaltip-left" data-original-title="download">$!{con.title}</div></a>
+				#end
+				
+				#if($fieldstodisplay.contains('author') && $utilmethods.isset($con.metadata.author))
+					<span class="byline">$!{con.metadata.author}</span>
+				#end
+				
+				#if($fieldstodisplay.contains('publishdate') && $utilmethods.isset($con.syspublishdate))
+					<time datetime="$date.format('yyyy-mm-dd',$!con.syspublishdate)t$date.format('hh:mm:ss',$!con.syspublishdate)">
+						publish date: $date.format('mmmm dd, yyyy',$con.syspublishdate),
+					</time>
+				#end
+				
+				#if($fieldstodisplay.contains('description'))
+					#if($utilmethods.isset($con.description1))
+						<p>$utilmethods.prettyshortenstring("$con.description1", 200)</p>
+					#elseif($utilmethods.isset($con.description))
+						<p>$utilmethods.prettyshortenstring("$con.description", 200)</p>
+					#end
+				#end
+			</div>
+		</div>
+	#end
+</div>
+s('title') && $utilmethods.isset($con.title))
+					<a href="${con.fileasset.uri}?force_download=true"><div class="media-heading normaltip-left" data-original-title="download">$!{con.title}</div></a>
+				#end
+				
+				#if($fieldstodisplay.contains('author') && $utilmethods.isset($con.metadata.author))
+					<span class="byline">$!{con.metadata.autho

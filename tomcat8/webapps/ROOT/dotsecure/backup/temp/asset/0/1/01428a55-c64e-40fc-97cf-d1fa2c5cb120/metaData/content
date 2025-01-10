@@ -1,0 +1,62 @@
+// bootstrap
+@import "../_bower_components/bootstrap4/scss/bootstrap";
+
+// font awesome!
+//@import "../_bower_components/font-awesome/less/font-awesome.less";
+//@import (less) "../_bower_components/font-awesome/css/font-awesome.css";
+//import "../_bower_components/font-awesome/scss/fontawesome";
+
+// core variables and mixins
+@import "mixins";
+@import "variables";
+
+// dotcms template
+@import "template/common";
+@import "template/footer";
+@import "template/header";
+@import "template/user-info-tab";
+
+// pages
+@import "pages/home/home";
+@import "pages/site-map/sitemaps";
+@import "pages/site-search/site-search";
+@import "pages/user-account/my-account";
+@import "pages/user-account/create-account";
+@import "pages/user-account/login-form";
+@import "pages/user-account/password-forgot";
+@import "pages/user-account/password-reset";
+@import "pages/user-account/challenge-question";
+@import "pages/user-account/resend-activation-email";
+@import "pages/user-account/create-edit-address";
+
+// content
+@import "content/banner/carousel";
+@import "content/blog/blog-listing";
+@import "content/blog/blog-detail";
+@import "content/blog/blog-menu";
+@import "content/comments/comments";
+@import "content/documents/document-detail";
+@import "content/documents/document-listing";
+@import "content/documents/document-search";
+@import "content/employee/employee-listing";
+@import "content/event/event-listing";
+@import "content/event/event-detail";
+@import "content/location/location-listing";
+@import "content/location/location-detail";
+@import "content/media/media-listing";
+@import "content/news/news-listing";
+@import "content/news/news-detail";
+@import "content/products/product-detail";
+@import "content/products/product-listing";
+@import "content/promotion/promotion";
+@import "content/video/video";
+
+// widgets
+@import "widgets/image-gallery";
+@import "widgets/youtube";
+"pages/user-account/challenge-question";
+@import "pages/user-account/resend-activation-email";
+@import "pages/user-account/create-edit-address";
+
+// content
+@import "content/banner/car

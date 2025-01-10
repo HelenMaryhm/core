@@ -1,0 +1,177 @@
+#set($actionid = $!request.getparameter("actionid"))
+#set($wfconid = $!request.getparameter("inode"))
+#set($user = $cmsuser.getloggedinuser($request))
+#set($action = $workflow.findaction($actionid, $user))
+#if($utilmethods.isset($wfconid))
+	#set($content = ${dotcontent.find($wfconid)})
+	
+	#set($url = "http://${content.host.hostname}$content.fileasset.uri")
+	
+	#set($bitlyuser="dotcmsdemo")
+	#set($bitlykey ="r_f0c91eac63cd553fa1969dc1647e5969")
+
+	
+#end
+<script type="text/javascript">
+
+	dojo.ready(function() {
+		
+		  //character limit
+		  var limit = 140; 
+		
+		
+		
+		  var div = document.createelement('div');
+		  div.classname = 'charcounter';
+		
+		  var txt = document.getelementbyid('taskcommentsaux');
+		  txt.parentnode.insertbefore(div, txt);
+
+		  //this will contain the background numbers
+		  var counter = document.createelement('div');
+		  div.appendchild(counter);
+		  counter.innerhtml = limit;
+		
+		  //add both keypress and keydown handlers to make sure the event always fires
+		  txt.onkeypress = txt.onkeydown = txt.onblur = function() {
+			//calculate how many chars the user has remaining
+			var len = limit - txt.value.length;
+			if(len < 0) {
+			  counter.classname = 'negative';
+			}
+			else {
+			  counter.classname = '';
+			}
+		
+			counter.innerhtml = len;
+		  };
+		
+		  txt.parentnode.removechild(txt);
+		  div.appendchild(txt);
+		}
+	);
+	
+	
+	function dobitly(url){
+
+		var xhr = new xmlhttprequest();
+		xhr.open("get", "http://api.bitly.com/v3/shorten?login=$bitlyuser&apikey=$bitlykey&longurl=" + encodeuricomponent(url));
+		xhr.onreadystatechange = function() { 
+			if(xhr.readystate == 4) { 
+	
+					console.log(xhr);
+					var res = dojo.fromjson(xhr.response);
+					var urly=res.data.url;
+					if(urly){
+						dojo.byid("bitlylink").innerhtml=urly;
+					}else{
+						dojo.byid("bitlylink").innerhtml="n/a";
+					}
+					
+				
+			} 
+		}
+		xhr.send();
+	}
+	
+	
+	#if($utilmethods.isset($wfconid))
+		dobitly("$url");
+	#end
+	
+
+
+</script>
+<style type="text/css">
+	.charcounter {
+			position: relative;
+			width:350px;
+			margin:auto;
+			min-height:130px;
+	
+	}
+	
+	.charcounter * {
+		background: none repeat scroll 0 0 transparent;
+		height: 120px;
+		left: 0;
+		position: absolute;
+		top: 0;
+		width: 100%;
+		padding:5px;
+	}
+	
+	.charcounter textarea{border: 1px solid #cccccc;}
+	
+	.charcounter div {
+			color: silver;
+			font-family: arial;
+			font-size: 550%;
+			font-weight: bold;
+			text-align: center;
+			line-height: 100px;
+			vertial-align: middle;
+			opacity: 0.5;
+	}
+	
+	.charcounter div.negative {
+			color: red;
+	}
+	
+	#twittertext{
+		margin:auto;
+	
+	}
+</style>
+
+
+
+<textarea id="taskcommentsaux" name="taskcommentsaux"></textarea>
+
+<input name="wfconid" id="wfconid" type="hidden" value="$wfconid">
+<input name="wfactionid" id="wfactionid" type="hidden" value="$actionid">
+<input type="hidden" name="taskassignmentaux" id="taskassignmentaux" value="$action.nextassign">
+
+	<table class="listingtable" style="width:400px;margin:10px;margin-left:auto;margin-right:auto;">
+		<tr>
+			<td width="40">url: </td>
+			<td>#if($utilmethods.isset($wfconid))<a href="$url" target="_blank">$url</a>#else n/a  #end</td>
+		</tr>
+		<tr>
+			<td>bit.ly: </td>
+			<td><span id="bitlylink"></span></td>
+		</tr>
+	</table>
+
+
+
+
+
+<div class="buttonrow">
+	<button dojotype="dijit.form.button" iconclass="saveassignicon" onclick="contentadmin.saveassign()" type="button">
+		$text.get("save")
+	</button>
+	<button dojotype="dijit.form.button" iconclass="cancelicon" onclick="dijit.byid('contentletwfdialog').hide()" type="button">
+		$text.get("cancel")
+	</button>
+
+</div>
+
+twittertext{
+		margin:auto;
+	
+	}
+</style>
+
+
+
+<textarea id="taskcommentsaux" name="taskcommentsaux"></textarea>
+
+<input name="wfconid" id="wfconid" type="hidden" value="$wfconid">
+<input name="wfactionid" id="wfactionid" type="hidden" value="$actionid">
+<input type="hidden" name="taskassignmentaux" id="taskassignmentaux" value="$action.nextassign">
+
+	<table class="listingtable" style="width:400px;margin:10px;margin-left:auto;margin-right:auto;">
+		<tr>
+			<td width="40">url: </td>
+			<td>#if($utilmethods.isset($wfconid))

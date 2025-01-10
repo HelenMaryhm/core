@@ -1,0 +1,125 @@
+//
+// Header
+// --------------------------------------------------
+// All the styles for the header of the theme
+// include navigation and search
+
+.header-wrap {
+    background: $white;
+    -webkit-box-shadow: 1px 1px 6px 0 rgba(0,0,0,.5);
+    box-shadow: 1px 1px 6px 0 rgba(0,0,0,.5);
+    padding: 8px 0;
+    width: 100%;
+    z-index: 10;
+    min-height: 105px;
+    position: absolute;
+    top: 0;
+    .header-logo {
+      img {
+        -webkit-transition: all 0.5s;
+        -moz-transition: all 0.5s;
+        transition: all 0.5s;
+        margin-top: -30px;
+        height: 63px;
+        @include media-breakpoint-down(lg) { 
+          padding-left: 20px;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+  .header-wrap-small {
+    position: fixed;
+    top: -50px;
+    min-height: 87px;
+    .header-logo {
+      img {
+        margin-top: 0px;
+        height: 40px;
+      }
+    }
+  }
+
+  @include media-breakpoint-down(lg) {
+    .header-wrap, .header-wrap-small {
+      position: fixed;
+      top: 0;
+      height: 75px;
+      min-height: 75px;
+      .header-logo {
+        img {
+          margin-top: 10px;
+          height: 40px;
+        }
+      }
+    }
+  }  
+  
+  
+  .navbar-brand {
+    height: auto;
+    padding: 0 0;
+  }
+  
+  
+  .header-tools {
+     .header-tools-wrapper {
+       font-size: $font-size-small;
+       text-align: right;
+       min-height: 42px;
+       a {
+         color: $gray;
+         text-decoration: none;
+       }
+     }
+  }
+  
+  .searchForm-header {
+    
+    display: inline-block;
+    margin: 7px 10px 10px 20px;
+    vertical-align: middle;
+  
+    .btn {
+      padding: 5px 10px;
+      margin-top: -2px;
+      background-color: $gray-light;
+      border: 0px solid $gray-light;
+      color: $gray;
+    }
+    
+    input[type="text"],
+    input[type="submit"] {
+        font-size: $font-size-small;
+    }
+    input[type="text"] {
+      background: $white;
+      color: $gray;
+      padding: 5px 10px;
+      border: 1px solid $gray-light;
+      border-radius: $border-radius-base;
+    }
+  }
+  
+  //
+  // Navs
+  // --------------------------------------------------
+  // Extending classes from Bootstrap
+  
+  .navbar-collapse {
+    background: $white;
+    max-height: none;
+  }
+  .navbar-toggler {
+      background-color: $blue;
+      color: $white;
+    .fa-bars {
+        color: $white;
+    }
+  }
+
+  .navbar-light .navbar-nav .nav-link {
+    color: $blue;
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }

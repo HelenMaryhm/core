@@ -1,0 +1,35 @@
+.document-search {
+    margin-top: $padding-base-vertical * 2;
+
+    @media (min-width: $screen-tablet) {
+        margin-top: 0;
+    }
+
+    .btn-document-search {
+        &:hover {
+            border-color: $brand-secondary;
+            background-color: $brand-secondary;
+        }
+    }
+
+    .document-filter {
+        margin-bottom: $padding-base-vertical * 2;
+
+        .btn-sm {
+            padding-top: 3px;
+        }
+
+        .fa-times:before {
+            color: $brand-danger;
+            margin-right: 3px;
+        }
+    }
+
+    .search-field {
+        margin-bottom: $padding-base-vertical;
+    }
+
+    .search-filter {
+        margin-top: $line-height-computed;
+    }
+}

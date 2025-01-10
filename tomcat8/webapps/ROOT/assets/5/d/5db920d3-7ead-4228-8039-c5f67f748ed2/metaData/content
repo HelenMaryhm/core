@@ -1,0 +1,39 @@
+#if($utilmethods.isset($urlmapcontent.title))
+    #set($pagetitle = $urlmapcontent.title)
+    #set($crumbtitle = $urlmapcontent.title)
+#end
+
+<title>$dotpagecontent.title</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta charset="utf-8">
+<meta name="application-name" content="dotcms dotcms.com">
+<meta name="description" content="$dotpagecontent.seodescription">
+<meta name="keywords" content="$dotpagecontent.seokeywords">
+<meta name="author" content="$dotpagecontent.pagemetadata">
+<meta name="lastmodifieddate" content="$dotpagecontent.moddate">
+
+<link rel="shortcut icon" href="https://dotcms.com/favicon.ico" type="image/x-icon">
+
+<link href='https://fonts.googleapis.com/css?family=kameron|oxygen:300,400,700' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" href="${dottheme.path}_bower_components/font-awesome/css/font-awesome.css.css">
+
+<link rel="stylesheet" href="${dottheme.path}sass/main.dotsass">
+
+<link rel="stylesheet" href="${dottheme.path}_bower_components/fancybox/source/jquery.fancybox.css">
+<link rel="stylesheet" href="${dottheme.path}_bower_components/fancybox/source/helpers/jquery.fancybox-buttons.css">
+<link rel="stylesheet" href="${dottheme.path}_bower_components/fancybox/source/helpers/jquery.fancybox-thumbs.css">
+<link rel="stylesheet" href="${dottheme.path}_bower_components/video.js/video-js.css">
+<link rel="stylesheet" href="${dottheme.path}_bower_components/chosen/public/chosen.css">
+
+<!--[if lt ie 9]>
+    <script src="_bower_components/respond/respond.min.js"></script>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+## <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iptk2s/jmvj81dnzb/ifr2sda7u06vhjyyllad4snfpcl/snyujrrbdjsw1pgil" crossorigin="anonymous"></script>
+ttheme.path}_bower_components/font-awesome/css/font-awesome.css.css">
+
+<link rel="stylesheet" href="${dottheme.path}sass/main.dotsass">
+
+<link rel="stylesheet" href="${dottheme.path}_bowe

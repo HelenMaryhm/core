@@ -1,0 +1,522 @@
+weekly time sheet
+	weekly time sheet
+	[client\company name]
+	[street address] [street address 2] [city, st zip code]
+	contractor:
+	contractor phone:	week start:	4/1/16
+	contractor e-mail:	hourly rate:	$50.00
+	client:	client 1	minimum hours:	0.25
+
+
+	day	date	project	billable
+hours	non-billable
+hours	total
+	friday	4/1/16	project 1	0.20	$   12.50
+	saturday	4/2/16	project 1	0.25	$   12.50
+	sunday	4/3/16	project 2	0.50	$   25.00
+	monday	4/4/16	project 2	70.00	5	$   3,500.00
+	tuesday	4/5/16	project 2	80.00	$   4,000.00
+	wednesday	4/6/16	project 1	65.00	$   3,250.00
+	thursday	4/7/16	project 1	50.00	$   2,500.00
+	total	$   13,300.00
+
+	contractor signature	date
+
+	company signature	date
+
+
+
+
+
+	\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+bi-weekly time sheet
+	bi-weekly time sheet
+	[client\company name]
+	[street address] [street address 2] [city, st zip code]
+	contractor:
+	contractor phone:	period start:	4/1/16
+	contractor e-mail:	hourly rate:	$50.00
+	client:	client 1	minimum hours:	0.25
+
+
+	day	date	project	billable
+hours	non-billable
+hours	total
+	friday	4/1/16	project 1	0.20	$   12.50
+	saturday	4/2/16	project 1	0.25	$   12.50
+	sunday	4/3/16	project 2	0.50	$   25.00
+	monday	4/4/16	project 2	70.00	5.00	$   3,500.00
+	tuesday	4/5/16	project 2	80.00	$   4,000.00
+	wednesday	4/6/16	project 1	65.00	$   3,250.00
+	thursday	4/7/16	project 1	50.00	$   2,500.00
+	friday	4/8/16	
+	saturday	4/9/16	
+	sunday	4/10/16	
+	monday	4/11/16	
+	tuesday	4/12/16	
+	wednesday	4/13/16	
+	thursday	4/14/16	
+	total	$   13,300.00
+
+	contractor signature	date
+
+	company signature	date
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+monthly time sheet
+	monthly time sheet
+	[client\company name]
+	[street address] [street address 2] [city, st zip code]
+	contractor:
+	contractor phone:	month start:	4/1/16
+	contractor e-mail:	hourly rate:	$50.00
+	client:	client 1	minimum hours:	0.25
+
+
+	day	date	project	billable
+hours	non-billable
+hours	total
+	friday	4/1/16	project 1	0.20	$   12.50
+	saturday	4/2/16	project 1	0.25	12.50
+	sunday	4/3/16	project 2	0.50	25.00
+	monday	4/4/16	project 2	70.00	5	3,500.00
+	tuesday	4/5/16	project 2	80.00	4,000.00
+	wednesday	4/6/16	project 1	65.00	3,250.00
+	thursday	4/7/16	project 1	50.00	2,500.00
+	friday	4/8/16	
+	saturday	4/9/16	
+	sunday	4/10/16	
+	monday	4/11/16	
+	tuesday	4/12/16	
+	wednesday	4/13/16	
+	thursday	4/14/16	
+	friday	4/15/16	
+	saturday	4/16/16	
+	sunday	4/17/16	
+	monday	4/18/16	
+	tuesday	4/19/16	
+	thursday	4/21/16	
+	friday	4/22/16	
+	saturday	4/23/16	
+	sunday	4/24/16	
+	monday	4/25/16	
+	tuesday	4/26/16	
+	wednesday	4/27/16	
+	thursday	4/28/16	
+	friday	4/29/16	
+	saturday	4/30/16	
+			
+	total	$   13,300.00
+
+	contractor signature	date
+
+	company signature	date
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+lookup lists
+	project lookup	client lookup
+	project 1	client 1	
+   : these lists populate the options that appear in the project and client lookup lists on the time sheet worksheets. edit the existing values as needed. to add additional values, begin typing in the cell directly beneath the last existing entry and the list will automatically expand.
+	project 2	client 2
+
+
+wednesday	4/6/16	project 1	65.00	3,250.00
+	thursday	4/7/16	project 1	50.00	2,500.00
+	friday	4/8/16	
+	saturday	4/9/16	
+	sunday	4/10/16	
+	monday	4/11/16	
+	tuesday	4/12/16	
+	wednesday	4/13/16	
+	thursday	4/14/16	
+	friday	4/15/16	
+	saturday	4/16/16	
+	sunday	4/17/16	
+	monday	4/18/16	
+	tuesday	4/19/16	
+	thursday	4/21/16	
+	friday	4/22/16	
+	saturday	4/23/16	
+	sunday	4/24/16	
+	monday	4/25/16	
+	tuesday	4/26/16	
+	wednesday	4/27/16	
+	thursday	4/28/16	
+	friday	4/29/16	
+	saturday	4/30/16	
+			
+	total	$   13,300.00
+
+	contractor signature	date
+
+	company signature	date
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+lookup lists
+	project lookup	client lookup
+	project 1	client 1	
+   : these lists populate the options that appear in the project and client lookup lists on the time sheet worksheets. edit the existing values as neede

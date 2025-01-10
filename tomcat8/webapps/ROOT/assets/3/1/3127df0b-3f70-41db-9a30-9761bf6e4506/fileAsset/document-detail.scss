@@ -1,0 +1,37 @@
+.document-detail-wrap {
+    @include make-row();
+}
+
+.document-detail-file,
+.document-detail-info {
+    @include media-breakpoint-up(sm) {
+        @include make-col(6);
+    }
+}
+
+.document-detail-file {
+    @include media-breakpoint-up(sm) {
+        @include make-col(6);
+    }
+}
+
+.document-detail-info {
+    @include media-breakpoint-up(sm) {
+        @include make-col(6);
+    }
+}
+
+.document-detail-meta {
+    border-bottom: solid 1px $gray-lighter;
+
+    .item-line {
+        border-top: solid 1px $gray-lighter;
+        padding: $padding-base-vertical 0;
+    }
+}
+
+.metadata {
+    h3 {
+        margin: 0;
+    }
+}

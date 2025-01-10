@@ -1,0 +1,78 @@
+<div class="document-search">
+  <form id="doc-search" class="js-doc-search">
+    <div class="input-group search-field">
+      <input type="text" class="form-control js-search-text">
+      <span class="input-group-btn">
+        <button class="btn btn-primary btn-document-search js-submit-button" type="button"><i class="fa fa-search"></i></button>
+      </span>
+    </div><!-- /search-field -->
+    <div class="btn-group d-flex" role="group" aria-label="Search type buttons">
+        <a href="#" class="btn btn-secondary w-100" role="button">All</a>
+        <a href="#" class="btn btn-secondary w-100" role="button">Image</a>
+        <a href="#" class="btn btn-secondary w-100" role="button">Video</a>
+        <a href="#" class="btn btn-secondary w-100" role="button" >Docs</a>
+    ##   <label class="btn btn-default btn-xs active">
+    ##     <input type="radio" name="options" id="all" checked> All
+    ##   </label>
+    ##   <label class="btn btn-default btn-xs">
+    ##     <input type="radio" name="options" id="image"> Image
+    ##   </label>
+    ##   <label class="btn btn-default btn-xs">
+    ##     <input type="radio" name="options" id="video"> Video
+    ##   </label>
+    ##   <label class="btn btn-default btn-xs">
+    ##     <input type="radio" name="options" id="document"> Docs
+    ##   </label>
+    </div>
+  </form>
+  <div class="card search-filter topics js-filter-items">
+    <div class="card-header"><h4 class="card-title">Topics</h4></div>
+    <div class="list-group">
+      #foreach($con in $categories.getChildrenCategoriesByKey("topic"))
+        <a href="#" id="$!{con.categoryVelocityVarName}" data-topic="$!{con.categoryVelocityVarName}" class="list-group-item">$!{con.categoryName}</a>
+      #end
+    </div>
+  </div>
+  <div class="card search-filter tags js-filter-items">
+    <div class="card-header"><h4 class="card-title">Tags</h4></div>
+    <div class="list-group">
+    
+    
+		##Set the tagContentType to the Velocity variable name of the Content Type to generate the Tag Cloud for
+		#set($tagContentType="news")
+
+		##Set the number of tags to display in the cloud
+		#set($numOfTags=10)
+
+		##Set the ES query string (using ES Aggregates)
+		#set($esQuery='{
+				"query": {
+					"query_string": {
+						"query": "+contenttype:$tagContentType"
+					}
+				},
+				"aggs" : {
+					"tag" : {
+						"terms" : {
+							"field": "tags",
+							"size" : $numOfTags
+						}
+					}
+				},
+				"size":0
+			}'
+		)
+
+		##Retrieve and display each of the tags retrieved by the query
+
+		#set($results = $estool.search($render.eval($esQuery)))
+		#set($tagCloud = $json.generate($results.response))
+
+
+      #foreach($tag in $tagCloud.aggregations.asMap.tag.buckets)
+       	<a href="#" id="$!{$tag.key}" data-tag="$!{$tag.key}" class="list-group-item">$tag.key ($tag.docCount)</a>
+		#end
+
+    </div>
+  </div>
+</div>

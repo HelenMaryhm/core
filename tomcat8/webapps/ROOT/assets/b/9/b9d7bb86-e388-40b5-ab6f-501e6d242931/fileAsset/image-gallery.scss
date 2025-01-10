@@ -1,0 +1,65 @@
+.gallery {
+    margin-bottom: 30px;
+  }
+  .imageMask {
+    height: 250px;
+    overflow: hidden;
+    background-size: cover;
+  }
+  
+  .image-gallery {
+      @include make-row();
+      font-size: 0;
+      list-style: none;
+      padding: 0;
+  
+      h5 {
+          line-height: 1.5;
+          padding: 0 $padding-base-horizontal;
+  
+          a {
+              text-decoration: none;
+          }
+          .qty {
+              background-color: lighten($gray-darker, 80%);
+              border-radius: 10px;
+              color: $gray-light;
+              font-size: $font-size-small;
+              padding: 2px 5px;
+          }
+      }
+  
+      li {
+          display: inline-block;
+          font-size: $font-size-base;
+          margin-bottom: $padding-base-vertical;
+          padding: 0 $padding-base-vertical / 2;
+          vertical-align: top;
+          width: 50%;
+  
+          @media (min-width: $screen-tablet) {
+              width: 12.5%;
+          }
+  
+          @media (min-width: $screen-desktop) {
+              width: 10%
+          }
+      }
+  
+  }
+  
+  .carousel {
+    overflow: hidden;
+  }
+  .li-pic li{
+    width: 75px;
+    height: 50px;
+    margin: 5px;
+    border: 1px solid #1e0604;
+    padding: 0;
+    text-indent: 0;
+    overflow: hidden;
+  }
+  .carousel-indicators .active {
+    border: 1px solid #7b695d;
+  }

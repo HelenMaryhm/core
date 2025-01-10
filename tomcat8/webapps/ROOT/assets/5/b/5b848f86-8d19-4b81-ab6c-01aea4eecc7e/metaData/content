@@ -1,0 +1,84 @@
+#if($utilmethods.isset($request.getparameter('date')))
+  #set($datestring = $request.getparameter('date'))
+#else
+  #set($datestring = $date.format('yyyy-mm-dd',$utilmethods.getcurrentdate()))
+#end
+#set($nowlv = $date.todate('yyyy-mm-dd',$datestring))
+#set($now = $date.todate('yyyy-mm-dd',$datestring))
+#set($fromdatelv = $date.todate('yyyy-mm-dd',$datestring))
+#set($todatelv = $date.todate('yyyy-mm-dd',$datestring))
+#set($calendarlv = $date.tocalendar($nowlv))
+#set($dayofweeklv = $math.sub($calendarlv.get(7),1))
+
+#set($temp = $fromdatelv.settime($math.sub($fromdatelv.gettime(), $math.mul(86400000,$dayofweeklv))))
+#set($temp = $todatelv.settime($math.add($todatelv.gettime(),$math.mul(86400000,$math.sub(6,$dayofweeklv)))))
+
+#set ($query = "+structurename:calendarevent +conhost:$host.identifier +live:true +calendarevent.startdate:[19000101000000 to $date.format('yyyymmddhhmmss',$todatelv)] +calendarevent.enddate:[$date.format('yyyymmddhhmmss',$fromdatelv) to 30000101000000]")
+
+#set($tag = $request.getparameter('tag'))
+#if($utilmethods.isset($tag))
+  #set ($query = "$query +calendarevent.tags:$tag")
+#end
+
+#set($cat = $request.getparameter('cat'))
+#if($utilmethods.isset($cat))
+  #set ($query = "$query +categories:$cat")
+#end
+#set($keywordbox = $request.getparameter('keywordbox'))
+#if($utilmethods.isset($keywordbox))
+  #set ($query = "$query +calendarevent.title:${keywordbox}*")
+#end
+
+#set ($query = "+structurename:calendarevent")
+
+#set ($list = $dotcontent.pull("$query",10,"calendarevent.startdate desc"))
+
+#if ($list && ${list.size()} > 0)
+
+<section class="events-ongoing">
+  <h4>ongoing events</h4>
+  <ul>
+    #foreach($levent in $list)
+    #set($evtsd = $date.format('mmmm d',$levent.startdate))
+    #set($evted = $date.format('mmmm d',$levent.enddate))
+    #if($evtsd != $evted)
+    <li>
+      <a href="/news-events/events/$levent.urltitle?id=$levent.identifier&language_id=$levent.languageid">$levent.title</a><br>
+      <time>$evtsd to $evted</time>
+      ##<p>$utilmethods.shortenstring("$levent.description", 220)</p>
+    </li>
+    #end
+    #end
+  </ul>
+</section>
+#end
+y = "$query +calendarevent.tags:$tag")
+#end
+
+#set($cat = $request.getparameter('cat'))
+#if($utilmethods.isset($cat))
+  #set ($query = "$query +categories:$cat")
+#end
+#set($keywordbox = $request.getparameter('keywordbox'))
+#if($utilmethods.isset($keywordbox))
+  #set ($query = "$query +calendarevent.title:${keywordbox}*")
+#end
+
+#set ($query = "+structurename:calendarevent")
+
+#set ($list = $dotcontent.pull("$query",10,"calendarevent.startdate desc"))
+
+#if ($list && ${list.size()} > 0)
+
+<section class="events-ongoing">
+  <h4>ongoing events</h4>
+  <ul>
+    #foreach($levent in $list)
+    #set($evtsd = $date.format('mmmm d',$levent.startdate))
+    #set($evted = $date.format('mmmm d',$levent.enddate))
+    #if($evtsd != $evted)
+    <li>
+      <a href="/news-events/events/$levent.urltitle?id=$levent.identifier&language_id=$levent.languageid">$levent.title</a><br>
+      <time>$evtsd to $evted</time>
+      ##<p>$utilmethods.shortenstring("$levent.description", 220)</p>
+   

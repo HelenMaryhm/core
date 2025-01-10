@@ -1,0 +1,86 @@
+#if($utilmethods.isset($urlmapcontent.title))
+    #set($pagetitle = $urlmapcontent.title)
+    #set($crumbtitle = $urlmapcontent.title)
+#else
+    #set($pagetitle = $dotpagecontent.title)
+#end
+#set($dotrelativethemepath=$dottheme.path)
+#if($dotrelativethemepath.startswith("//"))
+	#set($dotrelativethemepath=$dotrelativethemepath.substring(2))
+	#set($dotrelativethemepath=$dotrelativethemepath.substring($dotrelativethemepath.indexof("/")))
+#end
+#if("0" == $request.getparameter("com.dotmarketing.persona.id"))
+	${visitor.cleartags()}
+#end
+
+<title>$pagetitle</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta charset="utf-8">
+<meta name="application-name" content="dotcms dotcms.com">
+<meta name="description" content="$!dotpagecontent.seodescription">
+<meta name="keywords" content="$!dotpagecontent.seokeywords">
+<meta name="author" content="$!dotpagecontent.pagemetadata">
+<meta name="lastmodifieddate" content="$!dotpagecontent.moddate">
+<meta name="application-name" content="dotcms.com" />
+<meta name="generator" content="dotcms" />
+#if($utilmethods.isset($dotpagecontent.canonicalurl))
+<link rel="canonical" href="//demo.dotcms.com$!{dotpagecontent.canonicalurl}" />
+#else
+<link rel="canonical" href="//demo.dotcms.com$!{request.getattribute("javax.servlet.forward.request_uri")}" />
+#end
+
+
+<link rel="shortcut icon" href="//dotcms.com/favicon.ico" type="image/x-icon">
+<link href='//fonts.googleapis.com/css?family=kameron|oxygen:300,400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="${dotrelativethemepath}sass/main.dotsass" type='text/css'>
+
+## importing 3rd party plugins styles
+<link rel="stylesheet" href="${dottheme.path}_bower_components/fancybox/source/jquery.fancybox.css">
+<link rel="stylesheet" href="${dottheme.path}_bower_components/fancybox/source/helpers/jquery.fancybox-buttons.css">
+<link rel="stylesheet" href="${dottheme.path}_bower_components/fancybox/source/helpers/jquery.fancybox-thumbs.css">
+<link rel="stylesheet" href="${dottheme.path}_bower_components/video.js/video-js.css">
+<link rel="stylesheet" href="${dottheme.path}_bower_components/chosen/public/chosen.css">
+
+<!--[if lt ie 9]>
+    <script src="_bower_components/respond/respond.min.js"></script>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<!-- load jquery from google cdn -->
+<script src="//code.jquery.com/jquery.min.js"></script>
+<!-- load jquery from a local copy if loading from google fails -->
+<script type="text/javascript">window.jquery || document.write('<script type="text/javascript" src="${dottheme.path}_bower_components/jquery/jquery.min.js"><\/script>')</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+<script>
+	webfont.load({
+		google : {
+			families : ['open sans:300,700', 'roboto slab:100,500,700']
+		}
+	});
+</script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iptk2s/jmvj81dnzb/ifr2sda7u06vhjyyllad4snfpcl/snyujrrbdjsw1pgil" crossorigin="anonymous"></script>
+ideo.js/video-js.css">
+<link rel="stylesheet" href="${dottheme.path}_bower_components/chosen/public/chosen.css">
+
+<!--[if lt ie 9]>
+    <script src="_bower_components/respond/respond.min.js"></script>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<!-- load jquery from google cdn -->
+<script src="//code.jquery.com/jquery.min.js"></script>
+<!-- load jquery from a local copy if loading from google fails -->
+<script type="text/javascript">window.jquery || document.write('<script type="text/javascript" src="${dottheme.path}_bower_components/jquery/jquery.min.js"><\/script>')</script>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+<script>
+	webfont.load({
+		google : {
+			families : ['open sans:300,700', 'roboto slab:100,500,700']
+		}
+	});
+</script>
+<script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iptk2s/jmvj81dnzb/ifr2sda7u06vhjyyllad4snfpcl/snyujrrbdjsw1pgil" crossorigin="anonymous"

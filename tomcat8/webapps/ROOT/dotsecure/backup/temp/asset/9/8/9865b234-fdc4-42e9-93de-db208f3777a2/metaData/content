@@ -1,0 +1,67 @@
+<script>
+
+	dojo.require("dojox.widget.colorpicker");
+	
+		
+	dojo.addonload( function(){
+		var x = dojo.byid("backgroundcolor").value;
+		
+		if(x != ""){
+			dijit.byid("bgcolor").setvalue(x);
+			dojo.byid("colorblock").style.background = x;
+			dijit.byid("picker1").setvalue(x);
+		}
+	});
+	
+	// updates values from text field
+	function setcolor(){
+		var x = dojo.byid("bgcolor").value;
+		dojo.byid("colorblock").style.background = x;
+		dojo.byid("backgroundcolor").value = x;
+		if(dijit.byid("picker1")){
+			dijit.byid("picker1").setvalue(x);
+		}
+	}
+	
+	// updates values from picker
+	function pickercolor(){
+		var x = dijit.byid("picker1").value;
+		dojo.byid("colorblock").style.background = x;
+		dojo.byid("backgroundcolor").value = x;
+		dojo.byid("bgcolor").value = x;
+	}
+	
+	// open colro picker
+	function openpicker() {
+		dijit.byid("colorpickerdialog").show();
+	    dojo.connect(dijit.byid("picker1"), "onchange", pickercolor);
+	}
+</script>
+
+<div style="position:relative;">
+	<input id="bgcolor" dojotype="dijit.form.textbox" name="bgcolor" size="5" type="text" value="" style="width:170px;" onchange="setcolor();">
+	<button id="pickercolorbtn" dojotype="dijit.form.button" type="button" iconclass="coloricon" onclick="openpicker();">
+	    color picker
+	 </button>
+	<div id="colorblock" style="position:absolute;left:115px;border-left:1px solid #b3b3b3;top:3px;width:48px;height:26px;display:block;" onclick="openpicker();"></div>
+</div>
+
+<div id="colorpickerdialog" data-dojo-type="dijit.dialog" title="color picker">
+   <div dojotype="dojox.widget.colorpicker" id="picker1" websafe="false" liveupdate="true" ></div>
+</div>
+){
+		var x = dijit.byid("picker1").value;
+		dojo.byid("colorblock").style.background = x;
+		dojo.byid("backgroundcolor").value = x;
+		dojo.byid("bgcolor").value = x;
+	}
+	
+	// open colro picker
+	function openpicker() {
+		dijit.byid("colorpickerdialog").show();
+	    dojo.connect(dijit.byid("picker1"), "onchange", pickercolor);
+	}
+</script>
+
+<div style="position:relative;">
+	<input id="bgcolor" dojotype="dijit.form.textbox

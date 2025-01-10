@@ -1,0 +1,257 @@
+#if($URLMapContent.inode && $URLMapContent.sysPublishDate.before($date.date) && $UtilMethods.isSet($URLMapContent.latlong))
+    <h3>More news closer</h3>
+    <div class="map-canvas" id="mapCanvas"></div>
+    <hr>
+
+    #set ($lat = $URLMapContent.latlong.split(',')[0])
+    #set ($lng = $URLMapContent.latlong.split(',')[1])
+    <style>
+        .map-canvas {
+            height: 300px
+        }
+    </style>
+    <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=${host.googleMap}&v=3.exp&signed_in=true&libraries=places"></script>
+    <script>
+        var endPoint = '/api/es/search';
+        var queryBasic = {
+            'bool': {
+                'must': {
+                    'term': {
+                        'structureName': 'news'
+                    }
+                }
+            }
+        };
+        var latLongQuery = {
+          'sort': [{
+            '_geo_distance' : {
+              'news.latlong' : {
+                'lat' : $!{lat},
+                'lon' : $!{lng}
+              },
+              'order' : 'asc',
+              'unit' : 'km'
+            }
+          }],
+          'query': {
+            'bool': {
+              'must': queryBasic,
+              'filter': {
+                  'geo_distance': {
+                      'distance': '300km',
+                      'news.latlong': {
+                        'lat': $!{lat},
+                        'lon': $!{lng}
+                      }
+                  }
+              }
+            }
+          },
+          'size': 999 // TODO: use match_all
+        };
+
+        var mapNews = null;
+
+        function createMapView(data) {
+            var mapCanvas = document.getElementById('mapCanvas');
+            var mapOptions = {
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            mapNews = new google.maps.Map(mapCanvas, mapOptions);
+            var bounds = new google.maps.LatLngBounds();
+
+            $.each(data, function(index, item) {
+                var latitude = parseFloat(item.latlong.split(',')[0]);
+                var longitude = parseFloat(item.latlong.split(',')[1]);
+                var marker = new google.maps.Marker({
+                    map: mapNews,
+                    position: new google.maps.LatLng(latitude, longitude)
+                });
+                bounds.extend(marker.position);
+                createDetailPopup(marker, item);
+            });
+            mapNews.fitBounds(bounds);
+        }
+
+        var infowindow = new google.maps.InfoWindow();
+
+        function createDetailPopup(marker, item) {
+            var detailUrl = '/news/' + item.urlTitle;
+            var content = '<h4>' + item.title + '</h4>';
+            content += '<p>';
+            if (item.caption) {
+                content += item.caption;
+                content += '<br />';
+            }
+            content += '<a href="' + detailUrl + '">Read more...</a>';
+            content += '</p>';
+            google.maps.event.addListener(marker, 'click', function(e) {
+                infowindow.setContent(content);
+                infowindow.open(marker.get('map'), marker);
+            });
+        }
+
+        function requestData(query) {
+            $.ajax({
+                url: endPoint,
+                type: 'POST',
+                cache: false,
+                dataType: 'json',
+                data: JSON.stringify(query),
+                contentType: 'application/json',
+                success: function(data) {
+                    createMapView(data.contentlets);
+                },
+                error: function(e) {
+                    alert('Sorry, something went wrong. Please try again later.');
+                }
+            });
+        }
+
+        requestData(latLongQuery);
+    </script>
+#end
+
+#set($categoryList = "")
+#set($nowsers= $date.format('yyyyMMddHHmmss', $date.getDate()))
+#foreach($con in $URLMapContent.topic)
+    #set($categoryList = "$categoryList $con.categoryVelocityVarName")
+#end
+
+#if($UtilMethods.isSet($categoryList))
+    #set($_qk = "+structureName:News
+    +(conhost:$host.identifier conhost:SYSTEM_HOST)
+    +($categoryList)
+    +News.sysPublishDate:[19001010101000 TO $nowsers]")  
+    #set($cons = $dotcontent.pull(${_qk},10,"News.syspublishdate desc"))
+    #if($cons.size() > 0)
+        <h3>Related News</h3> 
+    #end
+#else
+	#set($cons = $dotcontent.pullPersonalized("+structureName:News +(conhost:$host.identifier conhost:SYSTEM_HOST) -identifier:$URLMapContent.identifier", 10, "News.syspublishdate desc"))
+	#if($cons.size() > 0)
+		<h3>You might like...</h3> 
+	#end
+#end
+<!-- RELATED NEWS -->
+
+
+
+
+#if($cons.size() > 0)
+
+	#foreach($con in $cons)
+		<div class="media flex-column">
+			<div class="media-heading"><a href="/news/$con.urlTitle">$!{con.title}</a></div>
+			<div class="media-subheading">
+				<time datetime="$date.format('yyyy-M-dd',$con.sysPublishDate)">$date.format('MMM dd yyyy', ${con.sysPublishDate}) at $date.format('HH:mm z', $!{con.sysPublishDate})</time>
+			</div>
+		</div>
+		<hr>
+	#end
+	
+#end
+
+<!-- RELATED YouTube --> 
+    #set($youtube  = $dotcontent.pullRelated("Parent_News-Child_Youtube","$URLMapContent.identifier",false,5))
+    #if($youtube.size() > 0)
+        <h3 style="margin-top: 50px;display:block;">Related Media</h3>
+    #end
+    #foreach($con in $youtube)
+        <div class="media">
+            <div class="media-badge pull-left"> 
+                <a href="$con.url" class="js-fancybox-media-link thumb media-thumb" title="$!{con.widgetTitle}">
+                    <img src="$!{con.thumbnail2}" alt="$!{con.widgetTitle}" style="width:120px;">
+                </a>
+            </div>
+            <div class="media-body">
+                <div class="media-heading"><a href='$con.url' class='js-fancybox-media-link'>$con.widgetTitle</a></div>
+                <div class="media-description">Author: $con.author | Length: $con.length</div>
+            </div>
+        </div>
+    #end
+
+<!-- RELATED MEDIA --> 
+
+    #set($media  = $dotcontent.pullRelated("Parent_News-Child_Media","$URLMapContent.identifier",false,5))
+
+    #foreach($con in $media)
+        ## Set File path for link
+        #if ($UtilMethods.isSet($con.file.rawUri))
+            #set ($filePath = "$con.file.rawUri/$con.file.name")
+        #else
+            #set ($filePath = $con.url)
+        #end
+      
+        <div class="media">
+                    
+            #if ($UtilMethods.getFileExtension($filePath) != 'mp3')
+                
+                ##IF IMAGE  
+                #if ($UtilMethods.isImage($filePath))
+                    <div class="media-badge pull-left"> 
+                        <a href='$filePath' class='js-fancybox-img thumb image-thumb' title='$!{con.title}'>
+                            #if ($UtilMethods.isSet($con.thumbnail.rawUri))
+                                <img src='/contentAsset/image/$con.inode/thumbnail/byInode/1/filter/Resize/resize_h/80/resize_w/120' alt='$!{con.title}'>
+                            #elseif($UtilMethods.isImage($filePath))
+                                <img src='/contentAsset/image/$con.inode/file/byInode/1/filter/Resize/resize_h/80/resize_w/120' alt='$!{con.title}'>
+                            #end
+                        </a>
+                    </div>
+                    
+                    
+                
+                
+                ##IF VIDEO
+                #else               
+                    #if ($UtilMethods.isSet($con.thumbnail.rawUri))
+                        <div class="media-badge pull-left">
+                            <a href='$filePath' class='js-fancybox-media-link thumb media-thumb' title='$!{con.title}'> 
+                                <img src='/contentAsset/image/$con.inode/thumbnail/byInode/1/filter/Resize/resize_h/80/resize_w/120' alt='$!{con.title}'>
+                            </a>
+                        </div>
+                    #else
+                        <div class="icon-badge pull-left">
+                            <a href='$filePath' class='js-fancybox-media-link thumb media-thumb' title='$!{con.title}'> 
+                                <i class="fa fa-map-marker fa-3x"></i>
+                            </a>
+                        </div>
+                    #end
+                #end
+                
+                
+                
+                    
+            #else
+            
+                ##IF MP3
+                                        
+                    #if ($UtilMethods.isSet(${con.thumbnailBinaryFileURI}))
+                        <div class="media-badge pull-left">
+                            <a href='$filePath' class='js-fancybox-media-link thumb media-thumb' title='$!{con.title}'>
+                                <img src='/contentAsset/image/$con.inode/thumbnail/byInode/1/filter/Resize/resize_h/80/resize_w/120' alt='$!{con.title}'>
+                            </a>
+                        </div>
+                    #else
+                        <div class="icon-badge pull-left">
+                            <i class="fa fa-map-marker fa-3x"></i>
+                        </div>
+                    #end
+                </a>
+
+                <div class="hidden">
+                    <audio id="$!{con.ContentIdentifier}" class="video-js vjs-default-skin vjs-big-play-centered"
+                        controls preload="auto" width="640" height="480">
+                        <source src="$!{filePath}" type='audio/$!{UtilMethods.getFileExtension($filePath)}' />
+                    </audio>
+                </div>
+            #end
+
+            <div class="media-body">
+                <div class="media-heading"><a href='$filePath' class='js-fancybox-media-link'>$con.title</a></div>
+                <div class="media-subheading">$date.format('MMM dd yyyy',$con.sysPublishDate) at $date.format('HH:mm z',$con.sysPublishDate)</div>
+                <div class="media-description">$UtilMethods.prettyShortenString("$con.description", 100)</div>
+            </div>
+        </div>
+        <hr>
+    #end

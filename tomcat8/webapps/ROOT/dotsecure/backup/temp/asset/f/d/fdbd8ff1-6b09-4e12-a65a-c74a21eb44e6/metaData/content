@@ -1,0 +1,386 @@
+
+tools edit alt+e layer alt+l
+add shape + c assign profile ctrl+alt+shift+ [ c blending options ctrl+shift+o
+subtract shape - c convert to profile ctrl+alt+shift+ ] bring forward ctrl+ ]
+preserve transparency (toggle) / clear (selection) delete / backspace bring to front ctrl+shift+ ]
+
+decrease brush size [ color settings ctrl+shift+k create / release clipping mask (toggle) ctrl+alt+g
+
+increase brush size ] copy ctrl+c group layers ctrl+g
+
+decrease brush softness by 25% shift+ [ copy merged ctrl+shift+c c delete layer (group) ctrl+shift+ -
+increase brush hardness by 25% shift+ ] cut ctrl+x c delete layer (group) (no dialog) ctrl+alt+shift+ -
+previous brush < duplicate free transform ctrl+alt+t c duplicate layer (group) ctrl+shift+q
+next brush > duplicate transform again ctrl+alt+shift+t c duplicate layer (no dialog) ctrl+alt+shift+q
+first brush shift+ < fade (last filter / adjustment) ctrl+shift+f c flatten image ctrl+alt+shift+0
+last brush shift+ > fill dialog shift+backspace c group into new smart object ctrl+alt+shift+h
+tool opacity 10% → 100% 1 → 0 fill from history ctrl+alt+backspace layer opacity 10% → 100% 1 → 0
+
+flow / airbrush opacity 10% → 100% shift+1 → 0 fill from history & preserve trans. ctrl+alt+shift+backspace c layer (group) properties ctrl+ /
+path / direct selection tool a fill w/ background & preserve trans. ctrl+shift+backspace layer via copy ctrl+j
+
+brush / pencil / color replacement tool b fill w/ foreground & preserve trans. alt+shift+backspace layer via copy (with dialog) ctrl+alt+j
+
+crop tool c fill with background color ctrl+backspace layer via cut ctrl+shift+j
+
+default colors d fill with foreground color alt+backspace layer via cut (with dialog) ctrl+alt+shift+j
+
+eraser tool e free transform ctrl+t merge layers ctrl+e
+
+cycle screen modes f keyboard shortcuts alt+shift+ctrl+k merge visible ctrl+shift+e
+
+gradient / paint bucket tool g menus ctrl+alt+shift+m new layer ctrl+shift+n
+
+hand tool h paste ctrl+v new layer (no dialog) ctrl+alt+shift+n
+
+eyedropper / sampler / measure tool i paste into (selection) ctrl+shift+v c new group ctrl+shift+ +
+spot healing / healing / patch / red eye j paste outside (selection) ctrl+alt+shift+v c new group (no dialog) ctrl+alt+shift+ +
+slice tool k preferences (general) ctrl+k next layer alt+ ]
+
+lasso tool l preferences (last used) ctrl+alt+k previous layer alt+ [
+
+marquee tool m c preset manager ctrl+alt+ / select previous layer alt+shift+ [
+notes / audio annotation tool n c purge all ctrl+shift+ ' select next layer alt+shift+ ]
+dodge / burn / sponge tool o c purge all (no dialog) ctrl+alt+shift+ ' send backward ctrl+ [
+pen / freeform pen tool p step backward (history) ctrl+alt+z send to back ctrl+shift+ [
+
+standard / quick mask mode q step forward (history) ctrl+shift+z stamp down ctrl+alt+e
+
+blur / sharpen / smudge tool r c stroke ctrl+alt+h stamp visible ctrl+alt+shift+e
+clone / pattern stamp tool s transform again ctrl+shift+t select bottom layer alt+ ,
+
+type tool (vertical / horizontal) t undo/redo ctrl+z select top layer alt+ .
+
+shape tool u select layers to bottom layer alt+shift+ ,
+
+move tool v filter alt+t select layers to top layer alt+shift+ .
+magic wand tool w c add noise ctrl+alt+shift+z ungroup layers ctrl+shift+g
+switch colors x extract ctrl+alt+x
+
+history / art history brush tool y c gaussian blur ctrl+alt+shift+g file alt+f
+zoom tool z last filter ctrl+f browse (launch adobe bridge) ctrl+alt+o
+
+hand tool (toggle) space last filter (show dialog box) ctrl+alt+f close ctrl+w / ctrl+f4
+
+zoom in (toggle) ctrl+space c lens correction ctrl+alt+shift+y close all ctrl+alt+w / ctrl+shift+f4
+zoom out (toggle) alt+space liquify ctrl+shift+x close and go to bridge ctrl+shift+w
+
+cycle path / direct selection tools shift+a pattern maker ctrl+alt+shift+x edit in imageready ctrl+shift+m
+
+cycle brush / pencil / color replacement shift+b c smart blur ctrl+alt+shift+d exit ctrl+q
+cycle eraser tools shift+e c smart sharpen ctrl+alt+shift+w file info ctrl+alt+shift+ i
+menubar (show / hide) shift+f c unsharp mask ctrl+alt+shift+u new document ctrl+n
+toggle gradient / paint bucket tools shift+g vanishing point ctrl+alt+v new document (last settings) ctrl+alt+n
+
+cycle eyedropper / sampler / measure shift+ i open ctrl+o
+
+cycle spot / healing / patch / red eye shift+j channels open as ctrl+alt+shift+o
+toggle slice / slice select tools shift+k add composite selection ctrl+alt+shift+ ~ page setup ctrl+shift+p
+
+cycle lasso tools shift+l add layer mask selection ctrl+alt+shift+ \ print ctrl+p
+
+toggle rectangular / elliptical marquee shift+m add selection channel 1 → 9 ctrl+alt+shift+1 → 9 print one copy ctrl+alt+shift+p
+
+toggle notes / audio annotation tools shift+n channel / rubylith view (toggle) ~ print with preview ctrl+alt+p
+
+cycle dodge / burn / sponge tools shift+o layer mask as rubylith (toggle) \ revert f12
+
+toggle pen / freeform pen tools shift+p load composite as selection ctrl+alt+ ~ save ctrl+s
+
+cycle blur / sharpen / smudge tools shift+r load layer mask as selection ctrl+alt+ \ save as ctrl+shift+s
+
+toggle clone / pattern stamp tools shift+s load selection channel 1 → 9 ctrl+alt+1 → 9 save as (copy) ctrl+alt+s
+
+cycle type tools (vertical / horizontal) shift+t select channel 1 → 9 ctrl+1 → 9 save for web ctrl+alt+shift+s
+
+cycle shape / line tools shift+u select composite channel ctrl+ ~
+
+toggle history / art history brush shift+y select layer mask (channel) ctrl+ \ author:  trevor morris ( trevor@morris-photographics.com )
+airbrush (brush tool) alt+shift+p show composite channel (toggle) shift+ ~ website:  morris photographics ( morris-photographics.com )
+
+[n] new to adobe photoshop cs3
+version: 6/july/2007 [c] custom keyboard shortcut
+
+adobe® photoshop®
+ 
+cs3  keyboard shortcuts 
+
+
+
+select alt+s type image alt+i
+all ctrl+a align left ctrl+shift+l auto color ctrl+shift+b
+
+all layers ctrl+alt+a align right ctrl+shift+r auto contrast ctrl+alt+shift+l
+c contract selection ctrl+alt+ [ bold (toggle) ctrl+shift+b auto levels ctrl+shift+l
+
+deselect ctrl+d center text ctrl+shift+c n black & white ctrl+alt+shift+b
+c expand selection ctrl+alt+ ] change kerning by 100/1000em ctrl+alt+ ←,  → canvas size ctrl+alt+c
+
+feather ctrl+alt+d change kerning by 20/1000em alt+ ←,  → color balance ctrl+b
+
+inverse ctrl+shift+ i decrease / increase baseline by 10pt ctrl+alt+shift+ ↑, ↓ color balance (last settings) ctrl+alt+b
+
+move duplicate of selection 10px ctrl+alt+shift+ ←, ↑, →, ↓ decrease / increase baseline by 2pt alt+shift+ ↑, ↓ c crop ctrl+alt+shift+c
+move duplicate of selection 1px ctrl+alt+ ←, ↑, →, ↓ decrease / increase leading by 10pt ctrl+alt+ ↑, ↓ curves ctrl+m
+
+move selection (while creating) space decrease / increase leading by 2pt alt+ ↑, ↓ curves (last settings) ctrl+alt+m
+
+move selection 10px ctrl+shift+ ←, ↑, →, ↓ decrease / increase type size by 10pt ctrl+alt+shift+ <, > desaturate ctrl+shift+u
+
+move selection 1px ctrl+ ←, ↑, →, ↓ decrease / increase type size by 2pt ctrl+shift+ <, > c duplicate ctrl+shift+a
+move selection area 10px shift+ ←, ↑, →, ↓ hyphenation (toggle) ctrl+alt+shift+h c duplicate (no dialog) ctrl+alt+shift+a
+move selection area 1px ←, ↑, →, ↓ italic (toggle) ctrl+shift+i hue / saturation ctrl+u
+
+n refine edge ctrl+alt+r justify paragraph (force last line) ctrl+shift+f hue / saturation (last settings) ctrl+alt+u
+
+reselect ctrl+shift+d justify paragraph (left align last line) ctrl+shift+j image size ctrl+alt+i
+
+move cursor one word left or right ctrl+ ←, → invert ctrl+ i
+
+view alt+v move cursor to end of line end levels ctrl+l
+actual pixels ctrl+alt+0 move cursor to end of story ctrl+end levels (last settings) ctrl+alt+l
+
+c clear guides ctrl+alt+shift+ ; move cursor to start of line home c mode > 8 bits/channel ctrl+alt+ ,
+extras (show / hide) ctrl+h move cursor to start of story ctrl+home c mode > rgb ctrl+ ,
+fit on screen ctrl+0 move to previous / next paragraph ctrl+ ↑, ↓ c reveal all ctrl+shift+r
+gamut warning ctrl+shift+y regular (toggle) ctrl+shift+y c rotate arbitrary ctrl+alt+shift+r
+grid (show / hide) ctrl+ ' select one character to left or right shift+ ←,  → c shadow/highlight ctrl+shift+ /
+guides (lock / unlock) ctrl+alt+ ; select one line (to end) up or down ctrl+shift+ ↑, ↓ c shadow/highlight (last settings) ctrl+alt+shift+ /
+guides (show / hide) ctrl+ ; select one line up or down shift+ ↑, ↓ c trim ctrl+alt+y
+
+c new guide ctrl+alt+ ' select one word to left or right ctrl+shift+ ←, →
+proof colors (cmyk preview) ctrl+y select type to end of line shift+end blending modes
+rulers (show / hide) ctrl+r select type to end of story ctrl+shift+end cycle blending modes backward shift+ -
+
+c smart guides (toggle) ctrl+alt+q select type to start of line shift+home cycle blending modes forward shift+ +
+snap (on / off) ctrl+shift+ ; select type to start of story ctrl+shift+home behind alt+shift+q
+
+target path (show / hide) ctrl+shift+h set horizontal scale to 100% ctrl+shift+x clear alt+shift+r
+* zoom in ctrl+ + set leading to auto ctrl+alt+shift+a color alt+shift+c
+* zoom in & resize window ctrl+alt+ + set tracking to 0 ctrl+shift+q color burn alt+shift+b
+* zoom out ctrl+ - set vertical scale to 100% ctrl+alt+shift+x color dodge alt+shift+d
+* zoom out & resize window ctrl+alt+ - show / hide type ctrl+h darken alt+shift+k
+
+small caps (toggle) ctrl+shift+h difference alt+shift+e
+
+window alt+w strikethrough (toggle) ctrl+shift+ / dissolve alt+shift+ i
+all palettes (show / hide) tab subscript (toggle) ctrl+alt+shift+ + exclusion alt+shift+x
+
+tool bar & palettes (show / hide) shift+tab superscript (toggle) ctrl+shift+ + hard light alt+shift+h
+
+actions palette (show / hide) f9 toggle single / every-line composer ctrl+alt+shift+t hard mix / threshold alt+shift+l
+c animation (show / hide) f11 underlining (toggle) ctrl+shift+u hue alt+shift+u
+
+brushes palette (show / hide) f5 uppercase (toggle) ctrl+shift+k lighten alt+shift+g
+
+color palette (show / hide) f6 cancel type changes esc linear burn alt+shift+a
+c histogram (show / hide) f4 commit type changes ctrl+return / enter linear dodge alt+shift+w
+c history (show / hide) f10 linear light alt+shift+j
+
+info palette (show / hide) f8 navigation luminosity alt+shift+y
+c layer comps (show / hide) f3 move view to bottom right end multiply alt+shift+m
+
+layers palette (show / hide) f7 move view to top left home normal alt+shift+n
+
+options bar (show) return / enter next document ctrl+tab overlay alt+shift+o
+c new window ctrl+shift+0 previous document ctrl+shift+tab pin light alt+shift+z
+
+scroll view down 10px shift+pagedown saturation alt+shift+t
+
+miscellaneous scroll view down one page pagedown screen alt+shift+s
+help f1 scroll view left 10px ctrl+shift+pageup soft light alt+shift+f
+
+c about photoshop shift+f1 scroll view left one page ctrl+pageup vivid light alt+shift+v
+accept operation return / enter scroll view right 10px ctrl+shift+pagedown pass through (groups) alt+shift+p
+
+cancel operation esc / ctrl+ . scroll view right one page ctrl+pagedown desaturate (sponge tool) alt+shift+d
+
+apply zoom & keep zoom field active shift+return scroll view up 10px shift+pageup saturate (sponge tool) alt+shift+s
+
+new frame (animation) ctrl+alt+shift+f scroll view up one page pageup highlights (dodge & burn tools) alt+shift+h
+c play action ctrl+alt+ . pan / zoom multiple documents shift midtones (dodge & burn tools) alt+shift+m
+
+shadows (dodge & burn tools) alt+shift+s
+
+[n] new to adobe photoshop cs3
+* these represent the default keyboard shortcuts; to reverse them, enable the "zoom resizes windows" option in the general preferences dialog [c] custom keyboard shortcut
+
+adobe® photoshop®
+ 
+cs3  keyboard shortcuts 
+
+
+
+shift alt alt+shift
+1 layer / tool opacity 10% flow / airbrush opacity 10% 1
+2 layer / tool opacity 20% flow / airbrush opacity 20% 2
+3 layer / tool opacity 30% flow / airbrush opacity 30% 3
+4 layer / tool opacity 40% flow / airbrush opacity 40% 4
+5 layer / tool opacity 50% flow / airbrush opacity 50% 5
+6 layer / tool opacity 60% flow / airbrush opacity 60% 6
+7 layer / tool opacity 70% flow / airbrush opacity 70% 7
+8 layer / tool opacity 80% flow / airbrush opacity 80% 8
+9 layer / tool opacity 90% flow / airbrush opacity 90% 9
+0 layer / tool opacity 100% flow / airbrush opacity 100% 0
+a path / direct selection tool path / direct selection tools linear burn blending mode a
+b brush / pencil / color replacement tool cycle brush / pencil / color replacement color burn blending mode b
+c crop tool color blending mode c
+d default colors color dodge / desaturate d
+e eraser tool cycle eraser tools edit menu… difference blending mode e
+f cycle screen modes menu bar (show / hide) file menu… soft light blending mode f
+g gradient / paint bucket tool toggle gradient / paint bucket lighten blending mode g
+h hand tool help menu… hard light / highlights h
+i eyedropper / sampler / measure eyedropper / sampler / measure image menu… dissolve blending mode i
+j spot / healing / patch / red eye cycle spot / healing / patch / red eye linear light blending mode j
+k slice tool toggle slice / slice select tools darken blending mode k
+l lasso tool cycle lasso tools layer menu… hard mix / threshold l
+m marquee tool rectangular / elliptical marquee multiply  / midtones m
+n notes / audio annotation tool toggle notes / audio annotations normal blending mode n
+o dodge / burn / sponge tool cycle dodge / burn / sponge overlay blending mode o
+p pen / freeform pen tool toggle pen / freeform pen tools pass through blend mode (groups) p
+q standard / quick mask mode behind blending mode q
+r blur / sharpen / smudge tool cycle blur / sharpen / smudge clear blending mode r
+s clone / pattern stamp tool toggle clone / pattern stamp select menu… screen / saturate / shadows s
+t type tool filter menu… saturation blending mode t
+u shape tool cycle shape / line tools hue blending mode u
+v move tool view menu… vivid light blending mode v
+w magic wand tool window menu… linear dodge blending mode w
+x switch colors exclusion blending mode x
+y history / art history brush tool toggle history / art history brush luminosity blending mode y
+z zoom tool pin light blending mode z
++ add shape cycle blending modes forward +
+- subtract shape cycle blending modes backward -
+; ;
+' '
+[ decrease brush size decrease brush softness by 25% previous layer select previous layer [
+] increase brush size increase brush hardness by 25% next layer select next layer ]
+< ( , ) previous brush first brush select bottom layer select layers to bottom layer < ( , )
+> ( . ) next brush last brush select top layer select layers to top layer > ( . )
+/ preserve transparency (toggle) /
+\ layer mask as rubylith (toggle) \
+~ channel / rubylith view (toggle) show composite channel (toggle) ~
+backspace clear (selection) fill dialog fill with foreground color fill w/ foreground & preserve trans. backspace
+return options bar (show) apply zoom & keep box active return
+space hand tool / drag selection zoom out (toggle) space
+tab toolbar & palettes (show / hide) all palettes (show / hide) next application (windows) previous application (windows) tab
+↑ move selection area 1px up move selection area 10px up t increase leading 2pt t increase baseline 2pt ↑
+
+↓ move selection area 1px down move selection area 10px down t decrease leading 2pt t decrease baseline 2pt ↓
+
+← move selection area 1px left move selection area 10px left t decrease kerning by 20/1000em ←
+
+→ move selection area 1px right move selection area 10px right t increase kerning by 20/1000em →
+
+home move view to top left t select type to start of line home
+end move view to bottom right t select type to end of line end
+pageup scroll view up scroll view up 10px pageup
+pagedown scroll view down scroll view down 10px pagedown
+
+[n] new to adobe photoshop cs3
+[t] only available in type mode
+
+[c] custom keyboard shortcut
+
+adobe® photoshop®
+ 
+cs3  keyboard shortcuts 
+
+
+
+ctrl ctrl+alt ctrl+shift ctrl+alt+shift
+1 select channel 1 load selection channel 1 add selection channel 1 1
+2 select channel 2 load selection channel 2 add selection channel 2 2
+3 select channel 3 load selection channel 3 add selection channel 3 3
+4 select channel 4 load selection channel 4 add selection channel 4 4
+5 select channel 5 load selection channel 5 add selection channel 5 5
+6 select channel 6 load selection channel 6 add selection channel 6 6
+7 select channel 7 load selection channel 7 add selection channel 7 7
+8 select channel 8 load selection channel 8 add selection channel 8 8
+9 select channel 9 load selection channel 9 add selection channel 9 9
+0 fit on screen (view) actual pixels c new window c flatten image 0
+a (select) all all layers c duplicate c duplicate (no dialog) a
+b color balance color balance (last settings) auto color n black & white b
+c copy canvas size copy merged c crop c
+d deselect feather (selection) reselect c smart blur d
+e merge layers stamp down merge visible stamp visible e
+f last filter last filter dialog box fade (last filter / adjustment) new frame (animation) f
+g group layers create / release clipping mask (toggle) ungroup layers c gaussian blur g
+h extras (show / hide) c stroke target path (show / hide) c group into new smart object h
+i invert image size inverse (selection) file info i
+j new layer via copy new layer via copy (with dialog) new layer via cut new layer via cut (with dialog) j
+k preferences (general) preferences panel (last used) color settings keyboard shortcuts k
+l levels levels (last settings) auto levels auto contrast l
+m curves curves (last settings) edit in imageready menus m
+n new document new document (last settings) new layer new layer (no dialog) n
+o open browse (launch adobe bridge) c blending options open as o
+p print print with preview page setup print one copy p
+q exit c smart guides (toggle) c duplicate layer (group) c duplicate layer (group) (no dialog) q
+r rulers (show / hide) n refine edge c reveal all c rotate arbitrary r
+s save save as (copy) save as save for web s
+t free transform duplicate free transform transform again duplicate transform again t
+u hue / saturation hue / saturation (last settings) desaturate c unsharp mask u
+v paste vanishing point paste into (selection) paste outside (selection) v
+w close close all close and go to bridge c smart sharpen w
+x cut extract liquify pattern maker x
+y proof colors (cmyk preview) c trim gamut warning c lens correction y
+z undo/redo step back (history) step forward (history) c add noise z
++ * zoom in * zoom in & resize window c new group c new group (no dialog) +
+- * zoom out * zoom out & resize window c delete layer (group) c delete layer (group) (no dialog) -
+; guides (show / hide) guides (lock / unlock) snap (on / off) c clear guides ;
+' grid (show / hide) c new guide c purge all c purge all (no dialog) '
+[ send backward c contract selection send to back c assign profile [
+] bring forward c expand selection bring to front c convert to profile ]
+< ( , ) c mode > rgb c mode > 8 bits/channel t decrease type size by 2pt t decrease type size by 10pt < ( , )
+> ( . ) cancel operation c play action t increase type size by 2pt t increase type size by 10pt > ( . )
+/ c layer (group) properties c preset manager c shadow/highlight c shadow/highlight (last settings) /
+\ select layer mask (channel) load layer mask as selection add layer mask selection \
+~ select composite channel load composite as selection add composite selection ~
+backspace fill with background color fill from history fill w/ background & preserve trans. fill from history & preserve trans. backspace
+return t commit changes return
+space zoom in (toggle) space
+tab next document previous document tab
+↑ move selection 1px up duplicate selection 1px up move selection 10px up duplicate selection 10px up ↑
+
+↓ move selection 1px down duplicate selection 1px down move selection 10px down duplicate selection 10px down ↓
+
+← move selection 1px left duplicate selection 1px left move selection 10px left duplicate selection 10px left ←
+
+→ move selection 1px right duplicate selection 1px right move selection 10px right duplicate selection 10px right →
+
+home t cursor to start of story t select type to start of story home
+end t cursor to end of story t select type to end of story end
+pageup scroll view left scroll view left 10px pageup
+pagedown scroll view right scroll view right 10px pagedown
+
+[n] new to adobe photoshop cs3
+[t] only available in type mode
+
+* these represent the default keyboard shortcuts; to reverse them, enable the "zoom resizes windows" option in the general preferences dialog [c] custom keyboard shortcut
+
+adobe® photoshop®
+ 
+cs3  keyboard shortcuts 
+
+
+	commands (1)
+	commands (2)
+	keys (1)
+	keys (2)
+
+ move selection 1px up duplicate selection 1px up move selection 10px up duplicate selection 10px up ↑
+
+↓ move selection 1px down duplicate selection 1px down move selection 10px down duplicate selection 10px down ↓
+
+← move selection 1px left duplicate selection 1px left move selection 10px left duplicate selection 10px left ←
+
+→ move selection 1px right duplicate selection 1px right move selection 10px right duplicate selection 10px right →
+
+home t cursor to start of story t select type to start of story home
+end t cursor to end of story t select type to end of story end
+pageup scroll view left scroll view left 10px pageup
+pagedown scroll view right scroll view right 10px pagedown
+
+[n] new to adobe photoshop cs3
+[t] only available in type mode
+
+* these represent the default keyboard shortcuts; to reverse them, enable the "zoom resizes windows" option in the general preferences dialog [c] cu

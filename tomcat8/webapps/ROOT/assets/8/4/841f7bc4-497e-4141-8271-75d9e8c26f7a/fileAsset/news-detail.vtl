@@ -1,0 +1,42 @@
+#if($URLMapContent.inode && $URLMapContent.sysPublishDate.before($date.date))
+#foreach($tag in $URLMapContent.tags)
+$!visitor.addTag($tag)
+#end
+<div class="news-detail">
+  #editContentlet($URLMapContent.inode)
+  <h1 class="news-detail-title">
+    #dotedit($!URLMapContent.inode,$!URLMapContent.title)
+  </h1>
+  <div class="post-info">
+    <div class="add-this news-add-this header-add-this pull-right">
+      #dotParse('/application/vtl/widgets/add-this/add-this.vtl')
+    </div>
+    <time datetime="$date.format('yyyy-MM-dd',$!URLMapContent.sysPublishDate)T$date.format('hh:mm:ss',$!URLMapContent.sysPublishDate)" class="date">$date.format('MMM dd yyyy',$!URLMapContent.sysPublishDate) at $date.format('HH:mm z',$!URLMapContent.sysPublishDate)</time>
+      <span class="comments">
+        <a href="#comments">
+          #set ($commentsCount = $dotcontent.count("+structureName:Comments +News-Comments:$content.identifier"))
+          #if($webapi.parseInt($commentsCount) > 0)
+            $commentsCount Comments
+          #else
+            No Comments
+          #end
+        </a>
+      </span>
+  </div>
+
+  #if($UtilMethods.isSet($URLMapContent.image) && $UtilMethods.isSet($URLMapContent.image.file))
+    <div class="news-detail-image">
+      <img src='/dA/$!URLMapContent.shorty/image/500w' alt="$!{con.title}" />
+      #if($UtilMethods.isSet($URLMapContent.caption))
+        <span class="news-detail-caption">$!URLMapContent.caption</span>
+      #end
+    </div>
+  #end
+
+  #dotedit($!URLMapContent.inode,$!URLMapContent.story)
+
+
+</div>
+#else
+  <div class="alert alert-info">We are sorry, but the story you are looking for is no longer available. <a href="/news-events/news/">Click here to see all news stories</a>.</div>
+#end

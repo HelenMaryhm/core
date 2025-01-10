@@ -1,0 +1,173 @@
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+
+<script type="text/javascript" >
+  $(document).ready(function() {
+    $("#newPost").submit(function(e) {
+
+      e.preventDefault();
+
+        var dataObj={        
+          'ipAddress': "$request.getRemoteAddr()",
+          'stName':'RequestProspectus'
+        };
+        if($('#firstName').val() != undefined && $('#firstName').val().length > 0){
+          dataObj.firstName = $('#firstName').val();
+        }
+        if($('#lastName').val() != undefined && $('#lastName').val().length > 0){
+          dataObj.lastName = $('#lastName').val();
+        }
+        if($('#email').val() != undefined && $('#email').val().length > 0){
+          dataObj.email = $('#email').val();
+        }
+        if($('#address1').val() != undefined && $('#address1').val().length > 0){
+            dataObj.address1 = $('#address1').val();
+        }
+        if($('#address2').val() != undefined && $('#address2').val().length > 0){
+            dataObj.address2 = $('#address2').val();
+        }
+        if($('#city').val() != undefined && $('#city').val().length > 0){
+            dataObj.city = $('#city').val();
+        }
+        if($('#state').val() != undefined && $('#state').val().length > 0){
+            dataObj.state = $('#state').val();
+        }
+        if($('#zipCode').val() != undefined && $('#zipCode').val().length > 0){
+            dataObj.zipCode = $('#zipCode').val();
+        }
+        if($('#fund').val() != undefined && $('#fund').val().length > 0){
+            dataObj.fund = $('#fund').val();
+        }
+
+        dataObj.contactMe =$('#contactMeYes').is(':checked') ;
+        if($('#fund').val()=="Select a Fund"){
+            alert("Select a Fund");
+            return;
+        };
+
+        $('requestBtn').attr('disabled', true);
+        $('requestBtn').prop('disabled', true);
+        $( "button" ).removeClass( "btn-primary" ).addClass( "disabled" );
+        $.ajax({
+          url: '/api/content/save/1',
+          type: 'POST',
+          cache:false,
+          data: dataObj,         
+
+          success: function(data, status, xhr) {
+            console.log("works!");
+            //window.location="/demos/form-success";
+            var a = xhr.getAllResponseHeaders();
+console.log(a.substring(a.indexOf('identifier: ') + 'identifier: '.length , a.indexOf('\n', a.indexOf('identifier: ') + 'identifier: '.length)));
+
+          },
+          error: function(data,status,xhr) {
+            $('requestBtn').attr('disabled', false);
+            $('requestBtn').prop('disabled', false);
+            $( "button" ).removeClass( "disabled" ).addClass( "btn-primary" );
+            console.log(data);
+            alert("Uh Oh, your request failed. Please check your entries and try again");
+          },
+      });
+    });
+  });
+ 
+</script>
+
+
+<!-- Form Name -->
+<h2>
+    Request a Prospectus for any Quest Financial Fund<br>
+    <small>No commitment, no obligation just the lowest fees in the industry.</small>
+</h2>
+<p>This is an example of using dotCMS's RESTful API to submit user content from a form and store it in the dotCMS database. Complete the form below and then login to the authoring/admin side of dotCMS to find your content stored there. As you can imagine, you can initiate Actions and Workflows along the way to process your user generated content and create dynamic user experiences. (You can find the content you submitted under the Content Tab. Search on Prospectus Request as the content type) </p>
+
+<hr>
+
+<form class="form-horizontal"  role="form"  id="newPost">
+  <input type="hidden" name="stName" value="RequestProspectus">
+  <input type="hidden" name="languageId" value="1">
+  <input type="hidden" name="contentHost" value="demo.dotcms.com">
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="firstName">First Name: <span class="required">*</span></label>
+        <div class="col-sm-8">
+            <input id="firstName" class="col-sm-12" name="firstName" type="text" placeholder="First Name" value="" required>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="lastName">Last Name: <span class="required">*</span></label>
+        <div class="col-sm-8">
+            <input id="lastName" class="col-sm-12" name="lastName" type="text" placeholder="Last Name"  value="" minlength="2" required>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="email">Email: <span class="required">*</span></label>
+        <div class="col-sm-8">
+            <input id="email" class="col-sm-12" name="email" type="email" value="" placeholder="Email" required>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="address1">Address 1: </label>
+        <div class="col-sm-8">
+            <input id="address1" class="col-sm-12" name="address1" value="" type="text" placeholder="Address 1">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="address2">Address 2: </label>
+        <div class="col-sm-8">
+            <input id="address2" class="col-sm-12" name="address2" value="" type="text" placeholder="Address 2">
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="city">City: </label>
+        <div class="col-sm-8">
+            <input id="city" class="col-sm-12" name="city" value="" type="text" placeholder="City">
+        </div>
+    </div>
+
+    
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="state">State: </label>
+        <div class="col-sm-8">
+            <input id="state" class="col-sm-12" name="state" value="" type="text" placeholder="State">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="zipCode">Postal Code: </label>
+        <div class="col-sm-8">
+            <input id="zipCode" class="col-sm-12" name="zipCode"  value="" type="text" placeholder="Postal Code">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="state">Contact Me: </label>
+        <div class="col-sm-8">
+            <input type=radio id="contactMeYes"  name="contactMe" value="yes"> <label for="contactMeYes">Yes</label> &nbsp;&nbsp;
+            <input type=radio id="contactMeNo"  name="contactMe" value="no" checked="true"> <label for="contactMeNo">No</label> &nbsp;&nbsp;
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label" for="fund">Fund: </label>
+        <div class="col-sm-8">
+            <select class="form-control col-sm-12" id="fund" name="fund" required>
+                <option>Select a Fund</option>
+                #foreach($fund in $dotcontent.pull("+structureName:Products +(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797 conhost:SYSTEM_HOST)",0,"Products.title"))
+                    <option value="$fund.title">$fund.title</option>
+                #end
+            </select>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Button -->
+    <div class="text-center">
+        <button id="requestBtn" name="singlebutton" class="btn btn-primary btn-large">Send me a Prospectus</button>
+    </div>
+
+</form>

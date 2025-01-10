@@ -1,0 +1,128 @@
+// user info flyoutv
+var userinfodataloaded = false;
+
+// user info flyout
+$(function () {
+    $("#userinfo .trigger").click(function () {
+        if($(this).parent().css("right") == "-335px"){
+            if(!userinfodataloaded){
+                $('#userinfodata').load('/application/ajax/location-clickstream.html');
+                userinfodataloaded=true;
+            };
+            $(this).parent().animate({right:'-10px'}, {queue: false, duration: 500});
+        }else{
+            $(this).parent().animate({right:'-335px'}, {queue: false, duration: 500});
+        }
+    })
+});
+
+function activeaddress(text) {
+    $('#address-title span').fadeout('fast', function() {
+        $(this).text(text + 'address');
+        $(this).fadein();
+    });
+}
+
+$(document).on('ready', function() {
+
+    var x;
+    x = $(window).height() - $(".header-wrap").height() - $(".footer-wrapper").height() - 61;
+    $(".body-container").css("min-height", x);
+    
+    // calling sticky sidebar
+    $('.sidebar').hcsticky();
+
+    // calling the fancybox
+    $('.js-fancybox-img').fancybox({
+        type: 'image'
+    });
+
+    $('.fancybox-swf').fancybox({
+        type: 'swf'
+    });
+    
+    $('.js-fancybox-inline').fancybox();
+
+    $('.js-fancybox-media-link').fancybox({
+        openeffect  : 'none',
+        closeeffect : 'none',
+        helpers : {
+            media : {}
+        }
+    });
+
+    $('.js-fancybox-media-file').fancybox();
+
+    // create account page
+    // to change the heading text in the address section
+    $('.js-address-type .btn').on('click', function() {
+        text = $(this).text();
+        activeaddress(text);
+    });
+
+    // home carousel
+    $('#carousel-home').carousel({
+        'pause': 'hover'
+    });
+
+    // table sorter
+    $('.sorted-tables').tablesorter({
+        sortlist: [[0,0]]
+    });
+
+    // chosen for the product detail and the event page
+    $('.js-product-nav, .js-event-categories').chosen({
+        width: '100%'
+    });
+    
+    // bootstrap tool tip
+    $('.normaltip').tooltip({
+    	'placement': 'bottom'
+    });
+});
+
+// video.js
+videojs.options.flash.swf = '/_bower_components/video.js/video-js.swf';
+
+swf').fancybox({
+        type: 'swf'
+    });
+    
+    $('.js-fancybox-inline').fancybox();
+
+    $('.js-fancybox-media-link').fancybox({
+        openeffect  : 'none',
+        closeeffect : 'none',
+        helpers : {
+            media : {}
+        }
+    });
+
+    $('.js-fancybox-media-file').fancybox();
+
+    // create account page
+    // to change the heading text in the address section
+    $('.js-address-type .btn').on('click', function() {
+        text = $(this).text();
+        activeaddress(text);
+    });
+
+    // home carousel
+    $('#carousel-home').carousel({
+        'pause': 'hover'
+    });
+
+    // table sorter
+    $('.sorted-tables').tablesorter({
+        sortlist: [[0,0]]
+    });
+
+    // chosen for the product detail and the event page
+    $('.js-product-nav, .js-event-categories').chosen({
+        width: '100%'
+    });
+    
+    // bootstrap tool tip
+    $('.normaltip').tooltip({
+    	'placement': 'bottom'
+   

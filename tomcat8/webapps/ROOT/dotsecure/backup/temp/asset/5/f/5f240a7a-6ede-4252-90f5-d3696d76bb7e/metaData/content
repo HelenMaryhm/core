@@ -1,0 +1,74 @@
+#if ($utilmethods.isset($urlmapcontent))
+  #set ($content = $urlmapcontent)
+#elseif ($utilmethods.isset($request.getparameter('id')))
+  #set($id = $request.getparameter("id"))
+  #getcontentmapdetail($id)
+#end
+
+#if($content.inode && $content.syspublishdate.before($date.date))
+<div class="news-detail">
+  #editcontentlet($content.inode)
+  <h1 class="news-detail-title">
+    #dotedit($$content.inode, $content.title)
+  </h1>
+  <div class="post-info">
+    <div class="add-this news-add-this header-add-this pull-right">
+      #dotparse('/application/vtl/widgets/add-this/add-this.vtl')
+    </div>
+    <time datetime="$date.format('yyyy-mm-dd',$content.syspublishdate)t$date.format('hh:mm:ss',$content.syspublishdate)" class="date">$date.format('mmm dd yyyy',$content.syspublishdate) at $date.format('hh:mm z',$content.syspublishdate)</time>
+      <span class="comments">
+        <a href="#comments">
+          #set ($commentscount = $dotcontent.count("+structurename:comments +news-comments:$content.identifier"))
+          #if($webapi.parseint($commentscount) > 0)
+            $commentscount comments
+          #else
+            no comments
+          #end
+        </a>
+      </span>
+  </div>
+
+  #if($utilmethods.isset($content.image) && $utilmethods.isset($content.image.file))
+    <div class="news-detail-image">
+      <img src='/contentasset/image/$content.inode/image/byinode/1/filter/resize/resize_w/500' alt="$!{con.title}" />
+      #if($utilmethods.isset($content.caption))
+        <span class="news-detail-caption">$content.caption</span>
+      #end
+    </div>
+  #end
+
+  #dotedit($content.inode,$content.story)
+
+  <div class="post-info-footer">
+    <div class="add-this news-add-this footer-add-this pull-right">
+      #dotparse('/application/vtl/widgets/add-this/add-this.vtl')
+    </div>
+  </div>
+
+  <div id="comments" class="news-comments" ng-app="commentsapp">
+    <comment-list content-id="'$content.identifier'" content-title="'$content.title'"></comment-list>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <script src="/application/comments/angular/comments.js"></script>
+  </div>
+</div>
+#else
+  <div class="alert alert-info">we are sorry, but the story you are looking for is no longer available. <a href="/news-events/news/">click here to see all news stories</a>.</div>
+#end
+ src='/contentasset/image/$content.inode/image/byinode/1/filter/resize/resize_w/500' alt="$!{con.title}" />
+      #if($utilmethods.isset($content.caption))
+        <span class="news-detail-caption">$content.caption</span>
+      #end
+    </div>
+  #end
+
+  #dotedit($content.inode,$content.story)
+
+  <div class="post-info-footer">
+    <div class="add-this news-add-this footer-add-this pull-right">
+      #dotparse('/application/vtl/widgets/add-this/add-this.vtl')
+    </div>
+  </div>
+
+  <div id="comments" class="news-comments" ng-app="commentsapp">
+    <comment-list content-id="'$content.identifier'" content-title="'$content.title'"></comment-list>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angu

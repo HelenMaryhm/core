@@ -1,0 +1,131 @@
+#if($URLMapContent.inode)
+          
+	<h2>
+		#dotedit($!URLMapContent.inode,$!URLMapContent.title)
+		#editContentlet($URLMapContent.inode)
+	</h2>
+ 	<div class="row">
+ 		<div class="col-md-8 col-sm-12">
+	 		#if ($UtilMethods.isSet($URLMapContent.imageBinaryFileURI))
+				<div class="img-indent-r p2">
+					<figure>
+						<a href="$URLMapContent.imageBinaryFileURI/$URLMapContent.imageBinaryFileTitle" class="hoverImage prettyPhoto" title="">
+							<img src="/contentAsset/resize-image/$URLMapContent.identifier/image?w=294" alt="$URLMapContent.title" />
+						</a>
+					</figure>
+				</div>
+			#end
+		  
+		  	<!-- Location Description -->
+			#dotedit($!URLMapContent.inode,$!URLMapContent.description)
+		</div>
+		<div class="col-md-4 col-sm-12">
+			
+			<!-- Google Map -->
+  			<script src="http://maps.googleapis.com/maps/api/js?key=${host.googleMap}&sensor=false"></script>
+			<script>
+				#if($!{URLMapContent.country.selectValue} == "United States" || $!{URLMapContent.country.selectValue} == "Canada")
+					#set($location = "$!{URLMapContent.address1} $!{URLMapContent.address2} $!{URLMapContent.city}, $!{URLMapContent.state.selectValue} $!{URLMapContent.zip}")
+				#else
+					#set($location = "$!{URLMapContent.address1} $!{URLMapContent.address2} $!{URLMapContent.city}, $!{URLMapContent.country.selectValue}")
+				#end
+  
+				var address1 = '${location}';
+				var image = '/images/icons/map-flag.png';
+  
+				$(document).ready(function() {
+					var geocoder = new google.maps.Geocoder();
+					geocoder.geocode({ 'address': address1}, function(results){    
+						var latlng = results[0].geometry.location;
+						var myOptions = {
+							zoom: 12,
+							center: latlng,
+							mapTypeControl: false,
+							mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU},
+							zoomControl: true,
+							zoomControlOptions: {style: google.maps.ZoomControlStyle.SMALL},
+							mapTypeId: google.maps.MapTypeId.ROADMAP
+						}
+						var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+						var marker = new google.maps.Marker({
+							position: latlng,
+							map: map,
+							icon: image
+						});
+					});
+				});
+			</script>
+			
+			<div id="map_canvas" class="location-map">
+				<div style="width:100%;height:100%;background:url(/images/icons/loader-big.gif) no-repeat center center;"></div>
+			</div>
+
+
+			<!-- Office Address -->
+			<table class="table table-striped">
+				<tr>
+					<td>Address</td>
+					<td>
+						<address>
+							$!URLMapContent.address1<br/>
+							#if ($UtilMethods.isSet($URLMapContent.address2))
+								$!URLMapContent.address2<br/>
+							#end
+							$!URLMapContent.city, 
+							$!URLMapContent.state.selectValue $!URLMapContent.zip
+							#if($!{URLMapContent.country.selectValue} != "United States" && $!{URLMapContent.country.selectValue} != "Canada")
+								$!URLMapContent.country.selectValue
+							#end
+						</address>
+					</td>
+				</tr>
+				<tr>
+					<td>Phone</td>
+					<td>$!URLMapContent.phone</td>
+				</tr>
+				#if ($UtilMethods.isSet($URLMapContent.fax))
+					<tr>
+						<td>Fax</td>
+						<td>$!URLMapContent.fax</td>
+					</tr>
+				#end
+			</table>
+			
+			
+
+			<!-- Related Employees -->
+			#set($list = $dotcontent.pullRelated("Parent_Location-Child_Employee","$!URLMapContent.identifier",false,0,"Employee.lastName"))
+			<h3>Employees</h3>
+			<ul class="media-list employee-management-team">
+				#foreach($con in $list)
+					<li class="media">
+						<a class="pull-left" href="#">
+							#if ($UtilMethods.isSet(${con.photo.rawUri}))
+								<img src="/contentAsset/resize-image/$con.identifier/photo?w=75" alt="$!con.firstName $!con.lastName" />
+							#elseif($con.gender.selectValue == "male")
+								<img src="/images/icons/profile-male.png" alt="$!con.firstName $!con.lastName" width="75" />
+							#else
+								<img src="/images/icons/profile-female.png" alt="$!con.firstName $!con.lastName" width="75" />          
+							#end
+						</a>
+						<div class="media-body">
+							<h4 class="media-heading name">$!con.firstName $!con.lastName</h4>
+							<ul class="member-info">
+								<li class="job-title">$!con.jobTitle</li>
+								<li class="phone">$!con.phone</li>
+								<li class="email"><a href="mailto:$!con.email">$!con.email</a></li>
+							</ul>
+						</div>
+					</li>
+				#end
+			</ul>
+			
+			
+		</div>	
+ 	</div>   
+	
+#else
+	<div class="alert alert-info">
+		<h3>We are sorry, but the Location you are looking for is no longer available. <a href="/about-us/locations/">Click here to see all our locations</a>.</h3>
+	</div>
+#end

@@ -1,0 +1,265 @@
+#if($urlmapcontent.inode && $urlmapcontent.syspublishdate.before($date.date) && $utilmethods.isset($urlmapcontent.latlong))
+    <h3>more news closer</h3>
+    <div class="map-canvas" id="mapcanvas"></div>
+    <hr>
+
+    #set ($lat = $urlmapcontent.latlong.split(',')[0])
+    #set ($lng = $urlmapcontent.latlong.split(',')[1])
+    <style>
+        .map-canvas {
+            height: 300px
+        }
+    </style>
+    <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?key=${host.googlemap}&v=3.exp&signed_in=true&libraries=places"></script>
+    <script>
+        var endpoint = '/api/es/search';
+        var querybasic = {
+            'bool': {
+                'must': {
+                    'term': {
+                        'structurename': 'news'
+                    }
+                }
+            }
+        };
+        var latlongquery = {
+          'sort': [{
+            '_geo_distance' : {
+              'news.latlong' : {
+                'lat' : $!{lat},
+                'lon' : $!{lng}
+              },
+              'order' : 'asc',
+              'unit' : 'km'
+            }
+          }],
+          'query': {
+            'bool': {
+              'must': querybasic,
+              'filter': {
+                  'geo_distance': {
+                      'distance': '300km',
+                      'news.latlong': {
+                        'lat': $!{lat},
+                        'lon': $!{lng}
+                      }
+                  }
+              }
+            }
+          },
+          'size': 999 // todo: use match_all
+        };
+
+        var mapnews = null;
+
+        function createmapview(data) {
+            var mapcanvas = document.getelementbyid('mapcanvas');
+            var mapoptions = {
+                maptypeid: google.maps.maptypeid.roadmap
+            };
+            mapnews = new google.maps.map(mapcanvas, mapoptions);
+            var bounds = new google.maps.latlngbounds();
+
+            $.each(data, function(index, item) {
+                var latitude = parsefloat(item.latlong.split(',')[0]);
+                var longitude = parsefloat(item.latlong.split(',')[1]);
+                var marker = new google.maps.marker({
+                    map: mapnews,
+                    position: new google.maps.latlng(latitude, longitude)
+                });
+                bounds.extend(marker.position);
+                createdetailpopup(marker, item);
+            });
+            mapnews.fitbounds(bounds);
+        }
+
+        var infowindow = new google.maps.infowindow();
+
+        function createdetailpopup(marker, item) {
+            var detailurl = '/news/' + item.urltitle;
+            var content = '<h4>' + item.title + '</h4>';
+            content += '<p>';
+            if (item.caption) {
+                content += item.caption;
+                content += '<br />';
+            }
+            content += '<a href="' + detailurl + '">read more...</a>';
+            content += '</p>';
+            google.maps.event.addlistener(marker, 'click', function(e) {
+                infowindow.setcontent(content);
+                infowindow.open(marker.get('map'), marker);
+            });
+        }
+
+        function requestdata(query) {
+            $.ajax({
+                url: endpoint,
+                type: 'post',
+                cache: false,
+                datatype: 'json',
+                data: json.stringify(query),
+                contenttype: 'application/json',
+                success: function(data) {
+                    createmapview(data.contentlets);
+                },
+                error: function(e) {
+                    alert('sorry, something went wrong. please try again later.');
+                }
+            });
+        }
+
+        requestdata(latlongquery);
+    </script>
+#end
+
+#set($categorylist = "")
+#set($nowsers= $date.format('yyyymmddhhmmss', $date.getdate()))
+#foreach($con in $urlmapcontent.topic)
+    #set($categorylist = "$categorylist $con.categoryvelocityvarname")
+#end
+
+#if($utilmethods.isset($categorylist))
+    #set($_qk = "+structurename:news
+    +(conhost:$host.identifier conhost:system_host)
+    +($categorylist)
+    +news.syspublishdate:[19001010101000 to $nowsers]")  
+    #set($cons = $dotcontent.pull(${_qk},10,"news.syspublishdate desc"))
+    #if($cons.size() > 0)
+        <h3>related news</h3> 
+    #end
+#else
+	#set($cons = $dotcontent.pullpersonalized("+structurename:news +(conhost:$host.identifier conhost:system_host) -identifier:$urlmapcontent.identifier", 10, "news.syspublishdate desc"))
+	#if($cons.size() > 0)
+		<h3>you might like...</h3> 
+	#end
+#end
+<!-- related news -->
+
+
+
+
+#if($cons.size() > 0)
+
+	#foreach($con in $cons)
+		<div class="media flex-column">
+			<div class="media-heading"><a href="/news/$con.urltitle">$!{con.title}</a></div>
+			<div class="media-subheading">
+				<time datetime="$date.format('yyyy-m-dd',$con.syspublishdate)">$date.format('mmm dd yyyy', ${con.syspublishdate}) at $date.format('hh:mm z', $!{con.syspublishdate})</time>
+			</div>
+		</div>
+		<hr>
+	#end
+	
+#end
+
+<!-- related youtube --> 
+    #set($youtube  = $dotcontent.pullrelated("parent_news-child_youtube","$urlmapcontent.identifier",false,5))
+    #if($youtube.size() > 0)
+        <h3 style="margin-top: 50px;display:block;">related media</h3>
+    #end
+    #foreach($con in $youtube)
+        <div class="media">
+            <div class="media-badge pull-left"> 
+                <a href="$con.url" class="js-fancybox-media-link thumb media-thumb" title="$!{con.widgettitle}">
+                    <img src="$!{con.thumbnail2}" alt="$!{con.widgettitle}" style="width:120px;">
+                </a>
+            </div>
+            <div class="media-body">
+                <div class="media-heading"><a href='$con.url' class='js-fancybox-media-link'>$con.widgettitle</a></div>
+                <div class="media-description">author: $con.author | length: $con.length</div>
+            </div>
+        </div>
+    #end
+
+<!-- related media --> 
+
+    #set($media  = $dotcontent.pullrelated("parent_news-child_media","$urlmapcontent.identifier",false,5))
+
+    #foreach($con in $media)
+        ## set file path for link
+        #if ($utilmethods.isset($con.file.rawuri))
+            #set ($filepath = "$con.file.rawuri/$con.file.name")
+        #else
+            #set ($filepath = $con.url)
+        #end
+      
+        <div class="media">
+                    
+            #if ($utilmethods.getfileextension($filepath) != 'mp3')
+                
+                ##if image  
+                #if ($utilmethods.isimage($filepath))
+                    <div class="media-badge pull-left"> 
+                        <a href='$filepath' class='js-fancybox-img thumb image-thumb' title='$!{con.title}'>
+                            #if ($utilmethods.isset($con.thumbnail.rawuri))
+                                <img src='/contentasset/image/$con.inode/thumbnail/byinode/1/filter/resize/resize_h/80/resize_w/120' alt='$!{con.title}'>
+                            #elseif($utilmethods.isimage($filepath))
+                                <img src='/contentasset/image/$con.inode/file/byinode/1/filter/resize/resize_h/80/resize_w/120' alt='$!{con.title}'>
+                            #end
+                        </a>
+                    </div>
+                    
+                    
+                
+                
+                ##if video
+                #else               
+                    #if ($utilmethods.isset($con.thumbnail.rawuri))
+                        <div class="media-badge pull-left">
+                            <a href='$filepath' class='js-fancybox-media-link thumb media-thumb' title='$!{con.title}'> 
+                                <img src='/contentasset/image/$con.inode/thumbnail/byinode/1/filter/resize/resize_h/80/resize_w/120' alt='$!{con.title}'>
+                            </a>
+                        </div>
+                    #else
+                        <div class="icon-badge pull-left">
+                            <a href='$filepath' class='js-fancybox-media-link thumb media-thumb' title='$!{con.title}'> 
+                                <i class="fa fa-map-marker fa-3x"></i>
+                            </a>
+                        </div>
+                    #end
+                #end
+                
+                
+                
+                    
+            #else
+            
+                ##if mp3
+                                        
+                    #if ($utilmethods.isset(${con.thumbnailbinaryfileuri}))
+                        <div class="media-badge pull-left">
+                            <a href='$filepath' class='js-fancybox-media-link thumb media-thumb' title='$!{con.title}'>
+                                <img src='/contentasset/image/$con.inode/thumbnail/byinode/1/filter/resize/resize_h/80/resize_w/120' alt='$!{con.title}'>
+                            </a>
+                        </div>
+                    #else
+                        <div class="icon-badge pull-left">
+                            <i class="fa fa-map-marker fa-3x"></i>
+                        </div>
+                    #end
+                </a>
+
+                <div class="hidden">
+                    <audio id="$!{con.contentidentifier}" class="video-js vjs-default-skin vjs-big-play-centered"
+                        controls preload="auto" width="640" height="480">
+                        <source src="$!{filepath}" type='audio/$!{utilmethods.getfileextension($filepath)}' />
+                    </audio>
+                </div>
+            #end
+
+            <div class="media-body">
+                <div class="media-heading"><a href='$filepath' class='js-fancybox-media-link'>$con.title</a></div>
+                <div class="media-subheading">$date.format('mmm dd yyyy',$con.syspublishdate) at $date.format('hh:mm z',$con.syspublishdate)</div>
+                <div class="media-description">$utilmethods.prettyshortenstring("$con.description", 100)</div>
+            </div>
+        </div>
+        <hr>
+    #end
+left">
+                            <i class="fa fa-map-marker fa-3x"></i>
+                        </div>
+                    #end
+                </a>
+
+                <div class="hidden">
+                    <audio id="$!{con.contentidentifier}" class="video-js vjs-default-skin vjs-big-play-center

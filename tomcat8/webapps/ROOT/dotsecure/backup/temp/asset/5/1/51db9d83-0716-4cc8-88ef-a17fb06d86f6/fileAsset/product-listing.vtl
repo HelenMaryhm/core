@@ -1,0 +1,42 @@
+## Query pulls all products and orders them by title 
+#set($results = $dotcontent.pull("+structureName:Products +(conhost:$host.identifier conhost:SYSTEM_HOST)",0,"Products.title"))
+
+<h2>Our Products</h2>
+<table class="table table-striped sorted-tables product-listing">
+	<thead>
+		<tr>
+			<th >Name</th>
+			<th>Ticker</th>
+			<th class="hidden-xs">Asset Class</th>
+			<th class="hidden-xs">Risk Potential</th>
+			<th class="hidden-xs">Inception Date</th>
+		</tr>
+	</thead>
+	
+	<tbody> 
+		#foreach($con in $results)
+			<tr onclick="window.location.href='/products/$con.urlTitle' ">
+				<td>$con.title</td>
+				<td>$!{con.tickerSymbol}</td>
+				<td class="hidden-xs">
+					$!{con.assetClass}
+					#if($UtilMethods.isSet($con.marketCap.selectValue) || $UtilMethods.isSet($con.quality.selectValue))
+						- 
+						$!{con.marketCap.selectValue}
+						$!{con.quality.selectValue}
+					#end
+			  
+					#if($UtilMethods.isSet($con.style.selectValue) || $UtilMethods.isSet($con.maturity.selectValue))
+						-
+						$!{con.style.selectValue}
+						$!{con.maturity.selectValue}
+					#end
+				</td>
+				<td class="hidden-xs">
+					<div class="risk-system risk${con.risk.selectValue}" title="${con.risk.selectValue}"><span class="d-none">${con.risk.selectValue}</span></div>
+				</td>
+				<td class="hidden-xs">$date.format('MM/dd/yyyy',$con.inception)</td>
+			</tr>
+		#end
+	</tbody> 
+</table>

@@ -1,0 +1,59 @@
+<footer>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12 col-lg-6">
+				<div class="media">
+					<a href="//dotcms.com" class="mr-2"><img src="${dotTheme.path}img/logo-footer.png"></a>
+					<div class="media-body">
+						<h4 class="media-heading" style="margin-top: 15px;">RESORT PATROLS/AEDS</h4>
+						The Patrol is here for your benefit and its members have been trained in emergency and life saving medical procedures. You will see these individuals out on the mountain administering medical assistance, enforcing the safety code, educating and conducting speed control.
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3 ml-auto p-2 d-none d-lg-block d-xl-block">
+				<address>
+					<strong>Bear Mountain Private Ski Resort</strong><br>
+					2300 Claw Circle<br>Bear Moutain, CO 80487<br>
+					<abbr title="Phone">P:</abbr> 615.620.2050
+				</address>
+			</div>
+		</div>
+	</div>
+</footer>
+
+<!-- JavaScript -->
+<script src="${dotTheme.path}js/jquery-2.1.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="${dotTheme.path}js/jquery.stellar.min.js"></script>
+<script src="${dotTheme.path}js/jquery.smooth-scroll.min.js"></script>
+<script src="${dotTheme.path}js/wow.min.js"></script>
+<script src="${dotTheme.path}js/scrolling-nav.js"></script>
+
+<script src="${dotTheme.path}js/toc.js"></script>
+
+
+
+<script type="text/javascript">  
+    $(function(){
+    	$('#toc').toc();
+    	
+		$.stellar({
+			horizontalScrolling: false,
+			verticalOffset: 0
+		});
+		
+		$('.nav-link').smoothScroll({
+			easing: 'swing',
+			speed: 800
+		});
+	});
+	
+	$('.carousel').carousel({
+	  interval: 2000,
+	  pause: "hover",
+	  wrap:	 false
+	})
+	
+	new WOW().init();
+</script>

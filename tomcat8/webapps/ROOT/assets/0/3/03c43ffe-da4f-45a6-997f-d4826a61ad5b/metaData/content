@@ -1,0 +1,62 @@
+ 
+
+<script>
+
+  function updatelocation(){
+
+    var x = dijit.byid("medialink");
+
+    if(x.checked){
+      dojo.style("url_tag", "display", "block");
+      dojo.style("url_field", "display", "block");
+      dojo.style("file_tag", "display", "none");
+      dojo.style("file_field", "display", "none");
+      dijit.byid('mediatype_dropdown').set("disabled",false);
+      document.getelementbyid('mediatype_dropdown').disabled=false;
+    }
+    else{
+      dijit.byid("url").setvalue("");
+      dojo.style("url_tag", "display", "none");
+      dojo.style("url_field", "display", "none");
+      dojo.style("file_tag", "display", "block");
+      dojo.style("file_field", "display", "block");
+      dijit.byid('mediatype_dropdown').set("disabled",true);
+      document.getelementbyid('mediatype_dropdown').disabled=true;
+    }
+  }
+  
+  dojo.addonload(function(){
+    var x = dijit.byid("url");
+    if(x.value ==undefined || x.value == ""){
+      dijit.byid("mediaupload").setchecked(true);
+    }
+    else{
+      dijit.byid("medialink").setchecked(true);
+    }
+    updatelocation()
+    
+  
+  });
+  
+</script>
+
+<div style="border:1px solid #d3aad1;background:#f4d8f2;padding:5px;">
+  <input type="radio" dojotype="dijit.form.radiobutton" name="medialocation" id="mediaupload" value="upload" onchange="updatelocation();" /> <label for="mediaupload">upload file</label>
+  &nbsp;&nbsp;
+  <input type="radio" dojotype="dijit.form.radiobutton" name="medialocation" id="medialink" value="link" onchange="updatelocation();" /> <label for="medialink">link to external file</label>
+</div>
+yle("url_field", "display", "none");
+      dojo.style("file_tag", "display", "block");
+      dojo.style("file_field", "display", "block");
+      dijit.byid('mediatype_dropdown').set("disabled",true);
+      document.getelementbyid('mediatype_dropdown').disabled=true;
+    }
+  }
+  
+  dojo.addonload(function(){
+    var x = dijit.byid("url");
+    if(x.value ==undefined || x.value == ""){
+      dijit.byid("mediaupload").setchecked(true);
+    }
+    else{
+      dijit.byid("medialink

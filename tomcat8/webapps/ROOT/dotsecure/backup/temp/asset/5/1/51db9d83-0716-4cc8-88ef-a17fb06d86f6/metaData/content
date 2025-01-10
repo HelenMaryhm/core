@@ -1,0 +1,64 @@
+## query pulls all products and orders them by title 
+#set($results = $dotcontent.pull("+structurename:products +(conhost:$host.identifier conhost:system_host)",0,"products.title"))
+
+<h2>our products</h2>
+<table class="table table-striped sorted-tables product-listing">
+	<thead>
+		<tr>
+			<th >name</th>
+			<th>ticker</th>
+			<th class="hidden-xs">asset class</th>
+			<th class="hidden-xs">risk potential</th>
+			<th class="hidden-xs">inception date</th>
+		</tr>
+	</thead>
+	
+	<tbody> 
+		#foreach($con in $results)
+			<tr onclick="window.location.href='/products/$con.urltitle' ">
+				<td>$con.title</td>
+				<td>$!{con.tickersymbol}</td>
+				<td class="hidden-xs">
+					$!{con.assetclass}
+					#if($utilmethods.isset($con.marketcap.selectvalue) || $utilmethods.isset($con.quality.selectvalue))
+						- 
+						$!{con.marketcap.selectvalue}
+						$!{con.quality.selectvalue}
+					#end
+			  
+					#if($utilmethods.isset($con.style.selectvalue) || $utilmethods.isset($con.maturity.selectvalue))
+						-
+						$!{con.style.selectvalue}
+						$!{con.maturity.selectvalue}
+					#end
+				</td>
+				<td class="hidden-xs">
+					<div class="risk-system risk${con.risk.selectvalue}" title="${con.risk.selectvalue}"><span class="d-none">${con.risk.selectvalue}</span></div>
+				</td>
+				<td class="hidden-xs">$date.format('mm/dd/yyyy',$con.inception)</td>
+			</tr>
+		#end
+	</tbody> 
+</table>
+ass</th>
+			<th class="hidden-xs">risk potential</th>
+			<th class="hidden-xs">inception date</th>
+		</tr>
+	</thead>
+	
+	<tbody> 
+		#foreach($con in $results)
+			<tr onclick="window.location.href='/products/$con.urltitle' ">
+				<td>$con.title</td>
+				<td>$!{con.tickersymbol}</td>
+				<td class="hidden-xs">
+					$!{con.assetclass}
+					#if($utilmethods.isset($con.marketcap.selectvalue) || $utilmethods.isset($con.quality.selectvalue))
+						- 
+						$!{con.marketcap.selectvalue}
+						$!{con.quality.selectvalue}
+					#end
+			  
+					#if($utilmethods.isset($con.style.selectvalue) || $utilmethods.isset($con.maturity.selectvalue))
+						-
+						$!{con.style.selec

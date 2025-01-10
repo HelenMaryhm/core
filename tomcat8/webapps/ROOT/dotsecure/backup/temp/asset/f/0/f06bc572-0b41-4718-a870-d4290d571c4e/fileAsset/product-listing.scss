@@ -1,0 +1,107 @@
+.product-listing {
+    tr td {
+      cursor: pointer;
+    }
+  }
+  
+  //
+  // Create rating system
+  // --------------------------------------------------
+  .risk-system {
+      display: block;
+      width: 63px;
+      height: 14px;
+      background-image: url('/application/themes/quest/images/layout/risk-sprite.png');
+  }
+  
+  .risk10 {
+      background-position: 0 -640px;
+  }
+  
+  .risk9 {
+      background-position: 0 -576px;
+  }
+  
+  .risk8 {
+      background-position: 0 -512px;
+  }
+  
+  .risk7 {
+      background-position: 0 -448px;
+  }
+  
+  .risk6 {
+      background-position: 0 -384px;
+  }
+  
+  .risk5 {
+      background-position: 0 -320px;
+  }
+  
+  .risk4 {
+      background-position: 0 -256px;
+  }
+  
+  .risk3 {
+      background-position: 0 -192px;
+  }
+  
+  .risk2 {
+      background-position: 0 -128px;
+  }
+  
+  .risk1 {
+      background-position: 0 -64px;
+  }
+  
+  // Sorted tables
+  // --------------------------------------------------
+  
+  .sorted-tables {
+      .tablesorter-header-inner {
+          display: inline-block;
+      }
+  
+      thead {
+          th {
+              background-color: $gray-lighter;
+              cursor: pointer;
+  
+              &:after {
+                  @include add-icon(4px);
+                  color: $gray-light;
+                  content: "\f07d";
+                  float: right;
+              }
+  
+              &.tablesorter-headerDesc,
+              &.tablesorter-headerAsc {
+                  background: $blue;
+                  background: -moz-linear-gradient(-45deg, rgba(38,162,219,1) 0%, rgba(70,119,204,1) 100%);
+                  background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(38,162,219,1)), color-stop(100%, rgba(70,119,204,1)));
+                  background: -webkit-linear-gradient(-45deg, rgba(38,162,219,1) 0%, rgba(70,119,204,1) 100%);
+                  background: -o-linear-gradient(-45deg, rgba(38,162,219,1) 0%, rgba(70,119,204,1) 100%);
+                  background: -ms-linear-gradient(-45deg, rgba(38,162,219,1) 0%, rgba(70,119,204,1) 100%);
+                  background: linear-gradient(135deg, rgba(38,162,219,1) 0%, rgba(70,119,204,1) 100%);
+                  color: $white;
+  
+                  &:after {
+                      color: $white;
+                      content: "\f0d8";
+                  }
+              }
+  
+              &.tablesorter-headerAsc {
+                  &:after {
+                      content: "\f0d7";
+                  }
+              }
+          }
+      }
+      tr {
+          &:nth-child(odd):hover > td,
+          &:hover > td {
+              background-color: lighten($brand-primary, 60%)
+          }
+      }
+  }

@@ -1,0 +1,28 @@
+.blog-listing {
+    margin-top: $padding-base-vertical * 2;
+  }
+  
+  .blog-search-string {
+    border-bottom: dashed 1px $gray-lighter;
+    font-size: ceil($font-size-base * 0.8);
+    padding-bottom: $padding-base-vertical;
+    text-transform: uppercase;
+  
+    .search-label {
+        &:first-child:before {
+            content: "";
+            margin-left: 0;
+        }
+        &:before {
+            content: "|";
+            left: -6px;
+            margin-left: 10px;
+            position: relative;
+        }
+    }
+  
+    .search-term {
+        color: $brand-secondary;
+        font-weight: bold;
+    }
+  }

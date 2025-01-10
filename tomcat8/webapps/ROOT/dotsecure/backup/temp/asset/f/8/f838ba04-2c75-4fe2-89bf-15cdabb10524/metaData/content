@@ -1,0 +1,60 @@
+<ul class="multimedia-listing">
+  #foreach($con in $dotcontent.pull("+structurename:media +(conhost:$host.identifier conhost:system_host) +media.mediatype:*video*",10,"media.$!{sortby}"))
+    #if ($utilmethods.isset($con.file.rawuri))
+      #set ($filepath = $!{con.file.rawuri} + '/' + $!{con.file.name})
+    #else
+      #set ($filepath = $con.url)
+    #end
+    #set($rate = $utilmethods.random(1,$math.sub(5,1)))
+    <li>
+      #editcontentlet($con.inode)
+
+      #if ($utilmethods.isset(${con.file.rawuri}))
+        <a href="#$!{con.identifier}" class="js-fancybox-media-file thumb media-thumb" title="$!{con.title}">
+          #if ($utilmethods.isset(${con.thumbnail.rawuri}))
+            <img src="/contentasset/resize-image/${con.identifier}/thumbnail/w/260/h/150" alt="$!{con.title}" />
+          #else
+            $!{con.title}
+          #end
+        </a>
+        <div class="risk-system risk$!{rate}" title="$!{rate}"></div>
+        <h4><a href="${filepath}" title="$!{con.title}" class="js-fancybox-media-file">$con.title</a></h4>
+        <div class="hidden">
+          <video id="$!{con.identifier}" class="video-js vjs-default-skin vjs-big-play-centered"
+            controls preload="auto" width="640" height="480"
+            poster="/contentasset/resize-image/${con.identifier}/thumbnail/w/640"
+            data-setup='{ "controls": true, "autoplay": false, "preload": "metadata" }'>
+            <source src="$!{filepath}" type='video/$!{utilmethods.getfileextension($filepath)}' />
+          </video>
+        </div>
+      #else
+        <a href="$!{filepath}" class="js-fancybox-media-link thumb media-thumb" title="$!{con.title}">
+          #if ($utilmethods.isset(${con.thumbnail.rawuri}))
+            <img src="/contentasset/resize-image/${con.identifier}/thumbnail/w/260/h/150" alt="$!{con.title}" />
+          #else
+            $!{con.title}
+          #end
+        </a>
+        <div class="risk-system risk$!{rate}" title="$!{rate}"></div>
+        <h4><a href="${filepath}" title="$!{con.title}" class="js-fancybox-media-link">$con.title</a></h4>
+      #end
+    </li>
+  #end
+</ul>
+   <video id="$!{con.identifier}" class="video-js vjs-default-skin vjs-big-play-centered"
+            controls preload="auto" width="640" height="480"
+            poster="/contentasset/resize-image/${con.identifier}/thumbnail/w/640"
+            data-setup='{ "controls": true, "autoplay": false, "preload": "metadata" }'>
+            <source src="$!{filepath}" type='video/$!{utilmethods.getfileextension($filepath)}' />
+          </video>
+        </div>
+      #else
+        <a href="$!{filepath}" class="js-fancybox-media-link thumb media-thumb" title="$!{con.title}">
+          #if ($utilmethods.isset(${con.thumbnail.rawuri}))
+            <img src="/contentasset/resize-image/${con.identifier}/thumbnail/w/260/h/150" alt="$!{con.title}" />
+          #else
+            $!{con.title}
+          #end
+        </a>
+        <div class="risk-system risk$!{rate}" title="$!{rate}"></div>
+        <h4><a href="${filepath}" title="$!{con.title}" class="js-fancybox-media-link">$c

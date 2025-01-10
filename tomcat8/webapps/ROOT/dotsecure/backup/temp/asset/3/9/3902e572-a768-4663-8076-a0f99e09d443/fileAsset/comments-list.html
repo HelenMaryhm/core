@@ -1,0 +1,38 @@
+<comment-form></comment-form>
+
+<a href="" class="btn btn-default btn-post-comment pull-right" ng-click="toggleCommentForm()" ng-hide="!commentForm.hide">Post a comment</a>
+<h3 class="comments-title">
+  <span class="bagde">{{ comments.length }}</span>
+  Comments
+</h3>
+
+<ul class="media-list comment-detail-list">
+  <li class="media preview" ng-show="c.author || c.email || c.comment">
+    <article>
+      <div class="pull-left comment-info">
+        <img ng-src="/images/icons/profile-image.png" width="65" height="65" alt="{{ c.author }}">
+        <span class="author">{{ c.author }}</span>
+        <time>{{ c.datePublished | date:"MM/dd/yyyy" }}</time>
+      </div>
+      <div class="media-body">
+        <div class="comment-body">
+          <p>{{ c.comment | htmlStrip }}</p>
+        </div>
+      </div>
+    </article>
+  </li>
+  <li class="media" ng-repeat="comment in comments">
+    <article>
+      <div class="pull-left comment-info">
+        <img ng-src="http://starter.dotcms.com:8080/images/icons/profile-image.png" width="65" height="65" alt="{{ comment.author }}">
+        <span class="author">{{ comment.author }}</span>
+        <time>{{ comment.datePublished | date:"MM/dd/yyyy" }}</time>
+      </div>
+      <div class="media-body">
+        <div class="comment-body">
+          <p>{{ comment.comment | htmlStrip }}</p>
+        </div>
+      </div>
+    </article>
+  </li>
+</ul>

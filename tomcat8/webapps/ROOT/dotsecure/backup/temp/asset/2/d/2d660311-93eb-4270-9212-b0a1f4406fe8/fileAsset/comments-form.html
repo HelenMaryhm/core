@@ -1,0 +1,32 @@
+<form ng-submit="commentsForm.$valid && submitComment(comments)" id="commentsForm" name="commentsForm" class="form-horizontal comments-form" novalidate ng-hide="commentForm.hide">
+  <fieldset>
+    <legend>Post a comment</legend>
+
+    <div class="alert alert-danger" ng-show="c.alert">There was an error posting your comment, please try again later</div>
+    <div class="form-group name-group">
+      <label for="name" class="control-label">Name</label>
+      <div class="control-field">
+        <input class="form-control" id="name" name="name" type="text" value="" tabindex="1" ng-model="c.author" required>
+      </div>
+    </div>
+    <div class="form-group email-group">
+      <label for="email" class="control-label">Email</label>
+      <div class="control-field">
+        <input class="form-control" id="email" name="email" type="email" value="" tabindex="2" ng-model="c.email" required>
+      </div>
+    </div>
+    <div class="form-group comment-group">
+      <label for="comment" class="control-label">Comment</label>
+      <div class="control-field">
+        <textarea class="form-control" cols="30" rows="5" name="comment" id="comment-textarea" tabindex="3" ng-model="c.comment" required></textarea>
+      </div>
+    </div>
+    <div class="form-group button-group">
+      <div class="control-field">
+        <button type="submit" class="btn btn-primary btn-comment" tabindex="5">Post comment</button>
+        <a href="" class="btn btn-danger btn-post-comment" ng-click="toggleCommentForm()" ng-hide="commentForm.hide">Cancel</a>
+
+      </div>
+    </div>
+  </fieldset>
+</form>

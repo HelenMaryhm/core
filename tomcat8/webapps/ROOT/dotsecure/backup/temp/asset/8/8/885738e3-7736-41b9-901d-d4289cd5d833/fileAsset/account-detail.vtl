@@ -1,0 +1,163 @@
+<script type="text/javascript" src="/dwr/engine.js"></script>
+<script type="text/javascript" src="/dwr/util.js"></script>
+<script type='text/javascript' src='/dwr/interface/TagAjax.js'></script>
+<script type='text/javascript' src='/html/js/tag.js'></script>
+
+#parse('static/messages.html')
+
+#set($addresses = $cmsuser.getAddresesByUser($user))
+
+<script>
+  function doSubmit(){
+    document.getElementById("myAccountForm").submit();
+  }
+  
+  function prefixChanged (obj) {
+    if (obj.options[obj.selectedIndex].value == "other") {
+      document.myAccountForm.otherPrefix.readOnly = false;
+      document.myAccountForm.otherPrefix.focus();
+    } else {
+      document.myAccountForm.otherPrefix.readOnly = true;
+    }
+  }
+
+  function doAddAddress(id){
+    var ele = document.getElementById("dispatch");
+    ele.value="editUserAddress";
+    ele = document.getElementById("addressID");
+    ele.value=id;
+    document.getElementById("myAccountForm").submit();
+  }
+</script>
+
+<div class="my-account-wrap">
+  <form class="form-horizontal my-account" action="/dotCMS/myAccount" method="post" id="myAccountForm" name="myAccountForm" autocomplete="off">
+    <input type="hidden" name="dispatch" id="dispatch" value="saveUserInfo" /> 
+    <input type="hidden" name="userId" value="${myAccountForm.userId}" />
+    <input type="hidden" name="addressID" id="addressID" value="${myAccountForm.addressID}" />
+
+    <fieldset class="personal-info">
+      <legend>Profile information</legend>
+      <div class="form-group prefix-group">
+        <label for="prefix" class="control-label">Prefix</label>
+        <div class="control-field">
+          #if($!{myAccountForm.prefix} == "mr")
+            #set( $mr = "selected")
+          #elseif($!{myAccountForm.prefix} == "mrs")
+            #set( $mrs = "selected")
+          #elseif($!{myAccountForm.prefix} == "miss")
+            #set( $miss = "selected")
+          #elseif($!{myAccountForm.prefix} == "dr")
+            #set( $dr =  "selected")
+          #else
+            #set( $other = "selected")
+          #end
+          <select class="form-control" tabindex="1" name="prefix" value="$!{myAccountForm.prefix}" onchange="prefixChanged(this)">
+            <option value="mr" $!{mr}>Mr.</option>
+            <option value="mrs" $!{mrs}>Mrs.</option>
+            <option value="miss" $!{miss}>Ms.</option>
+            <option value="dr" $!{dr}>Dr.</option>
+            <option value="other" $!{other}>Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group firstname-group">
+        <label for="firstName" class="control-label">First Name</label>
+        <div class="control-field">
+          <input class="form-control" tabindex="2" type="text" name="firstName" value="$!myAccountForm.firstName" />
+        </div>
+      </div>
+      <div class="form-group lastname-group">
+        <label for="lastName" class="control-label">Last Name</label>
+        <div class="control-field">
+          <input class="form-control" tabindex="3" type="text" name="lastName" value="$!myAccountForm.lastName" />
+        </div>
+      </div>
+      <div class="form-group suffix-group">
+        <label for="suffix" class="control-label">Suffix</label>
+        <div class="control-field">
+          <input class="form-control" tabindex="4" type="text" name="suffix" value="$!myAccountForm.suffix" />
+        </div>
+      </div>
+      <div class="form-group title-group">
+        <label for="title" class="control-label">Title</label>
+        <div class="control-field">
+          <input class="form-control" tabindex="5" type="text" name="title" value="$!myAccountForm.title" />
+        </div>
+      </div>
+      <div class="form-group button-group">
+        <div class="control-field">
+          <button onclick="doSubmit();" type="submit" class="btn btn-primary btn-account-save">Save</button>
+        </div>
+      </div>
+    </fieldset>
+    <fieldset class="account-info">
+      <legend>Account information</legend>
+      <div class="form-group email-group">
+        <label for="emailAddress" class="control-label">Email</label>
+        <div class="control-field">
+          <input class="form-control" tabindex="6" type="text" name="emailAddress" value="$!myAccountForm.emailAddress" />
+        </div>
+      </div>
+      <div class="form-group password-group">
+        <label for="password1" class="control-label">Current Password</label>
+        <div class="control-field">
+          <input class="form-control" tabindex="7" type="password" maxlength="20" name="password" id="password1" />
+        </div>
+      </div>
+      <div class="form-group newpassword-group">
+        <label for="newPassword" class="control-label">New Password</label>
+        <div class="control-field">
+          <input class="form-control" tabindex="8" type="password" name="newPassword" />
+        </div>
+      </div>
+      <div class="form-group verifypassword-group">
+        <label for="newPassword" class="control-label">Verify Password</label>
+        <div class="control-field">
+          <input class="form-control" tabindex="9" type="password" name="verifyPassword" />
+        </div>
+      </div>
+      <div class="form-group button-group">
+        <div class="control-field">
+          <button onclick="doSubmit();" type="submit" class="btn btn-primary btn-account-change-password">Change Password</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+  <fieldset class="address-info">
+    <legend id="address-title">Address Information</legend>
+    <ul class="media-list address-list">
+      #foreach($addr in $addresses )
+        <li class="media">
+          <article>
+            <div class="media-body">
+              <h4>$addr.description</h4>
+              <address>
+                #if($UtilMethods.isSet($addr.street1))
+                  $addr.street1<br>
+                #end
+                #if($UtilMethods.isSet($addr.street2))
+                  $addr.street2<br>
+                #end
+                $addr.city, $addr.state $addr.zip
+              </address>
+              #if($UtilMethods.isSet($addr.phone))
+                <p class="phone"><b>Phone:</b> <a href="tel:$addr.phone">$addr.phone</a></p>
+              #end
+              #if($UtilMethods.isSet($addr.fax))
+                <p class="fax"><b>Fax:</b> <a href="tel:$addr.fax">$addr.fax</a></p>
+              #end
+              <p class="address-action">
+                <a href="javascript:doAddAddress($addr.addressId)" class="btn btn-primary btn-xs">Edit</a>
+              </p>
+            </div>
+          </article>
+        </li>
+      #end
+    </ul>
+    <div class="text-center">
+      <a href="javascript:doAddAddress(0)" class="btn btn-primary btn-add-address">Add new address</a>
+    </div>
+  </fieldset>
+</div>

@@ -1,0 +1,159 @@
+## --------------------------------------------------
+## setting the default number of results ------------
+## --------------------------------------------------
+#if (!$utilmethods.isset($numberofresults))
+  #set($numberofresults = 5)
+#end
+
+
+## --------------------------------------------------
+## setting the sort order ---------------------------
+## --------------------------------------------------
+#set ($sortby = "news.syspublishdate")
+#if ($sortresultsby == "title")
+  #set ($sortby = "news.title")
+#elseif ($sortresultsby == "comments")
+  #set ($sortby = "news.commentscount")
+#end
+#set ($sortby = "news.syspublishdate $sortorder1")
+
+
+## --------------------------------------------------
+## filter by categories -----------------------------
+## --------------------------------------------------
+#set($catsquery = "")
+#foreach ($catinode in $topic)
+  #if ($velocitycount == 1)
+    #set($catsquery = "categories:$categories.getcategorybyinode($catinode).categoryvelocityvarname")
+  #else
+    #set($catsquery = "$catsquery categories:$categories.getcategorybyinode($catinode).categoryvelocityvarname")
+  #end
+#end
+#if ($utilmethods.isset($catsquery))
+  #set($catsquery = "+($catsquery)")
+#end
+
+
+#set($ignorequery="")
+#if($utilmethods.isset($urlmapcontent.inode))
+
+	#set($ignorequery="-inode:$urlmapcontent.inode")
+#end
+
+
+## --------------------------------------------------
+## filters by tags ----------------------------------
+## --------------------------------------------------
+
+#set($tagsquery = "")
+#if ($utilmethods.isset($tagsfilter))
+  #foreach ($tag in $tagsfilter.split(','))
+    #if ($velocitycount == 1)
+      #set($tagsquery = "news.tags:$tag")
+    #else
+      #set($tagsquery = "$tag news.tags:$tag")
+    #end
+  #end
+#end
+
+
+## --------------------------------------------------
+## setting paginated results ------------------------
+## --------------------------------------------------
+
+#if($pagination.contains('true'))
+  ## setting items per page
+  #if ($utilmethods.isset($itemsperpage))
+    #set($itemsperpage = $webapi.parseint($itemsperpage))
+  #else
+    #set($itemsperpage = 5)
+  #end
+
+  ## getting page number
+  #if($utilmethods.isset($request.getparameter('page')))
+    #set($page = $webapi.parseint($request.getparameter('page')))
+  #else
+    #set($page = 1)
+  #end
+#end
+#set($myhost = $webapi.resolvehostname($request.servername))
+
+#if($pagination.contains('true'))
+  #set($newslisting = $dotcontent.pullperpage("+structurename:news +(conhost:$!{myhost.identifier} conhost:system_host) $!{catsquery} $!{tagsquery} ${ignorequery}",$!{page},$!{itemsperpage},"$!{sortby}"))
+#else
+  #set($newslisting = $dotcontent.pull("+structurename:news +(conhost:$!{myhost.identifier} conhost:system_host) $!{catsquery} $!{tagsquery} ${ignorequery}",$!{numberofresults},"$!{sortby}"))
+#end
+
+#if($newslisting.size() > 0)
+  #if ($utilmethods.isset($headline))
+    #if (!$utilmethods.isset($headlinefontsize))
+      #set ($headlinefontsize = '1')
+    #end
+    <h$!{headlinefontsize} class="news-listing-headline">$!{headline}</h$!{headlinefontsize}>
+  #end
+  <ul class="media-list media-list-extend news-listing">
+  #foreach ($newsitem in $newslisting)
+    <li class="media">
+      <article>
+        #editcontentlet($newsitem.inode)
+        #if ($fieldstodisplay.contains('image') && $utilmethods.isset($newsitem.image.rawuri))
+          <a href="/news/$!{newsitem.urltitle}" class="pull-left media-object">
+            <img src="/contentasset/image/$!{newsitem.identifier}/image/filter/resize/resize_w/100" alt="$!{newsitem.title}" />
+          </a>
+        #end
+        <div class="media-body">
+          #if($fieldstodisplay.contains('title') && $utilmethods.isset($newsitem.urltitle))
+            <h4 class="media-heading news-title"><a href="/news/$!{newsitem.urltitle}">$!{newsitem.title}</a></h4>
+          #end
+          #if($fieldstodisplay.contains('publishdate') && $utilmethods.isset($newsitem.syspublishdate) || $fieldstodisplay.contains('commentscount') &&  $utilmethods.isset($newsitem.commentscount))
+            <div class="post-info">
+              #if($fieldstodisplay.contains('publishdate') && $utilmethods.isset($newsitem.syspublishdate))
+                <time class="date" datetime="$!{newsitem.syspublishdate}">$date.format('mmmm d, yyyy', $newsitem.syspublishdate)</time>
+              #end
+              #if($fieldstodisplay.contains('commentscount') && $utilmethods.isset($newsitem.commentscount))
+                #set ($comments = "comment")
+                #if ($newsitem.commentscount > 1)
+                  #set ($comments = "comments")
+                #end
+                <span class="comments"><a href="/news/$!{newsitem.urltitle}#comments">$!{newsitem.commentscount} $!{comments}</a></span>
+              #end
+            </div>
+          #end
+          #if ($fieldstodisplay.contains('summary') && $utilmethods.isset($newsitem.lead))
+            <p class="summary">$!{newsitem.lead}</p>
+          #end
+        </div>
+      </article>
+    </li>
+  #end
+  </ul>
+  #if($pagination.contains('true'))
+      <ul class="pagination justify-content-center">
+        #if($newslisting.previouspage)
+          <li class="page-item"><a class="page-link" href="/news-events/news/?page=$!{math.sub($page, 1)}">«</a></li>
+        #end
+        #foreach($i in [1..$newslisting.totalpages])
+          <li #if($page == $velocitycount)class="page-item active"#end><a href="/news-events/news/?page=${velocitycount}" class="page-link">$velocitycount</a></li>
+        #end
+        #if($newslisting.nextpage)
+          <li class="page-item"><a class="page-link" href="/news-events/news/?page=$!{math.add($page, 1)}">»</a></li>
+        #end
+      </ul>
+  #end
+#else
+  <div class="alert alert-info">
+    no results for this query, try with another categories or tags.
+  </div>
+#end
+        #end
+          #if ($fieldstodisplay.contains('summary') && $utilmethods.isset($newsitem.lead))
+            <p class="summary">$!{newsitem.lead}</p>
+          #end
+        </div>
+      </article>
+    </li>
+  #end
+  </ul>
+  #if($pagination.contains('true'))
+      <ul class="pagination justify-content-center">
+        #if($newslis

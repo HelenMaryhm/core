@@ -1,0 +1,215 @@
+#if ($utilmethods.isset($request.getparameter("id")))
+  #set ($content = $dotcontent.find($request.getparameter("id")))
+
+  <div class="document-detail-wrap">
+    <div class="document-detail-file">
+      ## if image
+      #if($content.metadata.contenttype.indexof("image/") == 0)
+        <a href="$content.fileasset.uri" class="thumb image-thumb js-fancybox-img" title="$content.title">
+          <img src="$content.shortyurl/560w">
+        </a>
+
+      ## if
+      #elseif($content.metadata.contenttype.indexof("application/pdf") == 0)
+        <a href="${content.fileasset.uri}?force_download=true" class="thumb" />
+          <img src="$content.shortyurl/560w" alt="download pdf" />
+        </a>
+
+      ## if quicktime
+      #elseif($content.metadata.contenttype.indexof("video/quicktime") == 0)
+        <div class="thumb">
+          <object classid='clsid:02bf25d5-8c17-4b23-bc80-d3488abddc6b' width="100%"codebase='http://www.apple.com/qtactivex/qtplugin.cab'>
+            <param name='src' value="$content.fileasset.uri">
+            <param name='autoplay' value="false">
+            <param name='controller' value="true">
+            <param name='loop' value="false">
+            <embed src="$content.fileasset.uri" width="100%" autoplay="false"
+              controller="true" loop="false" bgcolor="#000000" pluginspage='http://www.apple.com/quicktime/download/'>
+            </embed>
+          </object>
+        </div>
+
+      ## if mp4 video
+      #elseif($content.metadata.contenttype.indexof("video/mp4") == 0)
+        <div class="thumb">
+          <video class="video-js vjs-default-skin vjs-big-play-centered"
+            controls preload="auto"
+            data-setup='{ "controls": true, "autoplay": false, "preload": "metadata" }'>
+            <source src="$content.fileasset.uri" type="video/mp4" />
+          </video>
+        </div>
+
+      ## if ogg video
+      #elseif($content.metadata.contenttype.indexof("application/ogg") == 0)
+      <div class="thumb">
+        <video class="video-js vjs-default-skin vjs-big-play-centered"
+          controls preload="auto"
+          data-setup='{ "controls": true, "autoplay": false, "preload": "metadata" }'>
+          <source src="$content.fileasset.uri" type="video/ogg" />
+        </video>
+      </div>
+
+      ## if web video
+      #elseif($content.metadata.contenttype.indexof("application/octet-stream") == 0)
+        <div class="thumb">
+          <video class="video-js vjs-default-skin vjs-big-play-centered"
+            controls preload="auto"
+            data-setup='{ "controls": true, "autoplay": false, "preload": "metadata" }'>
+            <source src="$content.fileasset.uri" type="video/webv" />
+          </video>
+        </div>
+
+      ## if windows video
+      #elseif($content.metadata.contenttype.indexof("video/wmv") == 0)
+        <div class="thumb">
+          <object id='mediaplayer' width="560" height="264"
+            classid='clsid:22d6f312-b0f6-11d0-94ab-0080c74c7e95'
+            codebase='http://activex.microsoft.com/activex/controls/ mplayer/en/nsmp2inf.cab#version=5,1,52,701'
+            standby='loading microsoft windows media player components...' type='application/x-oleobject'>
+            <param name='filename' value="$content.fileasset.uri">
+            <param name='animationatstart' value='1'>
+            <param name='transparentatstart' value='1'>
+            <param name='autostart' value='0'>
+            <param name='showcontrols' value='1'>
+            <param name='showdisplay' value='1'>
+            <param name='showstatusbar' value='1'>
+            <param name='loop' value='0'>
+
+            <embed type='application/x-mplayer2'
+              pluginspage='http://microsoft.com/windows/mediaplayer/ en/download/'
+              id='mediaplayer' name='mediaplayer' displaysize='4' autosize='0'
+              bgcolor='darkblue' showcontrols='1' showtracker='1'
+              showdisplay='1' showstatusbar='1' videoborder3d='0' width="560" height="264"
+              src="$content.fileasset.uri" autostart='0' designtimesp='5311' loop='0'>
+            </embed>
+          </object>
+        </div>
+      ## if word doc
+      #elseif(
+            $content.metadata.contenttype.indexof("application/msword") == 0 || 
+            $content.metadata.contenttype.indexof("application/vnd.openxmlformats-officedocument.wordprocessingml.document") == 0 || 
+            $content.metadata.contenttype.indexof("application/vnd.openxmlformats-officedocument.wordprocessingml.template") == 0 || 
+            $content.metadata.contenttype.indexof("application/vnd.ms-word.document.macroenabled.12") == 0 || 
+            $content.metadata.contenttype.indexof("application/vnd.ms-word.template.macroenabled.12") == 0
+          )
+        <a href="${content.fileasset.uri}?force_download=true" class="thumb" />
+          <img src="/images/icons/word-icon.jpg" alt="download word doc" />
+        </a>
+
+      ## if excel doc
+      #elseif(
+            $content.metadata.contenttype.indexof("application/vnd.ms-excel") == 0 || 
+            $content.metadata.contenttype.indexof("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") == 0 || 
+            $content.metadata.contenttype.indexof("application/vnd.openxmlformats-officedocument.spreadsheetml.template") == 0 || 
+            $content.metadata.contenttype.indexof("application/vnd.ms-excel.sheet.macroenabled.12") == 0 || 
+            $content.metadata.contenttype.indexof("application/vnd.ms-excel.template.macroenabled.12") == 0 ||
+            $content.metadata.contenttype.indexof("application/vnd.ms-excel.addin.macroenabled.12") == 0 ||
+            $content.metadata.contenttype.indexof("application/vnd.ms-excel.sheet.binary.macroenabled.12") == 0
+          )
+      <a href="${content.fileasset.uri}?force_download=true" class="thumb" />
+        <img src="/images/icons/excel-icon.jpg" alt="download excel doc" />
+      </a>
+
+    ## if powerpoint
+    #elseif(
+            $content.metadata.contenttype.indexof("application/vnd.ms-powerpoint") == 0 || 
+            $content.metadata.contenttype.indexof("application/vnd.openxmlformats-officedocument.presentationml.presentation") == 0 || 
+            $content.metadata.contenttype.indexof("application/vnd.openxmlformats-officedocument.presentationml.template") == 0 || 
+            $content.metadata.contenttype.indexof("application/vnd.openxmlformats-officedocument.presentationml.slideshow") == 0 || 
+            $content.metadata.contenttype.indexof("application/vnd.ms-powerpoint.addin.macroenabled.12") == 0 ||
+            $content.metadata.contenttype.indexof("application/vnd.ms-powerpoint.presentation.macroenabled.12") == 0 ||
+            $content.metadata.contenttype.indexof("application/vnd.ms-powerpoint.template.macroenabled.12") == 0 ||
+            $content.metadata.contenttype.indexof("application/vnd.ms-powerpoint.slideshow.macroenabled.12")
+          )
+        <a href="${content.fileasset.uri}?force_download=true" class="thumb" />
+          <img src="/images/icons/ppt-icon.jpg" alt="download power point" />
+        </a>
+      #else
+        <a href="${content.fileasset.uri}?force_download=true" class="thumb" />
+          <img src="/images/icons/unknown-icon.jpg" alt="download document" />
+        </a>
+      #end
+    </div>
+    <div class="document-detail-info">
+      <h1 class="document-detail-title">$content.title #editcontentlet($content.inode)</h1>
+      #if ($utilmethods.isset($content.description1))
+        <p>$content.description1</p>
+      #end
+      #if ($utilmethods.isset($content.syspublishdate) || $content.topic.size() > 0 || $utilmethods.isset($content.tags))
+        <dl class="dl-horizontal document-detail-meta">
+          #if ($utilmethods.isset($content.syspublishdate))
+            <div class="item-line">
+              <dt>publish on:</dt>
+              <dd><time>$date.format('mm/dd/yyyy',$content.syspublishdate)</time></dd>
+            </div>
+          #end
+          #if ($content.topic.size() > 0)
+            <div class="item-line">
+              <dt>categories:</dt>
+              <dd>
+                #foreach ($cat in $content.topic)
+                  <a href="/resources/?cat=$!{cat.categoryvelocityvarname}">$!{cat.categoryname}</a>#if($velocitycount != $content.topic.size()),#end
+                #end
+              </dd>
+            </div>
+          #end
+          #if ($utilmethods.isset($content.tags) && $content.tags.size() > 0)
+            <div class="item-line">
+              <dt>tags:</dt>
+              <dd>
+                #foreach ($tag in $content.tags)
+                  <a href="/resources/?tag=$!{tag}">$!{tag}</a>#if($velocitycount != $content.tags.size()),#end
+                #end
+              </dd>
+            </div>
+          #end
+        </dl>
+      #end
+      #if ($utilmethods.isset($content.metadata))
+        <table class="table table-striped table-bordered metadata">
+          <thead>
+            <th colspan="2"><h3>metadata</h3></th>
+          </thead>
+          <tbody>
+            #foreach($key in $content.metadata.entryset())
+              #if($key.key != "map" && $key.key != "keys" && $utilmethods.isset($key.value))
+                <tr>
+                  <td>$key.key</td>
+                  <td>$!{utilmethods.prettyshortenstring($key.value, 400)}</td>
+                </tr>
+              #end
+            #end
+          </tbody>
+        </table>
+      #end
+    </div>
+  </div>
+
+#else
+
+  <div class="document-detail-wrap">
+    <div class="col-sm-12">
+      <div class="alert alert-info">
+        we are sorry, but the document you are looking for is no longer available. <a href="/resources/">click here to see all documents</a>.
+      </div>
+    </div>
+  </div>
+
+#end
+           #end
+              </dd>
+            </div>
+          #end
+        </dl>
+      #end
+      #if ($utilmethods.isset($content.metadata))
+        <table class="table table-striped table-bordered metadata">
+          <thead>
+            <th colspan="2"><h3>metadata</h3></th>
+          </thead>
+          <tbody>
+            #foreach($key in $content.metadata.entryset())
+              #if($key.key != "map" && $key.key != "keys" && $utilmethods.isset($key.value))
+                <tr>
+                  <td>$key.key</td>
+                  <td>$!{utilm

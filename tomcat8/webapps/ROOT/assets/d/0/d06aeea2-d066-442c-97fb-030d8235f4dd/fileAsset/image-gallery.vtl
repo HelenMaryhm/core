@@ -1,0 +1,27 @@
+#set($_qk = "+(structureName:Document structureName:FileAsset) +confolder:$!{folder1}*")
+#set($cons = $dotcontent.pull(${_qk},$!{numberOfResults},"Document.sysPublishDate desc"))
+
+#if ($UtilMethods.isSet($widgetTitle))
+  <h3>$!{widgetTitle}</h3>
+#end
+#if($cons.size() > 0)
+  #set($count = 0)
+  <div class="row gallery">
+    #foreach($con in $cons)
+      <div class="col-sm-3 col-xs-2">
+        <a class="js-fancybox-img thumb image-thumb small" href="/dA/$con.identifier/$con.name" rel="photo-gallery" title="$!{con.title}">
+          <div class="imageMask" style="background-image: url('/dA/$con.identifier/350w/$con.name');"></div>
+        </a>
+      </div>
+      #set($count = $count +1)
+      #if($count == 4 || $count == $cons.size())
+        </div>
+        <div class="row gallery">
+        #set($count = 0)
+      #end
+    #end
+#else
+  <div class="alert alert-info">
+    There currently no images in the folder.
+  </div>
+#end

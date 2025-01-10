@@ -1,0 +1,118 @@
+#set($catVar=$request.getParameter("cat"))
+#set($tagVar=$request.getParameter("tag"))
+#set($searchVar=$request.getParameter("blogSearch"))
+
+#set($nowsers= $date.format('yyyyMMddHHmmss', $date.getDate()))
+
+#set($_qk = "+structureName:Blog +(conhost:$host.identifier conhost:SYSTEM_HOST)")
+
+#if($UtilMethods.isSet($searchVar))
+  #set($_qk = $_qk + "+(Blog.title:*$searchVar* || Blog.body:*$searchVar*)")
+#end
+
+#if($UtilMethods.isSet($catVar))
+  #set($_qk = $_qk + "+(categories:$catVar)")
+#end
+
+#if($UtilMethods.isSet($tagVar))
+  #set($_qk = $_qk + "+Blog.tags:*$tagVar*")
+#end
+
+#if($request.getParameter("page"))
+  #set($pageNumber = $math.toInteger($request.getParameter("page")))
+#else
+  #set($pageNumber = 1)
+#end
+
+#set($numberToPull = 5)
+
+#set($mypagelist = $dotcontent.pullPerPage("${_qk}",${pageNumber},${numberToPull},"Blog.sysPublishDate desc"))
+
+#if($UtilMethods.isSet($catVar))
+  <a class="btn btn-warning btn-sm btn-rss pull-right-expecific" href="/blogs/rss?cat=$catVar"><i class="fa fa-rss"></i> RSS</a>
+#else
+  <a class="btn btn-warning btn-sm btn-rss pull-right-expecific" href="/blogs/rss"><i class="fa fa-rss"></i> RSS</a>
+#end
+<h1 class="page-title">Insight Blog</h1>
+#if($UtilMethods.isSet($searchVar) || $UtilMethods.isSet($catVar) || $UtilMethods.isSet($tagVar))
+  <p class="blog-search-string">
+    #if($UtilMethods.isSet($searchVar))
+      <span class="search-label">Search Results for:</span>
+      <span class="search-term">"$searchVar"</span>
+    #end
+    #if($UtilMethods.isSet($catVar))
+      <span class="search-label">Filter by:</span>
+      <span class="search-term">"$catVar"</span>
+    #end
+    #if($UtilMethods.isSet($tagVar))
+      <span class="search-label">Tagged by:</span>
+      <span class="search-term">"$tagVar"</span>
+    #end
+  </p>
+#end
+
+<ul class="media-list media-list-extend blog-listing pl-0">
+  #set($contentCount = ($pageNumber - 1) * $numberToPull)
+  #foreach($con in $mypagelist)
+    #set($contentCount = $contentCount + 1)
+    <li class="media">
+      <article>
+        <div class="media-boty">
+          #editContentlet($con.inode)
+          <h4 class="media-heading post-title"><a href="/blogs/$con.urlTitle">$!{con.title}</a></h4>
+          <div class="post-info">
+            <time datetime="$date.format('yyyy-MM-dd',$!con.sysPublishDate)T$date.format('hh:mm:ss',$!con.sysPublishDate)" class="date">$date.format('MMMM dd, yyyy',$con.sysPublishDate)</time>
+            <span class="author">$con.author</span>
+            <span class="comments">
+              <a href="/blogs/$con.urlTitle#comments">
+                #if($con.commentscount > 0)
+                  $con.commentscount Comments
+                #else
+                  No Comments
+                #end
+              </a>
+            </span>
+          </div>
+          <p class="summary">$UtilMethods.prettyShortenString("$con.body", 200)</p>
+        </div>
+      </article>
+    </li>
+  #end
+</ul>
+
+<nav aria-label="Blog pagination">
+    <ul class="pagination">
+      #if($mypagelist.previousPage)
+        <li class="page-item previous">
+          #set($prevPage= $pageNumber - 1)
+          #if($UtilMethods.isSet($searchVar))
+            <a class="page-link" href="?page=$prevPage&blogSearch=$searchVar">
+          #elseif($UtilMethods.isSet($catVar))
+            <a class="page-link" href="?page=$prevPage&cat=$catVar">
+          #elseif($UtilMethods.isSet($tagVar))
+            <a class="page-link" href="?page=$prevPage&tag=$tagVar">
+          #else
+            <a class="page-link" href="?page=$prevPage">
+          #end
+          <i class="fa fa-caret-left"></i> Previous
+          </a>
+        </li>
+      #end
+      #if($mypagelist.nextPage)
+        <li class="page-item next ml-auto">
+          #set($nextPage= $pageNumber + 1)
+          #if($UtilMethods.isSet($searchVar))
+            <a class="page-link" href="?page=$nextPage&blogSearch=$searchVar">
+          #elseif($UtilMethods.isSet($catVar))
+            <a class="page-link" href="?page=$nextPage&cat=$catVar">
+          #elseif($UtilMethods.isSet($tagVar))
+            <a class="page-link" href="?page=$nextPage&tag=$tagVar">
+          #else
+            <a class="page-link" href="?page=$nextPage">
+          #end
+          Next <i class="fa fa-caret-right"></i>
+          </a>
+        </li>
+      #end
+    </ul>
+</nav>

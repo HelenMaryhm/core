@@ -1,0 +1,230 @@
+var dotcmsserver = '';
+var baseurl = window.location.origin + '/api/content/type/json/render/false/query/+structurename:document%20+(conhost:48190c8c-42c4-46af-8d1a-0cd5db894797%20conhost:system_host)%20+languageid:1%20+deleted:false%20+working:true%20';
+
+var extquery = '';
+var limit = 5;
+var requesturl;
+var searchquery = '';
+var tags = [];
+var tagsquery = '';
+var topics = [];
+var topicsquery = '';
+
+function loadinganimation(state, frombutton) {
+  var loadingicon = '/application/themes/quest/images/layout/ico_loading.gif';
+  if (!state) {
+    $('.js-loading').remove();
+  } else {
+    if (frombutton) {
+      $('.js-show-more').html('<img src="' + loadingicon + '" width="16" height="16"> loading...');
+    } else {
+      if (!$('.js-loading').length) {
+        $('.js-document-list').before('<div class="alert alert-default loading-info js-loading"><h4><img src="' + loadingicon + '"> loading...</h4></div>');
+      }
+    }
+  }
+}
+
+function updateresults() {
+  var searchcontent = '';
+  var topicscontent = '';
+  var tagscontent = '';
+  if (topics.length) {
+    topicstemplate = '<span class="search-label">filter by:</span> <% _.each(content, function(name) { %><span class="search-term"><%= name %></span>, <% }); %>';
+    topicscontent = _.template(topicstemplate, {content: topics}).replace(/,\s*$/, '');
+  }
+  if (tags.length) {
+    tagstemplate = '<span class="search-label">tagged by:</span> <% _.each(content, function(name) { %><span class="search-term"><%= name %></span>, <% }); %>';
+    tagscontent = _.template(tagstemplate, {content: tags}).replace(/,\s*$/, '');
+  }
+
+  var textvalue = $('.js-search-text').val() || '';
+  if (textvalue) {
+      searchcontent = _.template('<span class="search-label">search results for:</span> <span class="search-term"><%= value %></span>', {value: textvalue});
+  }
+  $('.js-search-string').html(searchcontent + topicscontent + tagscontent);
+}
+
+function renderresults(results) {
+  loadinganimation(false);
+  if (results.contentlets.length) {
+    var mediatemplate = $('#media-item-template').html();
+    var content = _.template(mediatemplate, {data: results.contentlets});
+    if ($('.js-document-list li').length === 0) {
+      $('.js-document-list').html(content);
+    } else {
+      $('.js-document-list li:last-child').after(content);
+    }
+    if (results.contentlets.length < limit) {
+      $('.js-show-more').addclass('disabled').text('no more content for load...');
+    } else {
+      $('.js-show-more').show();
+      $('.js-show-more').removeclass('disabled').text('show more results');
+    }
+  } else if ($('.js-document-list li').length > 0) {
+    $('.js-show-more').addclass('disabled').text('no more content for load...');
+  } else {
+    $('.js-document-list').html('<li class="js-not-found"><div class="jumbotron js-not-found"><h1>ooops, nothing found</h1><p>there is no resources availables for this query, what about if you...</p><p><a class="btn btn-primary btn-lg" role="button" onclick="resetfilters()">start over</a></p></div></li>');
+  }
+  updateresults();
+}
+
+function getdocumentitems(page, frombutton) {
+  var offset;
+  if (!frombutton) {
+    $('.js-show-more').hide();
+  }
+  loadinganimation(true, frombutton);
+  if (!page) {
+    offset = 0;
+  } else {
+    offset = page * limit;
+  }
+  requesturl = baseurl + topicsquery + tagsquery + searchquery + extquery +'/orderby/moddate%20desc' + '/limit/' + limit + '/offset/' + offset + '/';
+  console.log('requesting data from url: ' + requesturl);
+  $.ajax({
+    type: 'get',
+    url: requesturl,
+    success: function(data) {
+      renderresults(data);
+    }
+  });
+}
+
+function resetfilters() {
+  $('.js-filter-items a').removeclass('active');
+  $('.js-not-found').remove();
+  $('.js-search-text').val('');
+  searchquery = '';
+  tags = [];
+  tagsquery = '';
+  topics = [];
+  topicsquery = '';
+  getdocumentitems();
+}
+
+function filteritems() {
+  var index;
+  $('.js-filter-items a').on('click', function(e) {
+    $('.js-document-list').empty();
+    e.preventdefault();
+
+    if (e.currenttarget.dataset.topic) {
+      if ($(this).hasclass('active')) {
+        index = topics.indexof(e.currenttarget.dataset.topic);
+        if (index > -1) {
+          topics.splice(index, 1);
+        }
+        $(this).removeclass('active');
+      } else {
+        topics.push(e.currenttarget.dataset.topic);
+        $(this).addclass('active');
+      }
+      topicsquery = '';
+      _.each(topics, function(t) {
+        topicsquery = topicsquery + 'categories:' + t + '%20';
+      });
+      if (topics.length) {
+        topicsquery = '+(' + topicsquery + ')';
+        topicsquery = topicsquery.replace('%20)', ')');
+      }
+    }
+
+    if (e.currenttarget.dataset.tag) {
+      if ($(this).hasclass('active')) {
+        index = tags.indexof(e.currenttarget.dataset.tag);
+        if (index > -1) {
+          tags.splice(index, 1);
+        }
+        $(this).removeclass('active');
+      } else {
+        tags.push(e.currenttarget.dataset.tag);
+        $(this).addclass('active');
+      }
+      tagsquery = '';
+      _.each(tags, function(t) {
+        tagsquery = tagsquery + '+document.tags:*' + t + '*%20';
+      });
+    }
+
+    getdocumentitems();
+  });
+
+  $('.js-doc-search').on('submit', function(e) {
+    $('.js-document-list').empty();
+    e.preventdefault();
+    var textvalue = $('.js-search-text').val();
+    var extvalue = $('input[name=options]:checked', '.js-doc-search').attr('id');
+    if (textvalue.length) {
+      searchquery = '+_all:' + textvalue + '*';
+    } else {
+      searchquery = '';
+    }
+
+    switch (extvalue) {
+      case 'all':
+        extquery = '';
+        break;
+      case 'image':
+        extquery = '+document.metadata:image/*%20';
+        break;
+      case 'video':
+        extquery = '+document.metadata:video/*%20';
+        break;
+      case 'document':
+        extquery = '+document.metadata:application/*%20';
+        break;
+    }
+
+    getdocumentitems();
+  });
+}
+
+function loadmorecontent() {
+  $('.js-show-more').on('click', function() {
+    var page = parseint($('.js-show-more').data('page'), 10);
+    $('.js-show-more').data('page', page + 1);
+    getdocumentitems(page, true);
+  });
+}
+
+function setdate(date, timestamp) {
+  var months = ['january', 'february', 'march', 'april', 'may', 'june',
+'july', 'august', 'september', 'october', 'november', 'december'];
+  var monthsnumber = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+  date = new date(date);
+
+  if (!timestamp) {
+    return months[date.getmonth()] + ' ' + date.getdate() + ',' + ' ' + date.getfullyear();
+  } else {
+    return date.getfullyear() + '-' + monthsnumber[date.getmonth()] + '-' + date.getdate();
+  }
+
+}
+
+function checkfiletype(type, inode) {
+  if (type.indexof('image/') === 0 || (type.indexof('application/pdf') === 0)) {
+    return '<img src="/da/' + inode + '/120w/thumb" alt="<%= doc.title %>"/>';
+
+  } else if (type.indexof('video/') === 0 || type.indexof('application/ogg') === 0) {
+    return '<div class="doc-thumbnail video"></div>';
+  } else if (type.indexof('application/msword') === 0 || type.indexof('application/vnd.openxmlformats-officedocument.wordprocessingml.document') === 0 || type.indexof('application/vnd.openxmlformats-officedocument.wordprocessingml.template') === 0 || type.indexof('application/vnd.ms-word.document.macroenabled.12') === 0 || type.indexof('application/vnd.ms-word.template.macroenabled.12') === 0) {
+    return '<div class="doc-thumbnail word"></div>';
+  } else if(type.indexof('application/vnd.ms-excel') === 0 || type.indexof('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') === 0 || type.indexof('application/vnd.openxmlformats-officedocument.spreadsheetml.template') === 0 || type.indexof('application/vnd.ms-excel.sheet.macroenabled.12') === 0 || type.indexof('application/vnd.ms-excel.template.macroenabled.12') === 0 || type.indexof('application/vnd.ms-excel.addin.macroenabled.12') === 0 || type.indexof('application/vnd.ms-excel.sheet.binary.macroenabled.12') === 0) {
+    return '<div class="doc-thumbnail excel"></div>';
+  } else if(type.indexof('application/vnd.ms-powerpoint') === 0 || type.indexof('application/vnd.openxmlformats-officedocument.presentationml.presentation') === 0 || type.indexof('application/vnd.openxmlformats-officedocument.presentationml.template') === 0 || type.indexof('application/vnd.openxmlformats-officedocument.presentationml.slideshow') === 0 || type.indexof('application/vnd.ms-powerpoint.addin.macroenabled.12') === 0 || type.indexof('application/vnd.ms-powerpoint.presentation.macroenabled.12') === 0 || type.indexof('application/vnd.ms-powerpoint.template.macroenabled.12') === 0 || type.indexof('application/vnd.ms-powerpoint.slideshow.macroenabled.12') === 0) {
+    return '<div class="doc-thumbnail powerpoint"></div>';
+  } else {
+    return '<div class="doc-thumbnail unknow"></div>';
+  }
+}
+
+$(document).on('ready', function() {
+  getdocumentitems();
+  loadmorecontent();
+  filteritems();
+});
+
+ion/vnd.ms-excel.sheet.binary.macroenabled.12') === 0) {
+    return '<div class="doc-thumbnail excel"></div>';
+  } else if(type.indexof('application/vnd.ms-powerpoint') === 0 || type.indexof('application/vnd.openxmlformats-officedocument.presentationml.presentat

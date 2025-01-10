@@ -1,0 +1,73 @@
+.home-promo {
+    @include make-row();
+
+    @media (min-width: $screen-tablet) {
+        margin: $padding-base-horizontal 0 0;
+    }
+
+    a {
+        &:hover {
+            text-decoration: none;
+        }
+
+        p {
+            color: $text-color;
+        }
+    }
+
+    h3,
+    p {
+        @include transition(color .25s linear);
+    }
+
+    h3 {
+        margin-top: 5px;
+    }
+
+    .promo-item {
+        @include media-breakpoint-up(sm) {
+            @include make-col(6);
+        }
+        @include media-breakpoint-up(md) {
+            @include make-col(3);
+        }
+        @include transition(background .25s linear);
+        padding-bottom: $padding-base-horizontal;
+        padding-top: $padding-base-horizontal;
+
+        @media (min-width: $screen-tablet) {
+            border-left: solid 1px $gray-lighter;
+            min-height: 105px;
+            margin: $padding-base-horizontal 0;
+            padding-bottom: 0;
+            padding-top: 0;
+        }
+
+        @media (min-width: $screen-desktop) {
+            min-height: 170px;
+            padding-bottom: $padding-base-horizontal;
+            padding-top: $padding-base-horizontal;
+
+            &:first-child {
+                border: none;
+            }
+        }
+
+        @media (min-width: $screen-lg-desktop) {
+            min-height: 130px;
+        }
+
+        &:hover {
+            background: $gray-dark;
+            text-decoration: none;
+
+            h3 {
+                color: $white;
+            }
+            
+            p {
+               color: $gray-light;
+            }
+        }
+    }
+}

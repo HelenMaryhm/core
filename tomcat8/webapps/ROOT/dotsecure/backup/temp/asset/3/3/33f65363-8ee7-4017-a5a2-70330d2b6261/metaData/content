@@ -1,0 +1,105 @@
+.employee-listing {
+    @include make-row();
+
+    & > li {
+        @include media-breakpoint-up(sm) {
+            @include make-col(6);
+        }
+        @include media-breakpoint-up(md) {
+            @include make-col(4);
+        }
+
+        &:first-child {
+            @media (min-width: $screen-tablet) {
+                margin-top: $padding-base-vertical * 2;
+            }
+        }
+    }
+}
+
+.employee-management-team {
+
+    & > li {
+        margin-top: $padding-base-vertical * 2;
+    }
+
+    .media {
+        @include clearfix;
+        border-bottom: solid 1px $gray-lighter;
+        border-top: solid 1px $gray-lighter;
+        padding: $padding-base-vertical 0 $padding-base-vertical $padding-base-vertical;
+
+        & > .pull-left {
+            margin-right: $padding-base-horizontal;
+        }
+    }
+
+    .member-info {
+        @include list-naked;
+        color: $gray;
+        font-size: $font-size-small;
+
+        a {
+            color: $brand-secondary;
+        }
+    }
+
+    .name {
+        color: $brand-primary;
+        font-size: $font-size-base;
+    }
+
+    // adding icons to the items
+    // using glyphicons bootstrap default
+    .email,
+    .phone {
+
+        &:before {
+            @include add-icon;
+            margin-right: 5px;
+        }
+    }
+
+    .email:before {
+        content: "\f0e0";
+    }
+
+    .phone:before {
+        content: "\f095";
+    }
+}
+tical * 2;
+            }
+        }
+    }
+}
+
+.employee-management-team {
+
+    & > li {
+        margin-top: $padding-base-vertical * 2;
+    }
+
+    .media {
+        @include clearfix;
+        border-bottom: solid 1px $gray-lighter;
+        border-top: solid 1px $gray-lighter;
+        padding: $padding-base-vertical 0 $padding-base-vertical $padding-base-vertical;
+
+        & > .pull-left {
+            margin-right: $padding-base-horizontal;
+        }
+    }
+
+    .member-info {
+        @include list-naked;
+        color: $gray;
+        font-size: $font-size-small;
+
+        a {
+            color: $brand-secondary;
+        }
+    }
+
+    .name {
+        color: $brand-primar
