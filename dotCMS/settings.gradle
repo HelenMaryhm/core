@@ -15,3 +15,11 @@ include 'shared'
 include 'api'
 include 'services:webservice'
 */
+
+pluginManagement {
+    repositories {
+        gradlePluginPortal()  // This will allow Gradle to find the plugin from the Plugin Portal
+        mavenCentral()
+        // other repositories you may need
+    }
+}
